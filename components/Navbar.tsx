@@ -27,12 +27,12 @@ export default function Navbar() {
                         className="rounded-full bg-black"
                     />
                 </div>
-                <Link onClick={() => setActiveTab("")} href="/" className="text-3xl tracking-wider font-medium">
+                <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-3xl tracking-wider font-medium">
                     Hergünebi&apos;şey
                 </Link>
             </div>
 
-            <nav className="flex items-center justify-center space-x-24 relative">
+            <nav className="flex items-center justify-center space-x-16 relative">
                 {menuItems.map((item) => (
                     <div key={item.name} className="relative">
                         <Link
