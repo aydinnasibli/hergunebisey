@@ -16,7 +16,7 @@ export default function Navbar() {
     ]
 
     return (
-        <header className="flex flex-col md:flex-row items-center justify-between py-10 px-4 md:px-8 lg:px-16 max-w-6xl mb-10 mx-auto">
+        <header className="flex flex-col md:flex-row items-center justify-between py-10 px-4 md:px-8 lg:px-16 max-w-6xl mx-auto mb-10">
             <div className="flex items-center space-x-3">
                 <div className="relative w-10 h-10">
                     <Image
@@ -27,7 +27,7 @@ export default function Navbar() {
                         className="rounded-full bg-black"
                     />
                 </div>
-                <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-3xl tracking-wider font-medium">
+                <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-3xl tracking-widest font-medium">
                     Hergünebi&apos;şey
                 </Link>
             </div>
