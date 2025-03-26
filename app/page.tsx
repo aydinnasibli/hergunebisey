@@ -1,7 +1,10 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-const SlideInFromLeft = ({ children }: { children: React.ReactNode }) => {
+import Image from "next/image";
+import landscape from "./assets/landscape.jpg"
+
+const SlideInFromRight = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
   const isInViewSlide = useInView(ref, { once: true });
 
@@ -10,14 +13,34 @@ const SlideInFromLeft = ({ children }: { children: React.ReactNode }) => {
     <motion.div
       ref={ref}
       className=" "
-      initial={{ x: "-100%" }} // Start off-screen
-      animate={{ x: isInViewSlide ? 0 : "-100%" }} // Move in from the left when in view
-      transition={{ duration: 1.5, ease: "easeOut" }}
+      initial={{ x: "50%" }} // Start off-screen
+      animate={{ x: isInViewSlide ? 0 : "100%" }} // Move in from the left when in view
+      transition={{ duration: 1, ease: "easeOut" }}
     >
       {children}
     </motion.div>
   );
 };
+
+
+const FadeIn = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef(null);
+  const isInViewFade = useInView(ref, { once: true });
+
+  return (
+    <motion.div
+      ref={ref}
+      className=" "
+      initial={{ opacity: 0 }} // Start with opacity 0 (invisible)
+      animate={{ opacity: isInViewFade ? 1 : 0 }} // Fade in to opacity 1 when in view
+      transition={{ duration: 1, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+
 const VerticalLine = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -36,27 +59,35 @@ const VerticalLine = () => {
 
 const Home = () => {
   return (
-    <div className="relative flex flex-col items-center space-y-80 py-40">
+    <div className="relative flex flex-col items-center py-12">
       <VerticalLine />
       <section className=" py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-10 lg:grid-cols-2 gap-3 items-center">
           {/* Text Section */}
-          <SlideInFromLeft>
+          <FadeIn>
             <div className="text-center md:text-left">
               <h2 className="text-4xl font-bold">Blog</h2>
               <p className="mt-4 text-lg text-gray-600">
                 Welcome to our latest blog posts where we share insights and tips.
               </p>
             </div>
-          </SlideInFromLeft>
+
+          </FadeIn>
 
           {/* Image Section */}
-          <div className="text-center lg:text-right">
-            <h2 className="text-4xl font-bold">Blog</h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Welcome to our latest blog posts where we share insights and tips.
-            </p>
-          </div>
+          <SlideInFromRight>
+            <div className="flex justify-center w-full  ">
+              <Image
+                src={landscape}// Use a valid path (e.g., "/landscape.jpg" if it's in the 'public' folder)
+                alt="Blog Image"
+                className="rounded-3xl"
+                layout="responsive"
+                width={384}    // Width in pixels (defines aspect ratio)
+                height={256}   // Height in pixels (defines aspect ratio)
+              />
+            </div>
+
+          </SlideInFromRight>
         </div>
       </section>
 
