@@ -20,7 +20,7 @@ const Footer = () => {
 
             <nav className="mt-4">
                 <div className="flex space-x-6">
-                    <a href="tel:+994103107117" className="text-gray-600 hover:text-black">
+                    <a href="tel:+" className="text-gray-600 hover:text-black">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
