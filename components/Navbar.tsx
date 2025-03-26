@@ -28,7 +28,7 @@ export default function Navbar() {
                     />
                 </div>
                 <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-3xl tracking-widest font-medium">
-                    Hergünebi&apos;şey
+                    Hergünebi'şey
                 </Link>
             </div>
 
