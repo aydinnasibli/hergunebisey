@@ -13,7 +13,7 @@ const Footer = () => {
                 height={64}
             />
 
-            <p className="font-bold mt-2">Hergünebi'şey</p>
+            <p className="font-bold mt-2">Hergünebi&apos;şey</p>
             <p className="text-sm text-gray-500">
                 Copyright © {new Date().getFullYear()} - All rights reserved
             </p>
