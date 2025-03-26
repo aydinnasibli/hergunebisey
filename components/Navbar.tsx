@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 
 export default function Navbar() {
-    const [activeTab, setActiveTab] = useState("BLOG")
+    const [activeTab, setActiveTab] = useState("")
     const [hoverTab, setHoverTab] = useState("")
 
     const menuItems = [

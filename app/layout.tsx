@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
@@ -28,7 +29,7 @@ export default function RootLayout({
         <Navbar />
         <div className=" max-w-4xl mx-auto px-4">
           {children}
-
+          <HorizontalScrollBar />
         </div>
         <Footer />
       </body>
