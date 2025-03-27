@@ -106,7 +106,8 @@ const Home = () => {
                 Sitemizde geçmişten günümüze uzanan bir bilgi hazinesi sizleri bekliyor. Gizemli uygarlıklardan unutulmaz sanat eserlerine, bilimsel gelişmelerden teknolojinin harikalarına kadar geniş bir yelpazede ilgi çekici yazılar bulabilirsiniz.
               </p>
               <Link href="/podcast">
-                <Button className="cursor-pointer " variant={'default'}>Keşfet</Button>
+                <Button className="cursor-pointer transition-all duration-300 
+                        hover:shadow-xl  hover:scale-110" variant={'default'}>Keşfet</Button>
               </Link>
             </div>
 
@@ -155,7 +156,7 @@ const Home = () => {
           <FadeIn>
             <div className="text-center md:text-left">
               <h2 className="text-4xl ">Podcast</h2>
-              <p className="mt-4 text-lg text-left py-10  text-gray-600">
+              <p className="mt-4 text-lg text-justify py-10  text-gray-600">
                 Aklımıza esen herhangi bir konuyu konuştuğumuz ve tartıştığımız öylesine bir podcast
 
 
@@ -179,7 +180,7 @@ const Home = () => {
           <FadeIn>
             <div className="text-center md:text-left">
               <h2 className="text-4xl ">Quote</h2>
-              <p className="mt-4 text-lg mx-auto py-10  text-gray-600">
+              <p className="mt-4 text-lg mx-auto py-10 text-justify text-gray-600">
                 Günlük,aylık ve yıllık olarak quotelar paylaştığımız yer
               </p>
               <Link href="/podcast">
