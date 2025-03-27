@@ -59,7 +59,18 @@ const VerticalLine = () => {
 
 const Home = () => {
   return (
-    <div className="relative flex flex-col items-center py-12">
+    <div className="relative flex flex-col items-center">
+
+      <div className="text-center">
+        <h1 className="text-gray-900 text-6xl font-medium font-manrope leading-snug">
+          Siteyi Keşfedin
+        </h1>
+        <p className="text-gray-500 text-lg mt-3">
+          WelcomeWelcomeWelcomeWelcome
+        </p>
+      </div>
+
+
       <VerticalLine />
       <section className=" py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-10 lg:grid-cols-2 gap-3 items-center">
