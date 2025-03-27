@@ -89,7 +89,7 @@ const Home = () => {
         <h1 className="text-gray-900 text-6xl font-light  leading-snug">
           Merhaba
         </h1>
-        <p className="text-gray-500 text-lg text-justify px-28 mt-6 mb-10">
+        <p className="text-gray-500 text-lg text-justify px-28 mt-3 mb-10">
           Biz kafamızın içindekileri dökmek bunu yaparken de eğlenmek istedik ve böyle bir işe giriştik. Burada günlük hayat tecrübelerimizin bir sonucu ortaya çıkan ‘quote’lar paylaşıyor, zaman zaman blog yazıları yayınlıyoruz. Sadece yazıyla olmaz deyip zaman zaman da bi'podcast yayınlıyoruz.
         </p>
       </div>
@@ -102,9 +102,12 @@ const Home = () => {
           <FadeIn>
             <div className="text-center md:text-left">
               <h2 className="text-4xl ">Blog</h2>
-              <p className="mt-4 text-lg mx-auto  text-gray-600">
-                Sitemizde geçmişten günümüze uzanan bir bilgi hazinesi sizleri bekliyor. Gizemli uygarlıklardan unutulmaz sanat eserlerine, bilimsel gelişmelerden teknolojinin harikalarına kadar geniş bir yelpazede ilgi çekici yazılar bulabilirsiniz.s
+              <p className="mt-4 text-lg mx-auto py-3  text-gray-600">
+                Sitemizde geçmişten günümüze uzanan bir bilgi hazinesi sizleri bekliyor. Gizemli uygarlıklardan unutulmaz sanat eserlerine, bilimsel gelişmelerden teknolojinin harikalarına kadar geniş bir yelpazede ilgi çekici yazılar bulabilirsiniz.
               </p>
+              <Link href="/podcast">
+                <Button className="cursor-pointer " variant={'default'}>Keşfet</Button>
+              </Link>
             </div>
 
           </FadeIn>
@@ -168,7 +171,40 @@ const Home = () => {
         </div>
       </section>
 
+
       <VerticalLine />
+      <section className="mt-10  mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-10 lg:grid-cols-2 gap-3 items-center">
+          {/* Text Section */}
+          <FadeIn>
+            <div className="text-center md:text-left">
+              <h2 className="text-4xl ">Quote</h2>
+              <p className="mt-4 text-lg mx-auto py-10  text-gray-600">
+                Günlük,aylık ve yıllık olarak quotelar paylaştığımız yer
+              </p>
+              <Link href="/podcast">
+                <Button className="cursor-pointer" variant={'default'}>Daha fazla</Button>
+              </Link>
+            </div>
+
+          </FadeIn>
+
+          {/* Image Section */}
+          <SlideInFromRight>
+            <div className="flex justify-center w-full ">
+              <Image
+                src={landscape}// Use a valid path (e.g., "/landscape.jpg" if it's in the 'public' folder)
+                alt="Blog Image"
+                className="rounded-3xl"
+                layout="responsive"
+                width={384}    // Width in pixels (defines aspect ratio)
+                height={256}   // Height in pixels (defines aspect ratio)
+              />
+            </div>
+
+          </SlideInFromRight>
+        </div>
+      </section>
     </div>
   );
 };
