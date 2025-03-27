@@ -62,7 +62,7 @@ const Home = () => {
     <div className="relative flex flex-col items-center">
 
       <div className="text-center">
-        <h1 className="text-gray-900 text-6xl font-medium font-manrope leading-snug">
+        <h1 className="text-gray-900 text-6xl font-light font-manrope leading-snug">
           Siteyi Keşfedin
         </h1>
         <p className="text-gray-500 text-lg mt-3">
