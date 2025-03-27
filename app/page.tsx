@@ -62,17 +62,17 @@ const Home = () => {
     <div className="relative flex flex-col items-center">
 
       <div className="text-center">
-        <h1 className="text-gray-900 text-6xl font-light font-manrope leading-snug">
-          Siteyi Keşfedin
+        <h1 className="text-gray-900 text-6xl font-light  leading-snug">
+          Merhaba
         </h1>
-        <p className="text-gray-500 text-lg mt-3">
-          WelcomeWelcomeWelcomeWelcome
+        <p className="text-gray-500 text-lg px-24 mt-1 mb-10">
+          Biz kafamızın içindekileri dökmek bunu yaparken de eğlenmek istedik ve böyle bir işe giriştik. Burada her gün tecrübelerimizin bir sonucu ortaya çıkan ‘quote’lar paylaşıyor, zaman zaman blog yazıları yayınlıyoruz. Sadece yazıyla olmaz deyip bir de podcast yayınlıyoruz.
         </p>
       </div>
 
 
       <VerticalLine />
-      <section className=" py-20">
+      <section className="mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-10 lg:grid-cols-2 gap-3 items-center">
           {/* Text Section */}
           <FadeIn>
