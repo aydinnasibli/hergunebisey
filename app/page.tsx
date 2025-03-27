@@ -65,7 +65,7 @@ const Home = () => {
         <h1 className="text-gray-900 text-6xl font-light  leading-snug">
           Merhaba
         </h1>
-        <p className="text-gray-500 text-lg px-24 mt-1 mb-10">
+        <p className="text-gray-500 text-lg text-justify px-24 mt-1 mb-10">
           Biz kafamızın içindekileri dökmek bunu yaparken de eğlenmek istedik ve böyle bir işe giriştik. Burada her gün tecrübelerimizin bir sonucu ortaya çıkan ‘quote’lar paylaşıyor, zaman zaman blog yazıları yayınlıyoruz. Sadece yazıyla olmaz deyip bir de podcast yayınlıyoruz.
         </p>
       </div>
@@ -78,7 +78,7 @@ const Home = () => {
           <FadeIn>
             <div className="text-center md:text-left">
               <h2 className="text-4xl font-bold">Blog</h2>
-              <p className="mt-4 text-lg text-gray-600">
+              <p className="mt-4 text-lg  text-gray-600">
                 Welcome to our latest blog posts where we share insights and tips.
               </p>
             </div>
