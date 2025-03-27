@@ -89,7 +89,7 @@ const Home = () => {
         <h1 className="text-gray-900 text-6xl font-light  leading-snug">
           Merhaba
         </h1>
-        <p className="text-gray-500 text-lg text-justify px-24 mt-1 mb-10">
+        <p className="text-gray-500 text-lg text-justify px-28 mt-6 mb-10">
           Biz kafamızın içindekileri dökmek bunu yaparken de eğlenmek istedik ve böyle bir işe giriştik. Burada günlük hayat tecrübelerimizin bir sonucu ortaya çıkan ‘quote’lar paylaşıyor, zaman zaman blog yazıları yayınlıyoruz. Sadece yazıyla olmaz deyip zaman zaman da bi'podcast yayınlıyoruz.
         </p>
       </div>
@@ -158,7 +158,7 @@ const Home = () => {
 
               </p>
               <Link href="/podcast">
-                <Button variant={'default'}>Dinle</Button>
+                <Button className="cursor-pointer" variant={'default'}>Dinle</Button>
               </Link>
             </div>
 
