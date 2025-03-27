@@ -3,6 +3,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import landscape from "./assets/landscape.jpg"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const SlideInFromRight = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
@@ -21,6 +23,28 @@ const SlideInFromRight = ({ children }: { children: React.ReactNode }) => {
     </motion.div>
   );
 };
+const SlideInFromLeft = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef(null);
+  const isInViewSlide = useInView(ref, { once: true });
+
+  const variants = {
+    hidden: { x: "-100%", opacity: 0 },
+    visible: { x: 0, opacity: 1 },
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={variants}
+      initial="hidden" // Start hidden
+      animate={isInViewSlide ? "visible" : "hidden"} // Animate only if in view
+      transition={{ duration: 1, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 
 
 const FadeIn = ({ children }: { children: React.ReactNode }) => {
@@ -66,20 +90,20 @@ const Home = () => {
           Merhaba
         </h1>
         <p className="text-gray-500 text-lg text-justify px-24 mt-1 mb-10">
-          Biz kafamızın içindekileri dökmek bunu yaparken de eğlenmek istedik ve böyle bir işe giriştik. Burada her gün tecrübelerimizin bir sonucu ortaya çıkan ‘quote’lar paylaşıyor, zaman zaman blog yazıları yayınlıyoruz. Sadece yazıyla olmaz deyip bir de podcast yayınlıyoruz.
+          Biz kafamızın içindekileri dökmek bunu yaparken de eğlenmek istedik ve böyle bir işe giriştik. Burada günlük hayat tecrübelerimizin bir sonucu ortaya çıkan ‘quote’lar paylaşıyor, zaman zaman blog yazıları yayınlıyoruz. Sadece yazıyla olmaz deyip zaman zaman da bi'podcast yayınlıyoruz.
         </p>
       </div>
 
 
       <VerticalLine />
-      <section className="mt-10">
+      <section className="mt-10  mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-10 lg:grid-cols-2 gap-3 items-center">
           {/* Text Section */}
           <FadeIn>
             <div className="text-center md:text-left">
-              <h2 className="text-4xl font-bold">Blog</h2>
-              <p className="mt-4 text-lg  text-gray-600">
-                Welcome to our latest blog posts where we share insights and tips.
+              <h2 className="text-4xl ">Blog</h2>
+              <p className="mt-4 text-lg mx-auto  text-gray-600">
+                Sitemizde geçmişten günümüze uzanan bir bilgi hazinesi sizleri bekliyor. Gizemli uygarlıklardan unutulmaz sanat eserlerine, bilimsel gelişmelerden teknolojinin harikalarına kadar geniş bir yelpazede ilgi çekici yazılar bulabilirsiniz.s
               </p>
             </div>
 
@@ -87,7 +111,7 @@ const Home = () => {
 
           {/* Image Section */}
           <SlideInFromRight>
-            <div className="flex justify-center w-full  ">
+            <div className="flex justify-center w-full ">
               <Image
                 src={landscape}// Use a valid path (e.g., "/landscape.jpg" if it's in the 'public' folder)
                 alt="Blog Image"
@@ -103,14 +127,45 @@ const Home = () => {
       </section>
 
 
-      <section className="h-48 flex items-center justify-center">
-        <h2 className="text-3xl">More Content</h2>
-      </section>
+
 
       <VerticalLine />
 
-      <section className="h-48 flex items-center justify-center">
-        <h2 className="text-3xl">Keep Scrolling</h2>
+      <section className="mt-10  mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-10 lg:grid-cols-2 gap-3 items-center">
+          {/* Image Section */}
+
+          <SlideInFromLeft>
+            <div className="flex justify-center w-full ">
+              <Image
+                src={landscape}// Use a valid path (e.g., "/landscape.jpg" if it's in the 'public' folder)
+                alt="Blog Image"
+                className="rounded-3xl"
+                layout="responsive"
+                width={384}    // Width in pixels (defines aspect ratio)
+                height={256}   // Height in pixels (defines aspect ratio)
+              />
+            </div>
+
+          </SlideInFromLeft>
+          {/* Text Section */}
+          <FadeIn>
+            <div className="text-center md:text-left">
+              <h2 className="text-4xl ">Podcast</h2>
+              <p className="mt-4 text-lg text-left py-10  text-gray-600">
+                Aklımıza esen herhangi bir konuyu konuştuğumuz ve tartıştığımız öylesine bir podcast
+
+
+              </p>
+              <Link href="/podcast">
+                <Button variant={'default'}>Dinle</Button>
+              </Link>
+            </div>
+
+          </FadeIn>
+
+
+        </div>
       </section>
 
       <VerticalLine />
