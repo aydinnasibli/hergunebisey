@@ -102,7 +102,7 @@ const Home = () => {
           <FadeIn>
             <div className="text-center md:text-left">
               <h2 className="text-4xl ">Blog</h2>
-              <p className="mt-4 text-lg mx-auto py-3  text-gray-600">
+              <p className="mt-4 text-lg mx-auto py-3 text-justify text-gray-600">
                 Sitemizde geçmişten günümüze uzanan bir bilgi hazinesi sizleri bekliyor. Gizemli uygarlıklardan unutulmaz sanat eserlerine, bilimsel gelişmelerden teknolojinin harikalarına kadar geniş bir yelpazede ilgi çekici yazılar bulabilirsiniz.
               </p>
               <Link href="/podcast">
