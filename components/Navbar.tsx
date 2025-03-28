@@ -16,7 +16,7 @@ export default function Navbar() {
     ]
 
     return (
-        <header className="flex flex-col md:flex-row items-center justify-between py-10 px-4 md:px-8 lg:px-16 max-w-6xl mx-auto ">
+        <header className="flex flex-col md:flex-row items-center justify-between py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto ">
             <div className="flex items-center space-x-3">
                 <div className="relative w-10 h-10">
                     <Image
@@ -27,12 +27,12 @@ export default function Navbar() {
                         className="rounded-full bg-black"
                     />
                 </div>
-                <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-3xl tracking-widest font-medium">
+                <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-2xl tracking-widest font-medium">
                     Hergünebi'şey
                 </Link>
             </div>
 
-            <nav className="flex items-center justify-center space-x-16 relative">
+            <nav className="flex items-center justify-center  space-x-16 relative">
                 {menuItems.map((item) => (
                     <div key={item.name} className="relative">
                         <Link
