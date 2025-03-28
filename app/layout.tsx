@@ -27,7 +27,7 @@ export default function RootLayout({
 
       <body className={`${poppins.variable} `}>
         <Navbar />
-        <div className=" max-w-6xl mx-auto px-2">
+        <div className=" max-w-6xl mx-auto px-8">
           {children}
           <HorizontalScrollBar />
         </div>
