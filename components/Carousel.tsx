@@ -12,11 +12,6 @@ const images = [
 const CarouselMain: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const prevSlide = () => {
-        setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? images.length - 1 : prevIndex - 1
-        );
-    };
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
