@@ -2,9 +2,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import landscape from "./assets/landscape.jpg"
+import landscape from '../public/assets/landscape.jpg'
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import CarouselMain from "@/components/Carousel";
 
 const SlideInFromRight = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
@@ -84,7 +85,7 @@ const VerticalLine = () => {
 const Home = () => {
   return (
     <div className="relative flex flex-col items-center">
-
+      <CarouselMain />
       <div className="text-center">
         <h1 className="text-gray-900 text-6xl font-light  leading-snug">
           Merhaba
