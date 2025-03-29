@@ -34,6 +34,14 @@ export default function Home() {
         <p className="mt-8 text-lg">This is the homepage content...</p>
         <p className="mt-8 text-lg">This is the homepage content...</p>
         <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
+        <p className="mt-8 text-lg">This is the homepage content...</p>
       </div>
     </main>
   )
