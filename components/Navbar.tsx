@@ -2,12 +2,14 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 
 export default function Navbar() {
     const [activeTab, setActiveTab] = useState("")
     const [hoverTab, setHoverTab] = useState("")
+    const [isVisible, setIsVisible] = useState(true)
+    const [lastScrollY, setLastScrollY] = useState(0)
 
     const menuItems = [
         { name: "BLOG", href: "/blog" },
@@ -15,16 +17,30 @@ export default function Navbar() {
         { name: "QUOTE", href: "#quote" },
         { name: "HAKKIMIZDA", href: "#hakkimizda" },
     ]
+
     const pathname = usePathname()
     const isHomePage = pathname === "/"
 
+    // Handle Scroll Event
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > lastScrollY) {
+                setIsVisible(false)  // Hide navbar on scroll down
+            } else {
+                setIsVisible(true)  // Show navbar on scroll up
+            }
+            setLastScrollY(window.scrollY)
+        }
 
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [lastScrollY])
 
     return (
         <>
-            {/* Header for both mobile and desktop */}
+            {/* Header for home page */}
             {isHomePage && (
-                <header className="md:fixed absolute top-0 left-0 z-50 w-full bg-transparent">
+                <header className={`md:fixed absolute top-0 left-0 z-50 w-full bg-transparent transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
                     <div className="flex items-center justify-between py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
                         {/* Logo Section */}
                         <div className="flex items-center space-x-3">
@@ -37,7 +53,7 @@ export default function Navbar() {
                                     className="rounded-full bg-black"
                                 />
                             </div>
-                            <Link onClick={() => setActiveTab("")} href="/" className=" px-4 text-2xl tracking-widest font-medium">
+                            <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-2xl tracking-widest font-medium">
                                 Hergünebi'şey
                             </Link>
                         </div>
@@ -65,16 +81,13 @@ export default function Navbar() {
                                 </div>
                             ))}
                         </nav>
-
-
                     </div>
-
-
                 </header>
             )}
-            {/* Non-home page header */}
+
+            {/* Header for non-home pages */}
             {!isHomePage && (
-                <header className="flex sticky top-0 left-0 z-50 flex-col md:flex-row items-center justify-between py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+                <header className={`flex flex-col md:flex-row items-center justify-between py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"}`}>
                     <div className="flex items-center space-x-3">
                         <div className="relative w-10 h-10">
                             <Image
