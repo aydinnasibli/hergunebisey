@@ -74,7 +74,7 @@ export default function Navbar() {
             )}
             {/* Non-home page header */}
             {!isHomePage && (
-                <header className="flex flex-col md:flex-row items-center justify-between py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+                <header className="flex sticky top-0 left-0 z-50 bg-black flex-col md:flex-row items-center justify-between py-8 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
                     <div className="flex items-center space-x-3">
                         <div className="relative w-10 h-10">
                             <Image
