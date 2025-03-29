@@ -14,7 +14,7 @@ export default function Home() {
           className="object-cover"
           priority
         />
-        <div className="absolute text-white text-xl z-10">Overlay Content</div>
+        <div className="absolute text-white text-xl z-10">Hergünebi'şey</div>
       </section>
 
 
