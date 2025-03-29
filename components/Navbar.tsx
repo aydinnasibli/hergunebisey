@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation"
 export default function Navbar() {
     const [activeTab, setActiveTab] = useState("")
     const [hoverTab, setHoverTab] = useState("")
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)  // State for mobile menu toggle
 
     const menuItems = [
         { name: "BLOG", href: "/blog" },
@@ -19,9 +18,7 @@ export default function Navbar() {
     const pathname = usePathname()
     const isHomePage = pathname === "/"
 
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen)
-    }
+
 
     return (
         <>
