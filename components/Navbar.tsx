@@ -1,148 +1,131 @@
 "use client"
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
-import Image from "next/image"
-import Link from "next/link"
-import { useState, useLayoutEffect } from "react"
-import { usePathname } from "next/navigation"
+const Navbar = () => {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-export default function Navbar() {
-    const [activeTab, setActiveTab] = useState("")
-    const [hoverTab, setHoverTab] = useState("")
-    const [isVisible, setIsVisible] = useState(true)
-    const [lastScrollY, setLastScrollY] = useState(0)
-    const [isTop, setIsTop] = useState(true)
-
-    const menuItems = [
-        { name: "BLOG", href: "/blog" },
-        { name: "PODCAST", href: "#podcast" },
-        { name: "QUOTE", href: "#quote" },
-        { name: "HAKKIMIZDA", href: "#hakkimizda" },
-    ]
-
-    const pathname = usePathname()
-    const isHomePage = pathname === "/"
-
-    useLayoutEffect(() => {
-        let ticking = false
-        const threshold = 10
-
+    // Track scroll position to change header style
+    useEffect(() => {
         const handleScroll = () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const scrollY = window.scrollY || document.documentElement.scrollTop
-
-                    if (Math.abs(lastScrollY - scrollY) > threshold) {
-                        setIsVisible(scrollY < lastScrollY)
-                        setLastScrollY(scrollY)
-                    }
-
-                    setIsTop(scrollY < 10) // Fix for Safari detecting top correctly
-                    ticking = false
-                })
-
-                ticking = true
+            if (window.scrollY > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
             }
-        }
+        };
 
-        window.addEventListener("scroll", handleScroll)
-        return () => window.removeEventListener("scroll", handleScroll)
-    }, [lastScrollY])
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Toggle mobile menu
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
 
     return (
         <>
-            {isHomePage && (
-                <header
-                    className={`md:fixed absolute top-0 left-0 w-full z-50 transition-transform duration-300 ease-in-out
-                    ${isVisible ? "translate-y-0" : "-translate-y-full"} 
-                    ${isTop ? "bg-transparent" : "bg-black/70 shadow-md"}`}
-                    style={{ willChange: "transform", backfaceVisibility: "hidden" }}
-                >
-                    <div className="flex items-center justify-between py-4 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-                        <div className="flex items-center space-x-3">
-                            <div className="relative w-10 h-10">
-                                <Image
-                                    src="/placeholder.svg?height=64&width=64"
-                                    alt="Logo"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full bg-black"
-                                />
-                            </div>
-                            <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-2xl text-white tracking-widest font-medium">
-                                Hergünebi'şey
-                            </Link>
-                        </div>
+            {/* Fixed header that changes style on scroll */}
+            <header
+                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
+                        ? 'bg-black/80 backdrop-blur-md py-4'
+                        : 'bg-gradient-to-b from-black/70 to-transparent py-6'
+                    }`}
+            >
+                <div className="container mx-auto px-4 flex justify-between items-center">
+                    {/* Logo */}
+                    <Link href="/" className="text-white font-bold text-2xl tracking-wider">
+                        EXPLORE<span className="text-yellow-500">.</span>
+                    </Link>
 
-                        <nav className="hidden md:flex items-center justify-center space-x-16 relative">
-                            {menuItems.map((item) => (
-                                <div key={item.name} className="relative">
-                                    <Link
-                                        href={item.href}
-                                        className={`relative py-2 px-2 tracking-widest font-medium transition-colors 
-                                        ${activeTab === item.name ? "text-white" : "text-white/70 hover:text-white"} `}
-                                        onClick={() => setActiveTab(item.name)}
-                                        onMouseEnter={() => setHoverTab(item.name)}
-                                        onMouseLeave={() => setHoverTab("")}
-                                    >
-                                        {item.name}
-                                        <span
-                                            className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-[150%] bg-black transition-all transform duration-300 
-                                            ${activeTab === item.name || hoverTab === item.name ? "scale-100" : "scale-0"}`}
-                                        />
-                                    </Link>
-                                </div>
-                            ))}
-                        </nav>
-                    </div>
-                </header>
-            )}
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center space-x-8">
+                        <NavLinks />
 
-            {!isHomePage && (
-                <header
-                    className={`sticky top-0 left-0 w-full z-50 transition-transform duration-300 ease-in-out
-                        ${isVisible ? "translate-y-0" : "-translate-y-full"} 
-                        ${isTop ? "bg-transparent" : "bg-black/70 shadow-md"}`}
-                    style={{ willChange: "transform", backfaceVisibility: "hidden" }}
-                >
-                    <div className="flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
-                        <div className="flex items-center space-x-3">
-                            <div className="relative w-10 h-10">
-                                <Image
-                                    src="/placeholder.svg?height=64&width=64"
-                                    alt="Logo"
-                                    width={40}
-                                    height={40}
-                                    className="rounded-full bg-black"
-                                />
-                            </div>
-                            <Link onClick={() => setActiveTab("")} href="/" className="px-4 text-2xl tracking-widest font-medium">
-                                Hergünebi'şey
-                            </Link>
-                        </div>
+                        {/* Book Now Button */}
+                        <button className="px-6 py-2 bg-yellow-500 text-black font-medium rounded-full uppercase tracking-wider text-sm hover:bg-yellow-400 transition-colors">
+                            Book Now
+                        </button>
+                    </nav>
 
-                        <nav className="flex items-center justify-center space-x-16 relative">
-                            {menuItems.map((item) => (
-                                <div key={item.name} className="relative">
-                                    <Link
-                                        href={item.href}
-                                        className={`relative py-2 px-2 tracking-widest font-medium transition-colors 
-                                        ${activeTab === item.name ? "text-black" : "text-black/70 hover:text-black"}`}
-                                        onClick={() => setActiveTab(item.name)}
-                                        onMouseEnter={() => setHoverTab(item.name)}
-                                        onMouseLeave={() => setHoverTab("")}
-                                    >
-                                        {item.name}
-                                        <span
-                                            className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-[2px] w-[150%] bg-black transition-all transform duration-300 
-                                            ${activeTab === item.name || hoverTab === item.name ? "scale-100" : "scale-0"}`}
-                                        />
-                                    </Link>
-                                </div>
-                            ))}
-                        </nav>
-                    </div>
-                </header>
-            )}
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={toggleMobileMenu}
+                        className="md:hidden text-white p-2"
+                        aria-label="Toggle mobile menu"
+                    >
+                        {mobileMenuOpen ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        )}
+                    </button>
+                </div>
+            </header>
+
+            {/* Mobile Navigation Overlay */}
+            <div
+                className={`fixed inset-0 bg-black z-40 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                    }`}
+            >
+                <div className="h-full flex flex-col justify-center items-center">
+                    <button
+                        onClick={toggleMobileMenu}
+                        className="absolute top-6 right-6 text-white"
+                        aria-label="Close mobile menu"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <nav className="flex flex-col items-center space-y-8">
+                        <NavLinks isMobile={true} closeMenu={() => setMobileMenuOpen(false)} />
+
+                        {/* Book Now Button for Mobile */}
+                        <button className="px-8 py-3 bg-yellow-500 text-black font-medium rounded-full uppercase tracking-wider text-sm hover:bg-yellow-400 transition-colors">
+                            Book Now
+                        </button>
+                    </nav>
+                </div>
+            </div>
         </>
-    )
-}
+    );
+};
+
+// Shared navigation links component
+const NavLinks = ({ isMobile = false, closeMenu = () => { } }) => {
+    const linkClasses = `text-white uppercase tracking-wider font-medium hover:text-yellow-500 transition-colors ${isMobile ? 'text-3xl' : 'text-sm'
+        }`;
+
+    const links = [
+        { name: 'Home', path: '/' },
+        { name: 'Destinations', path: '/destinations' },
+        { name: 'Experiences', path: '/experiences' },
+        { name: 'About', path: '/about' },
+        { name: 'Contact', path: '/contact' },
+    ];
+
+    return (
+        <>
+            {links.map((link) => (
+                <Link
+                    key={link.name}
+                    href={link.path}
+                    className={linkClasses}
+                    onClick={isMobile ? closeMenu : undefined}
+                >
+                    {link.name}
+                </Link>
+            ))}
+        </>
+    );
+};
+
+export default Navbar;
