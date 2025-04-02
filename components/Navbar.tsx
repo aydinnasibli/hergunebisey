@@ -30,14 +30,14 @@ const Navbar = () => {
             {/* Fixed header that changes style on scroll */}
             <header
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-                        ? 'bg-black/80 backdrop-blur-md py-4'
-                        : 'bg-gradient-to-b from-black/70 to-transparent py-6'
+                    ? 'bg-black/80 backdrop-blur-md py-4'
+                    : 'bg-gradient-to-b from-black/70 to-transparent py-6'
                     }`}
             >
                 <div className="container mx-auto px-4 flex justify-between items-center">
                     {/* Logo */}
                     <Link href="/" className="text-white font-bold text-2xl tracking-wider">
-                        EXPLORE<span className="text-yellow-500">.</span>
+                        Hergünebi'şey<span className="text-yellow-500">.</span>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -45,9 +45,7 @@ const Navbar = () => {
                         <NavLinks />
 
                         {/* Book Now Button */}
-                        <button className="px-6 py-2 bg-yellow-500 text-black font-medium rounded-full uppercase tracking-wider text-sm hover:bg-yellow-400 transition-colors">
-                            Book Now
-                        </button>
+
                     </nav>
 
                     {/* Mobile Menu Button */}
@@ -105,11 +103,10 @@ const NavLinks = ({ isMobile = false, closeMenu = () => { } }) => {
         }`;
 
     const links = [
-        { name: 'Home', path: '/' },
-        { name: 'Destinations', path: '/destinations' },
-        { name: 'Experiences', path: '/experiences' },
-        { name: 'About', path: '/about' },
-        { name: 'Contact', path: '/contact' },
+        { name: 'Blog', path: '/blog' },
+        { name: 'Podcast', path: '/podcast' },
+        { name: 'Quote', path: '/quote' },
+        { name: 'Hakkımızda', path: '/hakkimizda' },
     ];
 
     return (
