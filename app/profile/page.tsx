@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { UserProfile } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 export default function ProfilePage() {
