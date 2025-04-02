@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
@@ -23,17 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ClerkProvider>
+      <html lang="en">
 
-      <body className={`${poppins.variable} `}>
-        <Navbar />
+        <body className={`${poppins.variable} `}>
+          <Navbar />
 
-        <div className="">
-          {children}
-          <HorizontalScrollBar />
-        </div>
-        <Footer />
-      </body>
-    </html>
+          <div className="">
+            {children}
+            <HorizontalScrollBar />
+          </div>
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

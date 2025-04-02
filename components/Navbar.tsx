@@ -1,10 +1,12 @@
 "use client"
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { UserButton, SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
 
 const Navbar = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+    const { isSignedIn } = useUser();
 
     // Track scroll position to change header style
     useEffect(() => {
@@ -44,8 +46,33 @@ const Navbar = () => {
                     <nav className="hidden md:flex items-center space-x-8">
                         <NavLinks />
 
-                        {/* Book Now Button */}
-
+                        {/* Auth Buttons */}
+                        <div className="flex items-center space-x-4">
+                            {isSignedIn ? (
+                                <UserButton
+                                    afterSignOutUrl="/"
+                                    userProfileUrl="/profile"
+                                    appearance={{
+                                        elements: {
+                                            userButtonAvatarBox: "w-10 h-10"
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    <SignInButton mode="modal">
+                                        <button className="text-white uppercase tracking-wider font-medium hover:text-yellow-500 transition-colors text-sm">
+                                            Giriş
+                                        </button>
+                                    </SignInButton>
+                                    <SignUpButton mode="modal">
+                                        <button className="px-6 py-2 bg-yellow-500 text-black font-medium rounded-full uppercase tracking-wider text-sm hover:bg-yellow-400 transition-colors">
+                                            Kayıt
+                                        </button>
+                                    </SignUpButton>
+                                </>
+                            )}
+                        </div>
                     </nav>
 
                     {/* Mobile Menu Button */}
@@ -86,10 +113,33 @@ const Navbar = () => {
                     <nav className="flex flex-col items-center space-y-8">
                         <NavLinks isMobile={true} closeMenu={() => setMobileMenuOpen(false)} />
 
-                        {/* Book Now Button for Mobile */}
-                        <button className="px-8 py-3 bg-yellow-500 text-black font-medium rounded-full uppercase tracking-wider text-sm hover:bg-yellow-400 transition-colors">
-                            Book Now
-                        </button>
+                        {/* Auth Buttons for Mobile */}
+                        {isSignedIn ? (
+                            <div className="py-4">
+                                <UserButton
+                                    afterSignOutUrl="/"
+                                    userProfileUrl="/profile"
+                                    appearance={{
+                                        elements: {
+                                            userButtonAvatarBox: "w-12 h-12"
+                                        }
+                                    }}
+                                />
+                            </div>
+                        ) : (
+                            <div className="flex flex-col space-y-4">
+                                <SignInButton mode="modal">
+                                    <button className="text-white uppercase tracking-wider font-medium hover:text-yellow-500 transition-colors text-xl">
+                                        Giriş
+                                    </button>
+                                </SignInButton>
+                                <SignUpButton mode="modal">
+                                    <button className="px-8 py-3 bg-yellow-500 text-black font-medium rounded-full uppercase tracking-wider text-sm hover:bg-yellow-400 transition-colors">
+                                        Kayıt
+                                    </button>
+                                </SignUpButton>
+                            </div>
+                        )}
                     </nav>
                 </div>
             </div>
@@ -98,7 +148,12 @@ const Navbar = () => {
 };
 
 // Shared navigation links component
-const NavLinks = ({ isMobile = false, closeMenu = () => { } }) => {
+interface NavLinksProps {
+    isMobile?: boolean;
+    closeMenu?: () => void;
+}
+
+const NavLinks: React.FC<NavLinksProps> = ({ isMobile = false, closeMenu = () => { } }) => {
     const linkClasses = `text-white uppercase tracking-wider font-medium hover:text-yellow-500 transition-colors ${isMobile ? 'text-3xl' : 'text-sm'
         }`;
 
@@ -126,3 +181,6 @@ const NavLinks = ({ isMobile = false, closeMenu = () => { } }) => {
 };
 
 export default Navbar;
+
+
+
