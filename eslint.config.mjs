@@ -14,7 +14,7 @@ const eslintConfig = [
   {
     rules: {
       "react/no-unescaped-entities": "off", // Disable the apostrophe error
-      "@typescript-eslint/no-explicit-any": "off",
+
     },
   },
 ];
