@@ -6,8 +6,12 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 export const revalidate = 60 // revalidate this page every 60 seconds
-
-export default async function BlogPost({ params }: { params: { slug: string } }): Promise<React.ReactNode> {
+interface BlogPostParams {
+    params: {
+        slug: string;
+    };
+}
+export default async function BlogPost({ params }: BlogPostParams) {
     const post = await getBlogPostBySlug(params.slug)
 
     if (!post) {
