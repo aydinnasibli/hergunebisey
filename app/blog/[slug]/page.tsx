@@ -1,21 +1,19 @@
+// app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
-
 export const revalidate = 60 // revalidate this page every 60 seconds
 
-// Use the correct Next.js 15 type definition
-interface PageProps {
+interface PageParams {
     params: {
-        slug: string
-    },
-    searchParams: Record<string, string | string[] | undefined>
+        slug: string;
+    };
 }
 
-export default async function BlogPost({ params, searchParams }: PageProps) {
+export default async function BlogPost({ params }: PageParams) {
     const post = await getBlogPostBySlug(params.slug)
 
     if (!post) {
