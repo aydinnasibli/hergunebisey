@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getLatestBlogPostsForCarousel } from '../lib/sanity';
 import { urlFor } from '../lib/sanity';
+import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
 // Blog post type definition
 type BlogPost = {
@@ -9,7 +10,7 @@ type BlogPost = {
   title: string;
   slug: { current: string };
   excerpt: string;
-  mainImage: any;
+  mainImage: SanityImageSource;
   publishedAt: string;
   categories: string[];
 };
