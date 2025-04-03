@@ -5,15 +5,21 @@ import { PortableText } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+
+// Exporting revalidation interval
 export const revalidate = 60 // revalidate this page every 60 seconds
 
+// BlogPost Component
 export default async function BlogPost({ params }: { params: { slug: string } }) {
+    // Get the post by slug
     const post = await getBlogPostBySlug(params.slug)
 
+    // If no post is found, show 404
     if (!post) {
         notFound()
     }
 
+    // Components for rendering PortableText
     const components = {
         types: {
             image: ({ value }: { value: SanityImageSource }) => (
