@@ -1,7 +1,7 @@
 // app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
-import { PortableText } from '@portabletext/react'
+import { PortableText, PortableTextMarkComponentProps } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
@@ -29,11 +29,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             ),
         },
         marks: {
-            link: ({ children, value }: { children: React.ReactNode; value: { href: string } }) => {
-                const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
-                const target = !value.href.startsWith('/') ? '_blank' : undefined
+            link: ({ children, value }: PortableTextMarkComponentProps) => {
+                const href = value?.href || '';
+                const rel = !href.startsWith('/') ? 'noreferrer noopener' : undefined
+                const target = !href.startsWith('/') ? '_blank' : undefined
                 return (
-                    <a href={value.href} rel={rel} target={target} className="text-blue-600 underline">
+                    <a href={href} rel={rel} target={target} className="text-blue-600 underline">
                         {children}
                     </a>
                 )
