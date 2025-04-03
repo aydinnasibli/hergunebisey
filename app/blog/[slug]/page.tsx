@@ -7,14 +7,15 @@ import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
 export const revalidate = 60 // revalidate this page every 60 seconds
 
-// Fix: Updated the type definition to match Next.js expectations
-type Params = {
+// Try a different approach to type the params
+type Props = {
     params: {
         slug: string
     }
 }
 
-export default async function BlogPost({ params }: Params) {
+export default async function BlogPost(props: Props) {
+    const { params } = props
     const post = await getBlogPostBySlug(params.slug)
 
     if (!post) {
