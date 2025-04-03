@@ -313,16 +313,9 @@ const Home = () => {
               </h2>
 
               <div className="flex items-center justify-center mb-10">
-                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-yellow-500 mr-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000"
-                    alt="Alıntı Sahibi"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+
                 <div>
-                  <h3 className="text-xl font-bold">Ayşe Yılmaz</h3>
-                  <p className="text-white/70">Yazar & Düşünür</p>
+                  <h3 className="text-xl italic font-normal">Aristo</h3>
                 </div>
               </div>
             </div>
@@ -450,9 +443,10 @@ const Home = () => {
 
 
       {/* Content Carousel Section */}
+      {/* Content Carousel Section */}
       {blogPosts.length > 0 && currentContent && (
-        <div id="content-carousel" className="relative w-full h-screen overflow-hidden">
-          {/* Background image */}
+        <div id="content-carousel" className="relative w-full h-screen overflow-hidden bg-black">
+          {/* Background image with proper overlay gradient */}
           <div
             className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
               }`}
@@ -463,8 +457,8 @@ const Home = () => {
             }}
           />
 
-          {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-black/30" />
+          {/* Improved overlay with gradient for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30" />
 
           {/* Main content */}
           <div className="relative z-10 h-full text-white flex flex-col">
@@ -476,52 +470,57 @@ const Home = () => {
                 <div className="w-full lg:w-1/2 flex flex-col justify-center">
                   <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-y-10' : 'opacity-100 translate-y-0'}`}>
                     <div className="mb-6">
-                      <div className="w-10 h-1 bg-white mb-4"></div>
+                      <div className="w-12 h-1 bg-yellow-500 mb-4"></div>
                       <div className="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-yellow-500">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                         </svg>
-                        <p className="text-xl">{currentContent.categories?.[0] || "Blog"}</p>
+                        <p className="text-lg uppercase tracking-wider">{currentContent.categories?.[0] || "Blog"}</p>
                       </div>
                     </div>
 
+                    {/* Title with consistent styling */}
                     <h1 className="text-5xl md:text-7xl font-bold mb-2 tracking-wide">
                       {getTitleParts(currentContent.title).main}
                     </h1>
-                    <h2 className="text-5xl md:text-7xl font-bold mb-8 tracking-wide">
+                    <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white/90 tracking-wide">
                       {getTitleParts(currentContent.title).sub}
                     </h2>
 
-                    <p className="max-w-md text-white/90 mb-10">
+                    <p className="max-w-md text-white/80 text-lg mb-12">
                       {currentContent.excerpt}
                     </p>
 
                     <div className="flex items-center gap-6">
-                      <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                      <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
                         </svg>
                       </button>
 
-                      <a href={`/blog/${currentContent.slug.current}`} className="px-8 py-3 border border-white rounded-full uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors duration-300">
+                      <a
+                        href={`/blog/${currentContent.slug.current}`}
+                        className="px-8 py-4 bg-transparent border border-yellow-500 text-yellow-500 rounded-full uppercase tracking-widest text-sm font-medium hover:bg-yellow-500 hover:text-black transition-colors duration-300"
+                      >
                         İçeriği Oku
                       </a>
                     </div>
                   </div>
                 </div>
 
-                {/* Right side - Slide cards (bottom aligned) - Visible only on large screens */}
+                {/* Right side - Slide cards for desktop */}
                 <div className="hidden lg:flex w-1/2 items-end justify-end">
-                  <div className="flex gap-4 relative mb-8">
+                  <div className="flex gap-4 relative mb-12 mr-4">
                     {visibleContents.map((post, index) => (
                       <div
                         key={`${post._id}-${index}`}
-                        className={`relative w-48 h-72 rounded-lg overflow-hidden transition-all duration-500 
-                          ${index === 0 ? 'opacity-100 scale-100' : 'opacity-70 scale-95 hover:opacity-90'}`}
+                        className={`relative w-52 h-80 rounded-lg overflow-hidden transition-all duration-500 cursor-pointer
+                    ${index === 0 ? 'opacity-100 scale-100 shadow-xl' : index === 1 ? 'opacity-80 scale-95 hover:opacity-90' : 'opacity-60 scale-90 hover:opacity-70'}`}
                         style={{
-                          transform: `translateX(${index * -16}px)`,
+                          transform: `translateX(${index * -20}px)`,
                           zIndex: 4 - index,
                         }}
+                        onClick={() => index !== 0 && setCurrentSlide((currentSlide + index) % blogPosts.length)}
                       >
                         <div className="absolute inset-0">
                           <div
@@ -529,17 +528,17 @@ const Home = () => {
                             style={{ backgroundImage: `url(${urlFor(post.mainImage).url()})` }}
                           />
                         </div>
-                        <div className="absolute inset-0 bg-black/40"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20"></div>
                         <div className="absolute top-4 right-4">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-yellow-500">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                           </svg>
                         </div>
                         <div className="absolute bottom-0 left-0 p-4 text-white">
-                          <div className="w-6 h-0.5 bg-white mb-2"></div>
-                          <p className="text-xs mb-1">{post.categories?.[0] || "Blog"}</p>
-                          <h3 className="text-lg font-bold">{getTitleParts(post.title).main}</h3>
-                          <h4 className="text-lg font-bold">{getTitleParts(post.title).sub}</h4>
+                          <div className="w-8 h-0.5 bg-yellow-500 mb-2"></div>
+                          <p className="text-xs uppercase mb-1 text-yellow-500">{post.categories?.[0] || "Blog"}</p>
+                          <h3 className="text-xl font-bold leading-tight">{getTitleParts(post.title).main}</h3>
+                          <h4 className="text-lg font-bold text-white/80 leading-tight">{getTitleParts(post.title).sub}</h4>
                         </div>
                       </div>
                     ))}
@@ -547,47 +546,52 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Bottom Control Section */}
-              <div className="p-6 md:p-10 flex justify-center items-center relative">
-                <div className="flex items-center gap-4">
+              {/* Bottom Control Section - improved styling */}
+              <div className="p-8 md:p-12 flex justify-center items-center relative">
+                <div className="flex items-center gap-6">
                   <button
                     onClick={handlePrevSlide}
-                    className="w-10 h-10 md:w-12 md:h-12 border border-white/50 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-yellow-500">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
                   </button>
 
                   <button
                     onClick={handleNextSlide}
-                    className="w-10 h-10 md:w-12 md:h-12 border border-white/50 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-yellow-500">
                       <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
                   </button>
                 </div>
 
-                {/* Slide Count Progress Bar */}
-                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-1/2 md:w-1/3">
-                  <div className="h-0.5 bg-white/30 w-full">
+                {/* Slide Count Progress Bar - more visible */}
+                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-1/2 md:w-1/3">
+                  <div className="h-1 bg-white/20 w-full rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-yellow-500 transition-all duration-300"
+                      className="h-full bg-yellow-500 transition-all duration-300 rounded-full"
                       style={{ width: `${sliderCountProgress}%` }}
                     ></div>
                   </div>
                 </div>
 
-                {/* Current slide number */}
-                <div className="absolute right-6 md:right-12 bottom-6 md:bottom-8 text-4xl md:text-6xl font-bold text-white/30">
-                  {(currentSlide + 1).toString().padStart(2, '0')}
+                {/* More visible slide counter */}
+                <div className="absolute right-8 md:right-16 bottom-8 md:bottom-10">
+                  <div className="flex items-baseline">
+                    <span className="text-4xl md:text-6xl font-bold text-yellow-500">
+                      {(currentSlide + 1).toString().padStart(2, '0')}
+                    </span>
+                    <span className="text-lg text-white/50 ml-1">/{blogPosts.length.toString().padStart(2, '0')}</span>
+                  </div>
                 </div>
 
                 {/* Timer progress indicator */}
-                <div className="absolute right-20 md:right-32 bottom-8 md:bottom-10 w-16 md:w-20 h-1 bg-white/20 overflow-hidden">
+                <div className="absolute right-24 md:right-40 bottom-10 md:bottom-12 w-20 md:w-24 h-1 bg-white/20 overflow-hidden rounded-full">
                   <div
-                    className="h-full bg-white transition-all duration-100 ease-linear"
+                    className="h-full bg-yellow-500/80 transition-all duration-100 ease-linear rounded-full"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
