@@ -9,13 +9,7 @@ export const revalidate = 60 // revalidate this page every 60 seconds
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;
-    const post = await getBlogPostBySlug(resolvedParams.slug) as {
-        title: string;
-        publishedAt: string;
-        mainImage?: SanityImageSource;
-        body: any;
-        categories?: string[];
-    } | null;
+    const post = await getBlogPostBySlug(resolvedParams.slug)
 
     if (!post) {
         notFound()
