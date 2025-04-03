@@ -290,7 +290,51 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {/* Quote Section */}
+      <div className="relative bg-black text-white py-20 overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '30%', left: '5%' }}>
+            DÜŞÜN İLHAM AL
+          </div>
+        </div>
 
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="w-10 h-1 bg-yellow-500 mx-auto mb-16"></div>
+
+            <div className="relative">
+              {/* Large quote marks */}
+              <div className="absolute -top-16 -left-8 text-9xl text-yellow-500/20 font-serif">"</div>
+              <div className="absolute -bottom-32 -right-8 text-9xl text-yellow-500/20 font-serif">"</div>
+
+              <h2 className="text-3xl md:text-5xl font-bold mb-10 text-center leading-tight">
+                Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
+              </h2>
+
+              <div className="flex items-center justify-center mb-10">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-yellow-500 mr-6">
+                  <img
+                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000"
+                    alt="Alıntı Sahibi"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">Ayşe Yılmaz</h3>
+                  <p className="text-white/70">Yazar & Düşünür</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center mt-10">
+              <button className="px-8 py-3 border border-white rounded-full uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors duration-300">
+                Tüm Alıntılar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Podcast Section */}
       <div className="relative w-full bg-black text-white py-24 overflow-hidden">
         {/* Background gradient and pattern */}
