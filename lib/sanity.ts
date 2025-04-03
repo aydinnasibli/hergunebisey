@@ -54,3 +54,17 @@ export const getCategories = async () => {
     }
   `)
 }
+// Add this function to lib/sanity.ts
+export const getLatestBlogPostsForCarousel = async (limit = 5) => {
+  return client.fetch(`
+    *[_type == "blog"] | order(publishedAt desc)[0..${limit - 1}] {
+      _id,
+      title,
+      slug,
+      excerpt,
+      mainImage,
+      publishedAt,
+      "categories": categories[]->title
+    }
+  `)
+}

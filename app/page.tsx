@@ -1,88 +1,56 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
+import { getLatestBlogPostsForCarousel } from '../lib/sanity';
+import { urlFor } from '../lib/sanity';
 
-// İçerik tipleri için tanımlama
-type Content = {
-  id: number;
-  type: string; // 'blog', 'podcast', 'quote'
-  category: string;
+// Blog post type definition
+type BlogPost = {
+  _id: string;
   title: string;
-  subtitle: string;
-  description: string;
-  imageUrl: string;
+  slug: { current: string };
+  excerpt: string;
+  mainImage: any;
+  publishedAt: string;
+  categories: string[];
 };
 
-// Örnek içerik
-const contents: Content[] = [
-  {
-    id: 1,
-    type: 'blog',
-    category: 'Kişisel Gelişim',
-    title: 'DÜŞÜNCE',
-    subtitle: 'DÖNÜŞÜMÜ',
-    description: 'Günlük alışkanlıklarınızı değiştirerek zihinsel dönüşümü nasıl başlatabileceğinizi keşfedin. Bu blog yazısında pratik yaklaşımlar bulabilirsiniz.',
-    imageUrl: 'https://images.unsplash.com/photo-1531366599837-ce0c0e17657c?q=80&w=2070',
-  },
-  {
-    id: 2,
-    type: 'podcast',
-    category: 'Teknoloji',
-    title: 'DİJİTAL',
-    subtitle: 'DÜNYAMIZ',
-    description: 'Yapay zeka ve hayatımıza etkileri hakkında uzmanlarla gerçekleştirdiğimiz derinlemesine bir sohbeti dinleyin. Geleceğe dair öngörüler ve güncel gelişmeler.',
-    imageUrl: 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?q=80&w=2070',
-  },
-  {
-    id: 3,
-    type: 'blog',
-    category: 'Kültür & Sanat',
-    title: 'İSTANBUL',
-    subtitle: 'HIKAYELERI',
-    description: 'İstanbulun unutulmuş sokakları ve bu sokaklarda gizlenen hikayeleri keşfedin. Şehrin tarihine farklı bir bakış açısı sunuyoruz.',
-    imageUrl: 'https://images.unsplash.com/photo-1548195667-1a6bd674c08d?q=80&w=2070',
-  },
-  {
-    id: 4,
-    type: 'quote',
-    category: 'Motivasyon',
-    title: 'HAYAT',
-    subtitle: 'YOLCULUĞU',
-    description: '"Kendi yolculuğunu başkalarının fikirlerine göre şekillendirme. Senin kalbin, senin pusulun olsun." - Hergünebişey haftanın alıntısı',
-    imageUrl: 'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=2070',
-  },
-  {
-    id: 5,
-    type: 'podcast',
-    category: 'Yaşam',
-    title: 'MİNDFULNESS',
-    subtitle: 'PRATİKLERİ',
-    description: 'Günlük hayatta uygulayabileceğiniz mindfulness tekniklerini ve faydalarını konuştuğumuz bu bölümde uzman konuğumuzla birlikteyiz.',
-    imageUrl: 'https://images.unsplash.com/photo-1600697230088-4992c83b2804?q=80&w=2070',
-  },
-];
-
-const SLIDE_DURATION = 6000; // milisaniye cinsinden (6 saniye)
+const SLIDE_DURATION = 6000; // milliseconds (6 seconds)
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showCarousel, setShowCarousel] = useState(false);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const slideshowRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
-  // Giriş bölümü için parallax efekti
+  // Fetch blog posts from Sanity
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const posts = await getLatestBlogPostsForCarousel(5);
+        setBlogPosts(posts);
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
+
+  // Parallax effect for intro section
   useEffect(() => {
     const handleScroll = () => {
       if (parallaxRef.current) {
         const scrollPosition = window.scrollY;
         const threshold = window.innerHeight * 0.8;
 
-        // Arkaplan için parallax efekti
+        // Background parallax effect
         parallaxRef.current.style.transform = `translateY(${scrollPosition * 0.4}px)`;
 
-        // Eşik aşıldığında döngüyü göster
+        // Show carousel when threshold is passed
         if (scrollPosition > threshold && !showCarousel) {
           setShowCarousel(true);
         }
@@ -93,23 +61,25 @@ const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [showCarousel]);
 
-  // Sonraki slayta geç
+  // Move to next slide
   const handleNextSlide = () => {
+    if (blogPosts.length === 0) return;
+
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev === contents.length - 1 ? 0 : prev + 1));
+    setCurrentSlide((prev) => (prev === blogPosts.length - 1 ? 0 : prev + 1));
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 600); // Geçişin tamamlanmasını bekle
+    }, 600); // Wait for transition to complete
   };
 
-  // Önceki slayta dön
+  // Move to previous slide
   const handlePrevSlide = () => {
-    if (isTransitioning) return;
+    if (isTransitioning || blogPosts.length === 0) return;
 
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev === 0 ? contents.length - 1 : prev - 1));
+    setCurrentSlide((prev) => (prev === 0 ? blogPosts.length - 1 : prev - 1));
 
-    // İlerleme çubuğunu sıfırla
+    // Reset progress bar
     setProgress(0);
     startProgressTimer();
 
@@ -118,7 +88,7 @@ const Home = () => {
     }, 600);
   };
 
-  // İçerik bölümüne kaydır
+  // Scroll to carousel section
   const scrollToCarousel = () => {
     const carouselSection = document.getElementById('content-carousel');
     if (carouselSection) {
@@ -126,17 +96,17 @@ const Home = () => {
     }
   };
 
-  // İlerleme sayacını başlat
+  // Start progress timer
   const startProgressTimer = () => {
-    // Mevcut interval'ları temizle
+    // Clear existing intervals
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
     }
 
-    // İlerlemeyi sıfırla
+    // Reset progress
     setProgress(0);
 
-    // Saniyede 10 güncelleme yapan (100ms) ilerleme sayacını başlat
+    // Start progress counter that updates 10 times per second (100ms)
     const interval = setInterval(() => {
       setProgress(prev => {
         const newProgress = prev + (100 / (SLIDE_DURATION / 100));
@@ -147,25 +117,25 @@ const Home = () => {
     progressIntervalRef.current = interval;
   };
 
-  // Otomatik dönen slayt gösterisi
+  // Auto-rotating slideshow
   useEffect(() => {
-    if (!showCarousel) return;
+    if (!showCarousel || blogPosts.length === 0) return;
 
-    // Mevcut zamanlayıcıları temizle ve sayacı yeniden başlat
+    // Clear existing timers and restart counter
     if (slideshowRef.current) {
       clearTimeout(slideshowRef.current);
     }
 
-    // İlerleme sayacını başlat
+    // Start progress timer
     startProgressTimer();
 
-    // Slaytların otomatik ilerlemesi için zamanlayıcı ayarla
+    // Set timer for auto-advancing slides
     slideshowRef.current = setTimeout(() => {
       handleNextSlide();
     }, SLIDE_DURATION);
 
     return () => {
-      // Bileşen değiştiğinde veya kaldırıldığında sayaçları temizle
+      // Clean up counters when component changes or unmounts
       if (slideshowRef.current) {
         clearTimeout(slideshowRef.current);
       }
@@ -173,52 +143,40 @@ const Home = () => {
         clearInterval(progressIntervalRef.current);
       }
     };
-  }, [currentSlide, showCarousel]);
+  }, [currentSlide, showCarousel, blogPosts.length]);
 
-  // Şu anki içerik
-  const currentContent = contents[currentSlide];
+  // Current content
+  const currentContent = blogPosts[currentSlide];
 
-  // Görünür içerik kartları (şu ankinden başlayarak)
+  // Visible content cards (starting from current)
   const visibleContents = [];
-  for (let i = 0; i < 4; i++) {
-    const index = (currentSlide + i) % contents.length;
-    visibleContents.push(contents[index]);
+  if (blogPosts.length > 0) {
+    for (let i = 0; i < 4; i++) {
+      const index = (currentSlide + i) % blogPosts.length;
+      visibleContents.push(blogPosts[index]);
+    }
   }
 
-  // Slider ilerlemesini hesapla (toplamın içinde kaçıncı slayt)
-  const sliderCountProgress = ((currentSlide) / (contents.length - 1)) * 100;
+  // Calculate slider progress (which slide out of total)
+  const sliderCountProgress = blogPosts.length > 1
+    ? ((currentSlide) / (blogPosts.length - 1)) * 100
+    : 0;
 
-  // İçerik tipine göre ikon belirle
-  const getContentIcon = (type: string) => {
-    switch (type) {
-      case 'blog':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-          </svg>
-        );
-      case 'podcast':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-          </svg>
-        );
-      case 'quote':
-        return (
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-      default:
-        return null;
-    }
+  // Splitting title into main and subtitle parts (first word and rest)
+  const getTitleParts = (title: string) => {
+    if (!title) return { main: '', sub: '' };
+    const words = title.split(' ');
+    return {
+      main: words[0],
+      sub: words.slice(1).join(' ')
+    };
   };
 
   return (
     <div className="relative w-full">
-      {/* Hero Giriş Bölümü (Parallax ile) */}
+      {/* Hero Section (with Parallax) */}
       <div className="relative h-screen overflow-hidden">
-        {/* Parallax Arkaplan */}
+        {/* Parallax Background */}
         <div
           ref={parallaxRef}
           className="absolute inset-0 w-full h-full"
@@ -226,15 +184,15 @@ const Home = () => {
             backgroundImage: 'url(https://images.unsplash.com/photo-1502209524164-acea936639a2?q=80&w=2070)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            height: '120%', // Parallax için ekstra yükseklik
-            top: '-10%'     // Yukarı doğru hareket için konum
+            height: '120%', // Extra height for parallax
+            top: '-10%'     // Position for upward movement
           }}
         />
 
-        {/* Karanlık Katman */}
+        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50 z-10"></div>
 
-        {/* İçerik */}
+        {/* Content */}
         <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
@@ -257,7 +215,7 @@ const Home = () => {
             </button>
           </div>
 
-          {/* Kaydırma göstergesi */}
+          {/* Scroll indicator */}
           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
             <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -267,7 +225,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Hakkımızda Bölümü */}
+      {/* About Us Section */}
       <div className="relative bg-black text-white py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '10%', left: '-5%' }}>
@@ -333,147 +291,153 @@ const Home = () => {
         </div>
       </div>
 
-      {/* İçerik Döngüsü Bölümü */}
-      <div id="content-carousel" className="relative w-full h-screen overflow-hidden">
-        {/* Arka plan görüntüsü */}
-        <div
-          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-            }`}
-          style={{
-            backgroundImage: `url(${currentContent.imageUrl})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
+      {/* Content Carousel Section */}
+      {blogPosts.length > 0 && currentContent && (
+        <div id="content-carousel" className="relative w-full h-screen overflow-hidden">
+          {/* Background image */}
+          <div
+            className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
+              }`}
+            style={{
+              backgroundImage: `url(${urlFor(currentContent.mainImage).url()})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
 
-        {/* Metin okunabilirliği için karanlık katman */}
-        <div className="absolute inset-0 bg-black/30" />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-black/30" />
 
-        {/* Ana içerik */}
-        <div className="relative z-10 h-full text-white flex flex-col">
-          {/* Ana İçerik Alanı */}
-          <div className="flex-1 flex flex-col">
-            {/* İçerik Bölümü */}
-            <div className="flex flex-1 px-4 md:px-16">
-              {/* Sol taraf - Metin içeriği */}
-              <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-y-10' : 'opacity-100 translate-y-0'}`}>
-                  <div className="mb-6">
-                    <div className="w-10 h-1 bg-white mb-4"></div>
-                    <div className="flex items-center gap-2">
-                      {getContentIcon(currentContent.type)}
-                      <p className="text-xl">{currentContent.category}</p>
+          {/* Main content */}
+          <div className="relative z-10 h-full text-white flex flex-col">
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col">
+              {/* Content Section */}
+              <div className="flex flex-1 px-4 md:px-16">
+                {/* Left side - Text content */}
+                <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                  <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-y-10' : 'opacity-100 translate-y-0'}`}>
+                    <div className="mb-6">
+                      <div className="w-10 h-1 bg-white mb-4"></div>
+                      <div className="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                        </svg>
+                        <p className="text-xl">{currentContent.categories?.[0] || "Blog"}</p>
+                      </div>
+                    </div>
+
+                    <h1 className="text-5xl md:text-7xl font-bold mb-2 tracking-wide">
+                      {getTitleParts(currentContent.title).main}
+                    </h1>
+                    <h2 className="text-5xl md:text-7xl font-bold mb-8 tracking-wide">
+                      {getTitleParts(currentContent.title).sub}
+                    </h2>
+
+                    <p className="max-w-md text-white/90 mb-10">
+                      {currentContent.excerpt}
+                    </p>
+
+                    <div className="flex items-center gap-6">
+                      <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                        </svg>
+                      </button>
+
+                      <a href={`/blog/${currentContent.slug.current}`} className="px-8 py-3 border border-white rounded-full uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors duration-300">
+                        İçeriği Oku
+                      </a>
                     </div>
                   </div>
+                </div>
 
-                  <h1 className="text-5xl md:text-7xl font-bold mb-2 tracking-wide">
-                    {currentContent.title}
-                  </h1>
-                  <h2 className="text-5xl md:text-7xl font-bold mb-8 tracking-wide">
-                    {currentContent.subtitle}
-                  </h2>
-
-                  <p className="max-w-md text-white/90 mb-10">
-                    {currentContent.description}
-                  </p>
-
-                  <div className="flex items-center gap-6">
-                    <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                      </svg>
-                    </button>
-
-                    <button className="px-8 py-3 border border-white rounded-full uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors duration-300">
-                      İçeriği Oku/Dinle
-                    </button>
+                {/* Right side - Slide cards (bottom aligned) - Visible only on large screens */}
+                <div className="hidden lg:flex w-1/2 items-end justify-end">
+                  <div className="flex gap-4 relative mb-8">
+                    {visibleContents.map((post, index) => (
+                      <div
+                        key={`${post._id}-${index}`}
+                        className={`relative w-48 h-72 rounded-lg overflow-hidden transition-all duration-500 
+                          ${index === 0 ? 'opacity-100 scale-100' : 'opacity-70 scale-95 hover:opacity-90'}`}
+                        style={{
+                          transform: `translateX(${index * -16}px)`,
+                          zIndex: 4 - index,
+                        }}
+                      >
+                        <div className="absolute inset-0">
+                          <div
+                            className="w-full h-full bg-cover bg-center"
+                            style={{ backgroundImage: `url(${urlFor(post.mainImage).url()})` }}
+                          />
+                        </div>
+                        <div className="absolute inset-0 bg-black/40"></div>
+                        <div className="absolute top-4 right-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                          </svg>
+                        </div>
+                        <div className="absolute bottom-0 left-0 p-4 text-white">
+                          <div className="w-6 h-0.5 bg-white mb-2"></div>
+                          <p className="text-xs mb-1">{post.categories?.[0] || "Blog"}</p>
+                          <h3 className="text-lg font-bold">{getTitleParts(post.title).main}</h3>
+                          <h4 className="text-lg font-bold">{getTitleParts(post.title).sub}</h4>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Sağ taraf - Slayt kartları (alt hizalı) - Sadece büyük ekranlarda görünür */}
-              <div className="hidden lg:flex w-1/2 items-end justify-end">
-                <div className="flex gap-4 relative mb-8">
-                  {visibleContents.map((content, index) => (
+              {/* Bottom Control Section */}
+              <div className="p-6 md:p-10 flex justify-center items-center relative">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={handlePrevSlide}
+                    className="w-10 h-10 md:w-12 md:h-12 border border-white/50 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                  </button>
+
+                  <button
+                    onClick={handleNextSlide}
+                    className="w-10 h-10 md:w-12 md:h-12 border border-white/50 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Slide Count Progress Bar */}
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-1/2 md:w-1/3">
+                  <div className="h-0.5 bg-white/30 w-full">
                     <div
-                      key={`${content.id}-${index}`}
-                      className={`relative w-48 h-72 rounded-lg overflow-hidden transition-all duration-500 
-                        ${index === 0 ? 'opacity-100 scale-100' : 'opacity-70 scale-95 hover:opacity-90'}`}
-                      style={{
-                        transform: `translateX(${index * -16}px)`,
-                        zIndex: 4 - index,
-                      }}
-                    >
-                      <div className="absolute inset-0">
-                        <div
-                          className="w-full h-full bg-cover bg-center"
-                          style={{ backgroundImage: `url(${content.imageUrl})` }}
-                        />
-                      </div>
-                      <div className="absolute inset-0 bg-black/40"></div>
-                      <div className="absolute top-4 right-4">
-                        {getContentIcon(content.type)}
-                      </div>
-                      <div className="absolute bottom-0 left-0 p-4 text-white">
-                        <div className="w-6 h-0.5 bg-white mb-2"></div>
-                        <p className="text-xs mb-1">{content.category}</p>
-                        <h3 className="text-lg font-bold">{content.title}</h3>
-                        <h4 className="text-lg font-bold">{content.subtitle}</h4>
-                      </div>
-                    </div>
-                  ))}
+                      className="h-full bg-yellow-500 transition-all duration-300"
+                      style={{ width: `${sliderCountProgress}%` }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Alt Kontrol Bölümü */}
-            <div className="p-6 md:p-10 flex justify-center items-center relative">
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={handlePrevSlide}
-                  className="w-10 h-10 md:w-12 md:h-12 border border-white/50 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                  </svg>
-                </button>
+                {/* Current slide number */}
+                <div className="absolute right-6 md:right-12 bottom-6 md:bottom-8 text-4xl md:text-6xl font-bold text-white/30">
+                  {(currentSlide + 1).toString().padStart(2, '0')}
+                </div>
 
-                <button
-                  onClick={handleNextSlide}
-                  className="w-10 h-10 md:w-12 md:h-12 border border-white/50 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Slayt Sayısı İlerleme Çubuğu */}
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-1/2 md:w-1/3">
-                <div className="h-0.5 bg-white/30 w-full">
+                {/* Timer progress indicator */}
+                <div className="absolute right-20 md:right-32 bottom-8 md:bottom-10 w-16 md:w-20 h-1 bg-white/20 overflow-hidden">
                   <div
-                    className="h-full bg-yellow-500 transition-all duration-300"
-                    style={{ width: `${sliderCountProgress}%` }}
+                    className="h-full bg-white transition-all duration-100 ease-linear"
+                    style={{ width: `${progress}%` }}
                   ></div>
                 </div>
-              </div>
-
-              {/* Şu anki slayt numarası */}
-              <div className="absolute right-6 md:right-12 bottom-6 md:bottom-8 text-4xl md:text-6xl font-bold text-white/30">
-                {(currentSlide + 1).toString().padStart(2, '0')}
-              </div>
-
-              {/* Zamanlayıcı ilerleme göstergesi */}
-              <div className="absolute right-20 md:right-32 bottom-8 md:bottom-10 w-16 md:w-20 h-1 bg-white/20 overflow-hidden">
-                <div
-                  className="h-full bg-white transition-all duration-100 ease-linear"
-                  style={{ width: `${progress}%` }}
-                ></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
