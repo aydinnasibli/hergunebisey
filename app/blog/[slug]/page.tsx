@@ -6,13 +6,16 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 export const revalidate = 60 // revalidate this page every 60 seconds
-interface BlogPostParams {
-    params: {
-        slug: string;
-    };
-}
-export default async function BlogPost({ params }: BlogPostParams) {
-    const post = await getBlogPostBySlug(params.slug)
+
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+    const resolvedParams = await params;
+    const post = await getBlogPostBySlug(resolvedParams.slug) as {
+        title: string;
+        publishedAt: string;
+        mainImage?: SanityImageSource;
+        body: any;
+        categories?: string[];
+    } | null;
 
     if (!post) {
         notFound()
