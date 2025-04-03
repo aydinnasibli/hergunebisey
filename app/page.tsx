@@ -291,6 +291,120 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Podcast Section */}
+      <div className="relative w-full bg-black text-white py-24 overflow-hidden">
+        {/* Background gradient and pattern */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black to-blue-900/30"></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute right-0 top-0 w-full h-full overflow-hidden">
+            <svg viewBox="0 0 400 400" className="absolute right-0 top-0 w-full h-full opacity-20">
+              <defs>
+                <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#smallGrid)" />
+            </svg>
+          </div>
+        </div>
+
+        <div
+          className="container mx-auto px-4 relative z-10"
+          style={{
+            backgroundImage: "url(https://images.unsplash.com/photo-1502209524164-acea936639a2?q=80&w=2070)",
+            backgroundSize: "cover",
+            backgroundPosition: "center right",
+            backgroundAttachment: "fixed",
+            backgroundBlendMode: "overlay"
+          }}
+        >
+          <div className="rounded-2xl overflow-hidden bg-black/70 backdrop-blur-md p-10 md:p-16">
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="w-full md:w-1/2">
+                <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
+                <h2 className="text-4xl md:text-6xl font-bold mb-6">DİNLE<span className="text-yellow-500">.</span></h2>
+                <p className="text-lg text-white/80 mb-8">
+                  Podcastlerimizde uzmanlarla derinlemesine sohbetler, ilham verici hikayeler
+                  ve Türkiye'nin gündemine farklı bakış açıları sunuyoruz. Yolda, sporda
+                  veya evde - her anınıza eşlik edecek içerikler sizi bekliyor.
+                </p>
+
+                <div className="flex flex-wrap gap-3 mb-8">
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Kültür</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Teknoloji</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Bilim</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Kişisel Gelişim</span>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <a
+                    href="/podcast"
+                    className="px-8 py-3 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
+                  >
+                    Podcastler
+                  </a>
+
+                  <button className="w-12 h-12 rounded-full border border-white/50 flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div className="w-full md:w-1/2 flex justify-center">
+                <div className="relative">
+                  {/* Decorative rings around the podcast icon */}
+                  <div className="absolute inset-0 rounded-full border-4 border-white/10 animate-pulse"></div>
+                  <div className="absolute inset-0 scale-125 rounded-full border-4 border-white/5"></div>
+                  <div className="absolute inset-0 scale-150 rounded-full border-4 border-white/5"></div>
+
+                  {/* Inner circle with podcast icon */}
+                  <div className="w-56 h-56 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 shadow-xl flex items-center justify-center z-10 relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-24 h-24 text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Platform logos */}
+            <div className="mt-16 flex flex-wrap justify-center gap-8">
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-8 h-8 fill-current text-white">
+                  <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24.984375 12.986328 A 1.0001 1.0001 0 0 0 24 14 L 24 26.5 A 1.0001 1.0001 0 0 0 24.5 27.5 L 32.5 31.5 A 1.0001 1.0001 0 0 0 33.521484 31.060547 A 1.0001 1.0001 0 0 0 33 30 L 33 17.5 A 1.0001 1.0001 0 0 0 32.5 16.5 L 25.5 12.986328 A 1.0001 1.0001 0 0 0 24.984375 12.986328 z"></path>
+                </svg>
+                <span className="text-sm">Apple Podcasts</span>
+              </div>
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
+                  <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7.07,18.28C7.5,17.38 10.12,16.5 12,16.5C13.88,16.5 16.5,17.38 16.93,18.28C15.57,19.36 13.86,20 12,20C10.14,20 8.43,19.36 7.07,18.28M18.36,16.83C16.93,15.09 13.46,14.5 12,14.5C10.54,14.5 7.07,15.09 5.64,16.83C4.62,15.5 4,13.82 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,13.82 19.38,15.5 18.36,16.83M12,6C10.06,6 8.5,7.56 8.5,9.5C8.5,11.44 10.06,13 12,13C13.94,13 15.5,11.44 15.5,9.5C15.5,7.56 13.94,6 12,6M12,11A1.5,1.5 0 0,1 10.5,9.5A1.5,1.5 0 0,1 12,8A1.5,1.5 0 0,1 13.5,9.5A1.5,1.5 0 0,1 12,11Z"></path>
+                </svg>
+                <span className="text-sm">Google Podcasts</span>
+              </div>
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
+                  <path d="M17.9,10.9C14.7,9 9.35,8.8 6.3,9.75c-0.5,0.15-1-0.15-1.15-0.6c-0.15-0.5,0.15-1,0.6-1.15 c3.55-1.05,9.4-0.85,13.1,1.35c0.45,0.25,0.6,0.85,0.35,1.3C19.95,11 19.35,11.15,17.9,10.9z M16.8,13.9 c-0.25,0.35-0.7,0.5-1.05,0.25c-2.7-1.65-6.8-2.15-9.95-1.15c-0.4,0.1-0.85-0.1-0.95-0.5c-0.1-0.4,0.1-0.85,0.5-0.95 c3.65-1.1,8.15-0.6,11.25,1.35C16.9,13.1,17.05,13.55,16.8,13.9z M15.9,16.9c-0.2,0.3-0.55,0.4-0.85,0.2 c-2.35-1.45-5.3-1.75-8.8-0.95c-0.35,0.05-0.65-0.15-0.75-0.45c-0.1-0.35,0.15-0.65,0.45-0.75c3.8-0.85,7.1-0.5,9.7,1.1 C16,16.25,16.1,16.6,15.9,16.9z M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z"></path>
+                </svg>
+                <span className="text-sm">Spotify</span>
+              </div>
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
+                  <path d="M12 22a10 10 0 0 1-10-10 10 10 0 0 1 10-10 10 10 0 0 1 10 10 10 10 0 0 1-10 10m0-2a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m-2.25-10.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0M13 16l5-5-1.41-1.42L13 13.17l-2.59-2.59L9 12m0-4.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0"></path>
+                </svg>
+                <span className="text-sm">Anchor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
       {/* Content Carousel Section */}
       {blogPosts.length > 0 && currentContent && (
         <div id="content-carousel" className="relative w-full h-screen overflow-hidden">
