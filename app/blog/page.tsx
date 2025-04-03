@@ -3,8 +3,17 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getBlogPosts, urlFor } from '@/lib/sanity'
 import { formatDistance } from 'date-fns'
-
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 export const revalidate = 60 // revalidate this page every 60 seconds
+interface BlogPost {
+    _id: string
+    title: string
+    slug: { current: string }
+    excerpt?: string
+    mainImage?: SanityImageSource
+    publishedAt: string
+    categories?: string[]
+}
 
 export default async function BlogPage() {
     const posts = await getBlogPosts()
@@ -19,7 +28,7 @@ export default async function BlogPage() {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {posts.map((post: any) => (
+                        {posts.map((post: BlogPost) => (
                             <Link href={`/blog/${post.slug.current}`} key={post._id}>
                                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                                     {post.mainImage && (

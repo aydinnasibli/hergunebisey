@@ -4,7 +4,7 @@ import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 export const revalidate = 60 // revalidate this page every 60 seconds
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
@@ -16,7 +16,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
     const components = {
         types: {
-            image: ({ value }: { value: any }) => (
+            image: ({ value }: { value: SanityImageSource }) => (
                 <div className="relative w-full h-96 my-8">
                     <Image
                         src={urlFor(value).url()}
@@ -28,7 +28,8 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             ),
         },
         marks: {
-            link: ({ children, value }: { children: React.ReactNode, value: any }) => {
+            link: ({ children, value }: { children: React.ReactNode; value: { href: string } }) => {
+
                 const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
                 const target = !value.href.startsWith('/') ? '_blank' : undefined
                 return (
