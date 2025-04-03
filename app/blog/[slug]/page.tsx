@@ -1,4 +1,3 @@
-// app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
 import { PortableText } from '@portabletext/react'
@@ -6,20 +5,22 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
-// Exporting revalidation interval
 export const revalidate = 60 // revalidate this page every 60 seconds
 
-// BlogPost Component
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-    // Get the post by slug
+// Fix: Updated the type definition to match Next.js expectations
+type Params = {
+    params: {
+        slug: string
+    }
+}
+
+export default async function BlogPost({ params }: Params) {
     const post = await getBlogPostBySlug(params.slug)
 
-    // If no post is found, show 404
     if (!post) {
         notFound()
     }
 
-    // Components for rendering PortableText
     const components = {
         types: {
             image: ({ value }: { value: SanityImageSource }) => (
