@@ -1,7 +1,8 @@
 // app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
-import { PortableText } from '@portabletext/react'
+import { PortableText, PortableTextReactComponents } from '@portabletext/react'
+
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
@@ -15,7 +16,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         notFound()
     }
 
-    const components = {
+    const components: Partial<PortableTextReactComponents> = {
         types: {
             image: ({ value }: { value: SanityImageSource }) => (
                 <div className="relative w-full h-96 my-8">
@@ -30,7 +31,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         },
         marks: {
             link: ({ children, value }: { children: React.ReactNode; value: { href: string } }) => {
-
                 const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
                 const target = !value.href.startsWith('/') ? '_blank' : undefined
                 return (
