@@ -1,8 +1,7 @@
 // app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
-import { PortableText, PortableTextReactComponents } from '@portabletext/react'
-
+import { PortableText } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
@@ -16,7 +15,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         notFound()
     }
 
-    const components: Partial<PortableTextReactComponents> = {
+    const components = {
         types: {
             image: ({ value }: { value: SanityImageSource }) => (
                 <div className="relative w-full h-96 my-8">
