@@ -7,7 +7,8 @@ import Image from 'next/image'
 import { getBlogPosts, getCategories, urlFor } from '@/lib/sanity'
 import { formatDistance } from 'date-fns'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import { Search, X } from 'lucide-react'
+import { Search, X, Calendar, ChevronRight, Clock } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface BlogPost {
     _id: string
@@ -78,148 +79,264 @@ export default function BlogPage() {
         setSelectedCategory(null)
     }
 
+    // Framer Motion animations
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5
+            }
+        }
+    }
+
     return (
-        <div className="min-h-screen pt-20 bg-gradient-to-b from-gray-50 to-gray-100">
+        <div className="min-h-screen pt-20 bg-gray-900 text-gray-200">
             <div className="container mx-auto px-4 py-12">
-                <div className="max-w-6xl mx-auto">
+                <motion.div
+                    className="max-w-6xl mx-auto"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
                     <div className="text-center mb-16">
-                        <h1 className="text-5xl font-bold mb-4 text-gray-800">Our Blog</h1>
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">Discover the latest insights, updates, and stories from our team</p>
-                        <div className="w-24 h-1 bg-yellow-500 mx-auto mt-6"></div>
+                        <motion.h1
+                            className="text-5xl font-bold mb-4 text-yellow-500"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            Our Blog
+                        </motion.h1>
+                        <motion.p
+                            className="text-lg text-gray-400 max-w-2xl mx-auto"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                        >
+                            Discover the latest insights, updates, and stories from our team
+                        </motion.p>
+                        <motion.div
+                            className="w-24 h-1 bg-yellow-500 mx-auto mt-6"
+                            initial={{ width: 0 }}
+                            animate={{ width: 96 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                        ></motion.div>
                     </div>
 
-                    {/* Search and Filter Section */}
-                    <div className="mb-12">
-                        <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-6 rounded-xl shadow-md">
-                            {/* Search Bar */}
-                            <div className="relative w-full md:w-1/2">
-                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-400" />
+                    {/* Search and Filter Section - REDESIGNED */}
+                    <motion.div
+                        className="mb-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        <div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-700/50">
+                            <div className="flex flex-col md:flex-row gap-6 justify-between items-stretch">
+                                {/* Search Bar - REDESIGNED */}
+                                <div className="relative w-full md:w-1/2 group">
+                                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                                        <Search className="h-5 w-5 text-yellow-500" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="block w-full pl-12 pr-4 py-4 bg-gray-900/80 border-2 border-gray-700 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300"
+                                        placeholder="Search articles..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                    <motion.div
+                                        className="absolute bottom-0 left-0 h-0.5 bg-yellow-500 w-0 group-focus-within:w-full transition-all duration-300"
+                                        initial={{ width: 0 }}
+                                        animate={{ width: searchQuery ? '100%' : 0 }}
+                                        transition={{ duration: 0.3 }}
+                                    />
                                 </div>
-                                <input
-                                    type="text"
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                    placeholder="Search articles..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
+
+                                {/* Categories Filter */}
+                                <div className="flex flex-wrap gap-2 w-full md:w-auto justify-center md:justify-end">
+                                    {categories.map((category) => (
+                                        <motion.button
+                                            key={category._id}
+                                            onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
+                                            className={`px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${selectedCategory === category.title
+                                                    ? 'bg-yellow-500 text-gray-900'
+                                                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
+                                                }`}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            {category.title}
+                                        </motion.button>
+                                    ))}
+
+                                    {(searchQuery || selectedCategory) && (
+                                        <motion.button
+                                            onClick={clearFilters}
+                                            className="flex items-center gap-1 px-5 py-3 rounded-xl text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <X className="h-4 w-4" />
+                                            Clear
+                                        </motion.button>
+                                    )}
+                                </div>
                             </div>
 
-                            {/* Categories Filter */}
-                            <div className="flex flex-wrap gap-2 w-full md:w-auto justify-center md:justify-end">
-                                {categories.map((category) => (
-                                    <button
-                                        key={category._id}
-                                        onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === category.title
-                                            ? 'bg-yellow-500 text-white'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                            }`}
-                                    >
-                                        {category.title}
-                                    </button>
-                                ))}
-
-                                {(searchQuery || selectedCategory) && (
-                                    <button
-                                        onClick={clearFilters}
-                                        className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
-                                    >
-                                        <X className="h-4 w-4" />
-                                        Clear
-                                    </button>
+                            {/* Results Count */}
+                            <div className="text-gray-400 mt-4 text-sm">
+                                {isLoading ? (
+                                    'Loading posts...'
+                                ) : (
+                                    <>Showing <span className="text-yellow-500 font-medium">{filteredPosts.length}</span> of {posts.length} posts</>
                                 )}
                             </div>
                         </div>
-
-                        {/* Results Count */}
-                        <div className="text-gray-600 mt-4 text-sm">
-                            {isLoading ? (
-                                'Loading posts...'
-                            ) : (
-                                <>Showing {filteredPosts.length} of {posts.length} posts</>
-                            )}
-                        </div>
-                    </div>
+                    </motion.div>
 
                     {/* Posts Grid */}
                     {isLoading ? (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <motion.div
+                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {[...Array(6)].map((_, i) => (
-                                <div key={i} className="bg-white rounded-xl overflow-hidden shadow-md animate-pulse">
-                                    <div className="h-48 bg-gray-300"></div>
+                                <motion.div
+                                    key={i}
+                                    className="bg-gray-800 rounded-xl overflow-hidden shadow-md animate-pulse"
+                                    variants={itemVariants}
+                                >
+                                    <div className="h-48 bg-gray-700"></div>
                                     <div className="p-6">
-                                        <div className="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
-                                        <div className="h-8 bg-gray-300 rounded w-full mb-4"></div>
-                                        <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-                                        <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+                                        <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
+                                        <div className="h-8 bg-gray-700 rounded w-full mb-4"></div>
+                                        <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
+                                        <div className="h-4 bg-gray-700 rounded w-2/3"></div>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     ) : filteredPosts.length === 0 ? (
-                        <div className="text-center py-16">
-                            <div className="text-xl font-medium text-gray-600 mb-2">No posts found</div>
-                            <p className="text-gray-500">Try adjusting your search or filter criteria</p>
-                        </div>
+                        <motion.div
+                            className="text-center py-16"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <div className="text-xl font-medium text-gray-300 mb-2">No posts found</div>
+                            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+                        </motion.div>
                     ) : (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <motion.div
+                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {filteredPosts.map((post: BlogPost) => (
-                                <Link href={`/blog/${post.slug.current}`} key={post._id}>
-                                    <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full flex flex-col transform hover:-translate-y-1">
-                                        {post.mainImage ? (
-                                            <div className="relative h-56 w-full">
-                                                <Image
-                                                    src={urlFor(post.mainImage).url()}
-                                                    alt={post.title}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            </div>
-                                        ) : (
-                                            <div className="h-56 bg-gray-200 flex items-center justify-center">
-                                                <span className="text-gray-400">No image</span>
-                                            </div>
-                                        )}
+                                <motion.div
+                                    key={post._id}
+                                    variants={itemVariants}
+                                    whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                                >
+                                    <Link href={`/blog/${post.slug.current}`}>
+                                        {/* BLOG CARD - REDESIGNED */}
+                                        <div className="relative group bg-gray-800 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/20">
+                                            <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
 
-                                        <div className="p-6 flex flex-col flex-grow">
-                                            <div className="flex flex-wrap gap-2 mb-3">
-                                                {post.categories?.map((category: string, i: number) => (
-                                                    <span
-                                                        key={i}
-                                                        className="text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full px-3 py-1"
-                                                    >
-                                                        {category}
-                                                    </span>
-                                                ))}
-                                            </div>
+                                            {post.mainImage ? (
+                                                <div className="relative h-64 w-full overflow-hidden">
+                                                    <Image
+                                                        src={urlFor(post.mainImage).url()}
+                                                        alt={post.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80"></div>
 
-                                            <h2 className="text-xl font-bold mb-3 text-gray-800">{post.title}</h2>
+                                                    {/* Categories on image */}
+                                                    <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 z-20">
+                                                        {post.categories?.map((category: string, i: number) => (
+                                                            <span
+                                                                key={i}
+                                                                className="text-xs font-medium bg-yellow-500 text-gray-900 rounded-lg px-3 py-1 shadow-md"
+                                                            >
+                                                                {category}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="h-64 bg-gray-700 flex items-center justify-center relative">
+                                                    <span className="text-gray-500">No image</span>
 
-                                            {post.excerpt && (
-                                                <p className="text-gray-600 mb-4 line-clamp-3 flex-grow">{post.excerpt}</p>
+                                                    {/* Categories on placeholder */}
+                                                    <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+                                                        {post.categories?.map((category: string, i: number) => (
+                                                            <span
+                                                                key={i}
+                                                                className="text-xs font-medium bg-yellow-500 text-gray-900 rounded-lg px-3 py-1 shadow-md"
+                                                            >
+                                                                {category}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             )}
 
-                                            <div className="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-100">
-                                                <time dateTime={post.publishedAt} className="text-gray-500">
-                                                    {formatDistance(new Date(post.publishedAt), new Date(), {
-                                                        addSuffix: true
-                                                    })}
-                                                </time>
-                                                <span className="text-yellow-600 font-medium flex items-center">
-                                                    Read More
-                                                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                                    </svg>
-                                                </span>
+                                            <div className="p-6 flex flex-col flex-grow">
+                                                <h2 className="text-2xl font-bold mb-3 text-gray-100 line-clamp-2 group-hover:text-yellow-500 transition-colors duration-300">
+                                                    {post.title}
+                                                </h2>
+
+                                                {post.excerpt && (
+                                                    <p className="text-gray-400 mb-6 line-clamp-3 flex-grow">
+                                                        {post.excerpt}
+                                                    </p>
+                                                )}
+
+                                                <div className="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-700">
+                                                    <time dateTime={post.publishedAt} className="text-gray-400 flex items-center">
+                                                        <Clock className="h-4 w-4 mr-2 text-yellow-500" />
+                                                        {formatDistance(new Date(post.publishedAt), new Date(), {
+                                                            addSuffix: true
+                                                        })}
+                                                    </time>
+
+                                                    <span className="flex items-center group/button">
+                                                        <span className="text-yellow-500 font-medium mr-1 transition-all duration-300 group-hover/button:mr-2">
+                                                            Read Article
+                                                        </span>
+                                                        <motion.div
+                                                            className="bg-yellow-500 rounded-full p-1"
+                                                            whileHover={{ scale: 1.1 }}
+                                                        >
+                                                            <ChevronRight className="w-4 h-4 text-gray-900" />
+                                                        </motion.div>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
+                                    </Link>
+                                </motion.div>
                             ))}
-                        </div>
+                        </motion.div>
                     )}
-                </div>
+                </motion.div>
             </div>
         </div>
     )
