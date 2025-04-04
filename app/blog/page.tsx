@@ -284,7 +284,7 @@ export default function BlogPage() {
                                     whileHover={{ y: -8, transition: { duration: 0.3 } }}
                                 >
                                     <Link href={`/blog/${post.slug.current}`}>
-                                        <div className="relative group bg-gray-800 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/20">
+                                        <div className="relative group bg-transparent border border-white rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/20">
                                             <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
 
                                             {post.mainImage ? (
