@@ -103,7 +103,7 @@ export default function BlogPage() {
     }
 
     return (
-        <div className="min-h-screen pt-20 bg-gray-900 text-gray-200">
+        <div className="min-h-screen pt-20 bg-black/90 text-gray-200">
             <div className="container mx-auto px-4 py-12">
                 <motion.div
                     className="max-w-6xl mx-auto"
