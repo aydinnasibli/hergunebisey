@@ -438,9 +438,6 @@ const Home = () => {
 
 
 
-      {/* Content Carousel Section */}
-      {/* Content Carousel Section */}
-      // Content Carousel Section
       {blogPosts.length > 0 && currentContent && (
         <div id="content-carousel" className="relative w-full h-screen overflow-hidden bg-black">
           {/* Background image with proper overlay gradient */}
