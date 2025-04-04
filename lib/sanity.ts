@@ -106,7 +106,8 @@ export const fetchCategories = async () => {
 }
 
 export const searchBlogPosts = async (query: string) => {
-  return clientSide.fetch(`
+  return clientSide.fetch(
+    `
     *[_type == "blog" && (title match $query || excerpt match $query)] | order(publishedAt desc) {
       _id,
       title,
@@ -116,8 +117,11 @@ export const searchBlogPosts = async (query: string) => {
       publishedAt,
       "categories": categories[]->title
     }
-  `, { query: `*${query}*` })
-}
+    `,
+    { query: `*${query}*` } as Record<string, string> // Ensuring correct type
+  );
+};
+
 
 export const getBlogPostsByCategory = async (category: string) => {
   return clientSide.fetch(`
