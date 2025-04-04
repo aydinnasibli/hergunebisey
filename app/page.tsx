@@ -440,6 +440,7 @@ const Home = () => {
 
       {/* Content Carousel Section */}
       {/* Content Carousel Section */}
+      // Content Carousel Section
       {blogPosts.length > 0 && currentContent && (
         <div id="content-carousel" className="relative w-full h-screen overflow-hidden bg-black">
           {/* Background image with proper overlay gradient */}
@@ -506,14 +507,14 @@ const Home = () => {
 
                 {/* Right side - Slide cards for desktop */}
                 <div className="hidden lg:flex w-1/2 items-end justify-end">
-                  <div className="flex gap-4 relative mb-12 mr-4">
+                  <div className="flex gap-2 relative mb-5 mr-1">
                     {visibleContents.map((post, index) => (
                       <div
                         key={`${post._id}-${index}`}
-                        className={`relative w-52 h-80 rounded-lg overflow-hidden transition-all duration-500 cursor-pointer
+                        className={`relative w-44 h-64 rounded-lg overflow-hidden transition-all duration-500 cursor-pointer
                     ${index === 0 ? 'opacity-100 scale-100 shadow-xl' : index === 1 ? 'opacity-80 scale-95 hover:opacity-90' : 'opacity-60 scale-90 hover:opacity-70'}`}
                         style={{
-                          transform: `translateX(${index * -20}px)`,
+                          transform: `translateX(${index * -24}px)`,
                           zIndex: 4 - index,
                         }}
                         onClick={() => index !== 0 && setCurrentSlide((currentSlide + index) % blogPosts.length)}
@@ -526,15 +527,15 @@ const Home = () => {
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20"></div>
                         <div className="absolute top-4 right-4">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-yellow-500">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-yellow-500">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                           </svg>
                         </div>
-                        <div className="absolute bottom-0 left-0 p-4 text-white">
-                          <div className="w-8 h-0.5 bg-yellow-500 mb-2"></div>
+                        <div className="absolute bottom-0 left-0 p-3 text-white">
+                          <div className="w-6 h-0.5 bg-yellow-500 mb-1"></div>
                           <p className="text-xs uppercase mb-1 text-yellow-500">{post.categories?.[0] || "Blog"}</p>
-                          <h3 className="text-xl font-bold leading-tight">{getTitleParts(post.title).main}</h3>
-                          <h4 className="text-lg font-bold text-white/80 leading-tight">{getTitleParts(post.title).sub}</h4>
+                          <h3 className="text-sm font-bold leading-tight">{getTitleParts(post.title).main}</h3>
+                          <h4 className="text-xs font-bold text-white/80 leading-tight">{getTitleParts(post.title).sub}</h4>
                         </div>
                       </div>
                     ))}
@@ -547,7 +548,7 @@ const Home = () => {
                 <div className="flex items-center gap-6">
                   <button
                     onClick={handlePrevSlide}
-                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors"
+                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-yellow-500">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -556,7 +557,7 @@ const Home = () => {
 
                   <button
                     onClick={handleNextSlide}
-                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors"
+                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-yellow-500">
                       <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
