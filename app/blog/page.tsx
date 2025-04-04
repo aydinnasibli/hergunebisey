@@ -112,8 +112,8 @@ export default function BlogPage() {
                                         key={category._id}
                                         onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
                                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === category.title
-                                                ? 'bg-yellow-500 text-white'
-                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                            ? 'bg-yellow-500 text-white'
+                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                             }`}
                                     >
                                         {category.title}
