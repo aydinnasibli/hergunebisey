@@ -36,7 +36,8 @@ export const getBlogPosts = async () => {
       excerpt,
       mainImage,
       publishedAt,
-      "categories": categories[]->title
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
     }
   `)
 }
@@ -90,7 +91,8 @@ export const fetchBlogPosts = async () => {
       excerpt,
       mainImage,
       publishedAt,
-      "categories": categories[]->title
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
     }
   `)
 }
@@ -115,13 +117,13 @@ export const searchBlogPosts = async (query: string) => {
       excerpt,
       mainImage,
       publishedAt,
-      "categories": categories[]->title
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
     }
     `,
-    { query: `*${query}*` } as Record<string, string> // Ensuring correct type
+    { query: `*${query}*` } as Record<string, string>
   );
 };
-
 
 export const getBlogPostsByCategory = async (category: string) => {
   return clientSide.fetch(`
@@ -132,7 +134,8 @@ export const getBlogPostsByCategory = async (category: string) => {
       excerpt,
       mainImage,
       publishedAt,
-      "categories": categories[]->title
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
     }
   `, { category })
 }

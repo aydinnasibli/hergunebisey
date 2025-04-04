@@ -1,4 +1,5 @@
 // sanity/schemaTypes/blog.ts
+// sanity/schemaTypes/blog.ts
 export const blog = {
     name: 'blog',
     title: 'Blog Posts',
@@ -19,6 +20,13 @@ export const blog = {
                 maxLength: 96,
             },
             validation: (Rule: any) => Rule.required(),
+        },
+        {
+            name: 'author',
+            title: 'Yazar',
+            type: 'reference',
+            to: { type: 'author' },
+            description: 'Bu gönderinin yazarını seçin',
         },
         {
             name: 'publishedAt',
@@ -57,6 +65,10 @@ export const blog = {
             title: 'title',
             author: 'author.name',
             media: 'mainImage',
+        },
+        prepare(selection: any) {
+            const { author } = selection
+            return { ...selection, subtitle: author ? `Yazar: ${author}` : 'Yazar belirtilmemiş' }
         },
     },
 };

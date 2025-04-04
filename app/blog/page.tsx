@@ -19,6 +19,11 @@ interface BlogPost {
     mainImage?: SanityImageSource
     publishedAt: string
     categories?: string[]
+    author?: {
+        name: string
+        image?: SanityImageSource
+        bio?: string
+    }
 }
 
 interface Category {
@@ -270,6 +275,9 @@ export default function BlogPage() {
                             animate="visible"
                         >
                             {filteredPosts.map((post: BlogPost) => (
+                                // app/blog/page.tsx (partial update - only showing the blog card part)
+
+                                // Inside the filteredPosts.map function where you render each post card
                                 <motion.div
                                     key={post._id}
                                     variants={itemVariants}
@@ -328,6 +336,27 @@ export default function BlogPage() {
                                                     <p className="text-gray-400 mb-6 line-clamp-3 flex-grow">
                                                         {post.excerpt}
                                                     </p>
+                                                )}
+
+                                                {/* Author information */}
+                                                {post.author && (
+                                                    <div className="flex items-center mb-4">
+                                                        {post.author.image ? (
+                                                            <div className="relative w-8 h-8 mr-2 rounded-full overflow-hidden border border-yellow-500/50">
+                                                                <Image
+                                                                    src={urlFor(post.author.image).url()}
+                                                                    alt={post.author.name}
+                                                                    fill
+                                                                    className="object-cover"
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="w-8 h-8 mr-2 rounded-full bg-gray-700 flex items-center justify-center text-yellow-500">
+                                                                {post.author.name.charAt(0)}
+                                                            </div>
+                                                        )}
+                                                        <span className="text-sm text-gray-300">{post.author.name}</span>
+                                                    </div>
                                                 )}
 
                                                 <div className="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-700">
