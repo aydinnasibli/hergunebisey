@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getBlogPosts, getCategories, urlFor } from '@/lib/sanity'
 import { formatDistance } from 'date-fns'
+import { tr } from 'date-fns/locale'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import { Search, X, Calendar, ChevronRight, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -117,7 +118,7 @@ export default function BlogPage() {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            Our Blog
+                            Blogumuz
                         </motion.h1>
                         <motion.p
                             className="text-lg text-gray-400 max-w-2xl mx-auto"
@@ -125,7 +126,7 @@ export default function BlogPage() {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.8, delay: 0.4 }}
                         >
-                            Discover the latest insights, updates, and stories from our team
+                            Ekibimizden en son içgörüleri, güncellemeleri ve hikayeleri keşfedin
                         </motion.p>
                         <motion.div
                             className="w-24 h-1 bg-yellow-500 mx-auto mt-6"
@@ -135,72 +136,93 @@ export default function BlogPage() {
                         ></motion.div>
                     </div>
 
-                    {/* Search and Filter Section - REDESIGNED */}
+                    {/* REDESIGNED Search and Filter Section */}
                     <motion.div
                         className="mb-12"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
                     >
-                        <div className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-700/50">
-                            <div className="flex flex-col md:flex-row gap-6 justify-between items-stretch">
-                                {/* Search Bar - REDESIGNED */}
-                                <div className="relative w-full md:w-1/2 group">
-                                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                                        <Search className="h-5 w-5 text-yellow-500" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        className="block w-full pl-12 pr-4 py-4 bg-gray-900/80 border-2 border-gray-700 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300"
-                                        placeholder="Search articles..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                    <motion.div
-                                        className="absolute bottom-0 left-0 h-0.5 bg-yellow-500 w-0 group-focus-within:w-full transition-all duration-300"
-                                        initial={{ width: 0 }}
-                                        animate={{ width: searchQuery ? '100%' : 0 }}
-                                        transition={{ duration: 0.3 }}
-                                    />
+                        <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
+                            {/* Elegant Search Bar */}
+                            <div className="relative w-full md:w-96 group">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-4">
+                                    <Search className="h-5 w-5 text-yellow-500" />
                                 </div>
-
-                                {/* Categories Filter */}
-                                <div className="flex flex-wrap gap-2 w-full md:w-auto justify-center md:justify-end">
-                                    {categories.map((category) => (
-                                        <motion.button
-                                            key={category._id}
-                                            onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
-                                            className={`px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${selectedCategory === category.title
-                                                    ? 'bg-yellow-500 text-gray-900'
-                                                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
-                                                }`}
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                        >
-                                            {category.title}
-                                        </motion.button>
-                                    ))}
-
-                                    {(searchQuery || selectedCategory) && (
-                                        <motion.button
-                                            onClick={clearFilters}
-                                            className="flex items-center gap-1 px-5 py-3 rounded-xl text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                        >
-                                            <X className="h-4 w-4" />
-                                            Clear
-                                        </motion.button>
-                                    )}
-                                </div>
+                                <input
+                                    type="text"
+                                    className="block w-full pl-12 pr-4 py-3 bg-transparent border-b-2 border-gray-700 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300 focus:outline-none"
+                                    placeholder="Makalelerde ara..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <motion.div
+                                    className="absolute bottom-0 left-0 h-0.5 bg-yellow-500 w-0"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: searchQuery ? '100%' : 0 }}
+                                    transition={{ duration: 0.3 }}
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => setSearchQuery('')}
+                                        className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-500"
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                )}
                             </div>
 
                             {/* Results Count */}
-                            <div className="text-gray-400 mt-4 text-sm">
+                            <div className="text-gray-400 text-sm">
                                 {isLoading ? (
-                                    'Loading posts...'
+                                    'İçerikler yükleniyor...'
                                 ) : (
-                                    <>Showing <span className="text-yellow-500 font-medium">{filteredPosts.length}</span> of {posts.length} posts</>
+                                    <>Toplam <span className="text-yellow-500 font-medium">{posts.length}</span> içerikten <span className="text-yellow-500 font-medium">{filteredPosts.length}</span> tanesi gösteriliyor</>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Categories Section - Separate */}
+                        <div className="mt-6 pb-6 border-b border-gray-800">
+                            <h3 className="text-yellow-500 font-medium mb-4">Kategoriler</h3>
+                            <div className="flex flex-wrap gap-3">
+                                <motion.button
+                                    onClick={() => setSelectedCategory(null)}
+                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === null
+                                        ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
+                                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
+                                        }`}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    Tümü
+                                </motion.button>
+
+                                {categories.map((category) => (
+                                    <motion.button
+                                        key={category._id}
+                                        onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
+                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === category.title
+                                            ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
+                                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
+                                            }`}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        {category.title}
+                                    </motion.button>
+                                ))}
+
+                                {(searchQuery || selectedCategory) && (
+                                    <motion.button
+                                        onClick={clearFilters}
+                                        className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50"
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        <X className="h-4 w-4" />
+                                        Filtreleri Temizle
+                                    </motion.button>
                                 )}
                             </div>
                         </div>
@@ -237,8 +259,8 @@ export default function BlogPage() {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <div className="text-xl font-medium text-gray-300 mb-2">No posts found</div>
-                            <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+                            <div className="text-xl font-medium text-gray-300 mb-2">İçerik bulunamadı</div>
+                            <p className="text-gray-400">Lütfen arama veya filtre kriterlerinizi değiştirin</p>
                         </motion.div>
                     ) : (
                         <motion.div
@@ -254,7 +276,6 @@ export default function BlogPage() {
                                     whileHover={{ y: -8, transition: { duration: 0.3 } }}
                                 >
                                     <Link href={`/blog/${post.slug.current}`}>
-                                        {/* BLOG CARD - REDESIGNED */}
                                         <div className="relative group bg-gray-800 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/20">
                                             <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
 
@@ -282,7 +303,7 @@ export default function BlogPage() {
                                                 </div>
                                             ) : (
                                                 <div className="h-64 bg-gray-700 flex items-center justify-center relative">
-                                                    <span className="text-gray-500">No image</span>
+                                                    <span className="text-gray-500">Görsel yok</span>
 
                                                     {/* Categories on placeholder */}
                                                     <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
@@ -313,13 +334,14 @@ export default function BlogPage() {
                                                     <time dateTime={post.publishedAt} className="text-gray-400 flex items-center">
                                                         <Clock className="h-4 w-4 mr-2 text-yellow-500" />
                                                         {formatDistance(new Date(post.publishedAt), new Date(), {
-                                                            addSuffix: true
+                                                            addSuffix: true,
+                                                            locale: tr
                                                         })}
                                                     </time>
 
                                                     <span className="flex items-center group/button">
                                                         <span className="text-yellow-500 font-medium mr-1 transition-all duration-300 group-hover/button:mr-2">
-                                                            Read Article
+                                                            Makaleyi Oku
                                                         </span>
                                                         <motion.div
                                                             className="bg-yellow-500 rounded-full p-1"
