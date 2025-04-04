@@ -8,7 +8,7 @@ import { getBlogPosts, getCategories, urlFor } from '@/lib/sanity'
 import { formatDistance } from 'date-fns'
 import { tr } from 'date-fns/locale'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import { Search, X, Calendar, ChevronRight, Clock } from 'lucide-react'
+import { Search, X, ChevronRight, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 interface BlogPost {
