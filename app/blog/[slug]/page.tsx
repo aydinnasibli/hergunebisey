@@ -17,16 +17,32 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     const components = {
         types: {
-            image: ({ value }: { value: SanityImageSource }) => (
-                <div className="relative w-full h-96 my-8">
-                    <Image
-                        src={urlFor(value).url()}
-                        alt="Post image"
-                        fill
-                        className="object-cover rounded-lg"
-                    />
-                </div>
-            ),
+            image: ({ value }: { value: any }) => {
+                const alignment = value?.alignment || 'center';
+                const customSize = value?.customSize?.width || '100%';
+
+                // Create alignment and width style
+                const containerStyle: React.CSSProperties = {
+                    position: 'relative',
+                    width: customSize,
+                    margin: alignment === 'center' ? '2rem auto' :
+                        alignment === 'left' ? '2rem 0' : '2rem 0 2rem auto',
+                    height: '0',
+                    paddingBottom: '56.25%', // 16:9 aspect ratio
+                };
+
+                return (
+                    <div style={containerStyle}>
+                        <Image
+                            src={urlFor(value).url()}
+                            alt={value.alt || "Blog image"}
+                            fill
+                            className="object-cover rounded-lg"
+                            sizes={`(max-width: 768px) 100vw, ${customSize}`}
+                        />
+                    </div>
+                );
+            },
         },
         marks: {
             link: ({ children, value }: PortableTextMarkComponentProps) => {
@@ -54,8 +70,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     </Link>
 
                     <article className=" rounded-2xl overflow-hidden shadow-lg">
-
-
                         <div className="p-8">
                             <div className="mb-8">
                                 <h1 className="text-4xl font-bold mb-6 text-gray-100">{post.title}</h1>
@@ -103,9 +117,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                                     components={components}
                                 />
                             </div>
-
-                            {/* Author bio section */}
-
                         </div>
                     </article>
                 </div>

@@ -94,6 +94,7 @@ export const category = {
 };
 
 // sanity/schemaTypes/blockContent.ts
+// sanity/schemaTypes/blockContent.ts
 export const blockContent = {
     title: 'Block Content',
     name: 'blockContent',
@@ -110,7 +111,10 @@ export const blockContent = {
                 { title: 'H4', value: 'h4' },
                 { title: 'Quote', value: 'blockquote' },
             ],
-            lists: [{ title: 'Bullet', value: 'bullet' }],
+            lists: [
+                { title: 'Bullet', value: 'bullet' },
+                { title: 'Numbered', value: 'number' }
+            ],
             marks: {
                 decorators: [
                     { title: 'Strong', value: 'strong' },
@@ -135,6 +139,38 @@ export const blockContent = {
         {
             type: 'image',
             options: { hotspot: true },
+            fields: [
+                {
+                    name: 'alt',
+                    type: 'string',
+                    title: 'Alternative text',
+                    description: 'Important for SEO and accessibility',
+                },
+                {
+                    name: 'alignment',
+                    type: 'string',
+                    title: 'Alignment',
+                    options: {
+                        list: [
+                            { title: 'Left', value: 'left' },
+                            { title: 'Center', value: 'center' },
+                            { title: 'Right', value: 'right' },
+                        ],
+                    },
+                },
+                {
+                    name: 'customSize',
+                    type: 'object',
+                    title: 'Custom Size',
+                    fields: [
+                        {
+                            name: 'width',
+                            type: 'string',
+                            title: 'Width',
+                        },
+                    ],
+                },
+            ],
         },
     ],
 };
