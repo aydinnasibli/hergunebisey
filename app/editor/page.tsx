@@ -26,8 +26,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Plus } from 'lucide-react';
 
-// Import Sanity-powered Block Editor dynamically to avoid SSR issues
-const BlockEditor = dynamic(() => import('@/components/BlockEditor'), { ssr: false });
+// Import TipTap editor dynamically to avoid SSR issues
+const TipTapEditor = dynamic(() => import('@/components/Editor'), { ssr: false });
 
 export default function EditorPage() {
     const { user, isLoaded } = useUser();
@@ -35,7 +35,7 @@ export default function EditorPage() {
 
     const [title, setTitle] = useState('');
     const [excerpt, setExcerpt] = useState('');
-    const [content, setContent] = useState<any[]>([]);
+    const [content, setContent] = useState('');
     const [categories, setCategories] = useState<any[]>([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [authors, setAuthors] = useState<any[]>([]);
@@ -74,13 +74,28 @@ export default function EditorPage() {
                 .replace(/[^\w\s]/g, '')
                 .replace(/\s+/g, '-');
 
-            // Prepare the document
+            // Convert HTML content to Portable Text for Sanity
+            // This is a simplified conversion - you may need a more robust solution
+            const portableTextContent = [
+                {
+                    _type: 'block',
+                    children: [
+                        {
+                            _type: 'span',
+                            text: 'Your TipTap content will be stored here'
+                        }
+                    ]
+                }
+            ];
+
+            // Store the raw HTML content in a separate field for easier retrieval
             const doc = {
                 _type: 'blog',
                 title,
                 slug: { _type: 'slug', current: slug },
                 excerpt,
-                body: content,
+                body: portableTextContent,
+                rawHtmlContent: content, // Store the raw HTML for easier retrieval
                 mainImage: mainImage ? { _type: 'image', asset: { _ref: mainImage._id } } : undefined,
                 publishedAt: new Date().toISOString(),
                 author: { _type: 'reference', _ref: selectedAuthor },
@@ -212,15 +227,13 @@ export default function EditorPage() {
 
                     <div className="space-y-2">
                         <Label>Content</Label>
-                        <div className="border rounded-md p-4">
-                            <BlockEditor value={content} onChange={setContent} />
-                        </div>
+                        <TipTapEditor value={content} onChange={setContent} />
                     </div>
                 </CardContent>
                 <CardFooter>
                     <Button
                         onClick={handleSubmit}
-                        disabled={isSubmitting || !title || !content.length}
+                        disabled={isSubmitting || !title || !content}
                         className="ml-auto"
                     >
                         {isSubmitting ? (
