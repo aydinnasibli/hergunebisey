@@ -1,14 +1,13 @@
 // app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, getBlogPostsByCategory, urlFor } from '@/lib/sanity'
-import { PortableText, PortableTextMarkComponentProps, PortableTextTypeComponentProps, PortableTextComponentProps } from '@portabletext/react'
+import { PortableText, PortableTextComponents } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import ShareButtons from './ShareButtons' // Import the client component
 import { PortableTextBlock } from 'sanity'
 export const revalidate = 60 // revalidate this page every 60 seconds
-
 
 // Define BlogPost type
 interface BlogPost {
@@ -18,7 +17,7 @@ interface BlogPost {
     excerpt?: string;
     mainImage?: SanityImageSource;
     publishedAt: string;
-    body?: PortableTextBlock;
+    body: PortableTextBlock[]; // Changed from body?: PortableTextBlock to body: PortableTextBlock[]
     categories?: string[];
     author?: {
         name: string;
@@ -48,9 +47,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         .slice(0, 3)
 
     // Define proper type for the components object
-    const components = {
+    const components: PortableTextComponents = {
         types: {
-            image: ({ value }: PortableTextTypeComponentProps<SanityImageSource>) => (
+            image: ({ value }) => (
                 <div className="relative w-full h-80 my-8 overflow-hidden group rounded-lg">
                     <div className="absolute inset-0 bg-yellow-500 mix-blend-multiply opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
                     <Image
@@ -63,7 +62,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             ),
         },
         marks: {
-            link: ({ children, value }: PortableTextMarkComponentProps) => {
+            link: ({ children, value }) => {
                 const href = value?.href || '';
                 const rel = !href.startsWith('/') ? 'noreferrer noopener' : undefined
                 const target = !href.startsWith('/') ? '_blank' : undefined
@@ -74,24 +73,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 )
             },
         },
-        // Fix: Use the correct PortableTextComponentProps type
         block: {
-            h1: ({ children }: PortableTextComponentProps<any>) => (
-                <h1 className="text-4xl md:text-5xl font-black mt-14 mb-6 leading-tight text-white">{children}</h1>
-            ),
-            h2: ({ children }: PortableTextComponentProps<any>) => (
-                <h2 className="text-3xl md:text-4xl font-bold mt-10 mb-5 leading-tight text-yellow-400">{children}</h2>
-            ),
-            h3: ({ children }: PortableTextComponentProps<any>) => (
-                <h3 className="text-2xl md:text-3xl font-semibold mt-8 mb-4 text-yellow-300">{children}</h3>
-            ),
-            h4: ({ children }: PortableTextComponentProps<any>) => (
-                <h4 className="text-xl md:text-2xl font-medium mt-6 mb-3 text-yellow-200">{children}</h4>
-            ),
-            normal: ({ children }: PortableTextComponentProps<any>) => (
-                <p className="text-lg leading-relaxed mb-6 text-gray-200">{children}</p>
-            ),
-            blockquote: ({ children }: PortableTextComponentProps<any>) => (
+            h1: ({ children }) => <h1 className="text-4xl md:text-5xl font-black mt-14 mb-6 leading-tight text-white">{children}</h1>,
+            h2: ({ children }) => <h2 className="text-3xl md:text-4xl font-bold mt-10 mb-5 leading-tight text-yellow-400">{children}</h2>,
+            h3: ({ children }) => <h3 className="text-2xl md:text-3xl font-semibold mt-8 mb-4 text-yellow-300">{children}</h3>,
+            h4: ({ children }) => <h4 className="text-xl md:text-2xl font-medium mt-6 mb-3 text-yellow-200">{children}</h4>,
+            normal: ({ children }) => <p className="text-lg leading-relaxed mb-6 text-gray-200">{children}</p>,
+            blockquote: ({ children }) => (
                 <blockquote className="border-l-4 border-yellow-500 pl-6 py-1 my-8 italic text-xl text-gray-300">
                     {children}
                 </blockquote>
@@ -185,10 +173,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             <div className="container mx-auto px-4 md:px-8 py-12">
                 <div className="max-w-3xl mx-auto bg-gray-800/50 p-6 md:p-10 rounded-xl shadow-xl">
                     <article className="prose prose-lg prose-invert max-w-none">
-                        <PortableText
-                            value={post.body}
-                            components={components}
-                        />
+                        {post.body && (
+                            <PortableText
+                                value={post.body}
+                                components={components}
+                            />
+                        )}
                     </article>
 
                     {/* Share Section - Using client component */}
@@ -265,6 +255,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     )}
                 </div>
             </div>
+
 
 
         </div>
