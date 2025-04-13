@@ -1,7 +1,7 @@
 // app/blog/[slug]/page.tsx
 import Image from 'next/image'
 import { getBlogPostBySlug, getBlogPostsByCategory, urlFor } from '@/lib/sanity'
-import { PortableText, PortableTextMarkComponentProps, PortableTextTypeComponentProps } from '@portabletext/react'
+import { PortableText, PortableTextMarkComponentProps, PortableTextTypeComponentProps, PortableTextComponentProps } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
@@ -74,13 +74,24 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 )
             },
         },
+        // Fix: Use the correct PortableTextComponentProps type
         block: {
-            h1: ({ children }: { children: React.ReactNode }) => <h1 className="text-4xl md:text-5xl font-black mt-14 mb-6 leading-tight text-white">{children}</h1>,
-            h2: ({ children }: { children: React.ReactNode }) => <h2 className="text-3xl md:text-4xl font-bold mt-10 mb-5 leading-tight text-yellow-400">{children}</h2>,
-            h3: ({ children }: { children: React.ReactNode }) => <h3 className="text-2xl md:text-3xl font-semibold mt-8 mb-4 text-yellow-300">{children}</h3>,
-            h4: ({ children }: { children: React.ReactNode }) => <h4 className="text-xl md:text-2xl font-medium mt-6 mb-3 text-yellow-200">{children}</h4>,
-            normal: ({ children }: { children: React.ReactNode }) => <p className="text-lg leading-relaxed mb-6 text-gray-200">{children}</p>,
-            blockquote: ({ children }: { children: React.ReactNode }) => (
+            h1: ({ children }: PortableTextComponentProps<any>) => (
+                <h1 className="text-4xl md:text-5xl font-black mt-14 mb-6 leading-tight text-white">{children}</h1>
+            ),
+            h2: ({ children }: PortableTextComponentProps<any>) => (
+                <h2 className="text-3xl md:text-4xl font-bold mt-10 mb-5 leading-tight text-yellow-400">{children}</h2>
+            ),
+            h3: ({ children }: PortableTextComponentProps<any>) => (
+                <h3 className="text-2xl md:text-3xl font-semibold mt-8 mb-4 text-yellow-300">{children}</h3>
+            ),
+            h4: ({ children }: PortableTextComponentProps<any>) => (
+                <h4 className="text-xl md:text-2xl font-medium mt-6 mb-3 text-yellow-200">{children}</h4>
+            ),
+            normal: ({ children }: PortableTextComponentProps<any>) => (
+                <p className="text-lg leading-relaxed mb-6 text-gray-200">{children}</p>
+            ),
+            blockquote: ({ children }: PortableTextComponentProps<any>) => (
                 <blockquote className="border-l-4 border-yellow-500 pl-6 py-1 my-8 italic text-xl text-gray-300">
                     {children}
                 </blockquote>
@@ -141,7 +152,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                         )}
 
                         {post.author && (
-                            <div className="flex items-center  p-3 rounded-lg ">
+                            <div className="flex items-center p-3 rounded-lg">
                                 {post.author.image && (
                                     <div className="relative w-12 h-12 mr-4 rounded-full overflow-hidden border-2 border-white">
                                         <Image
@@ -255,7 +266,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 </div>
             </div>
 
-            {/* Footer */}
 
         </div>
     )
