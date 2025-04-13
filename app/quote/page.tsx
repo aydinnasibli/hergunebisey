@@ -1,9 +1,9 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { urlFor, client } from '@/lib/sanity';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-// Tip tanımı
+// Quote definition
 interface Quote {
     _id: string;
     content: string;
@@ -26,23 +26,47 @@ export default function QuotePage() {
 
     const [loading, setLoading] = useState(true);
 
+    // Refs for parallax sections
+    const containerRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const dailyRef = useRef<HTMLDivElement>(null);
+    const weeklyRef = useRef<HTMLDivElement>(null);
+    const monthlyRef = useRef<HTMLDivElement>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start", "end"]
+    });
+
+    // Parallax effects for different sections
+    const headerParallax = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
+    const dailyParallax = useTransform(scrollYProgress, [0.1, 0.4], [0, -50]);
+    const weeklyParallax = useTransform(scrollYProgress, [0.3, 0.6], [0, -50]);
+    const monthlyParallax = useTransform(scrollYProgress, [0.5, 0.8], [0, -50]);
+
+    // Background opacity for each section based on scroll
+    const headerOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+    const dailyOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.4], [0, 1, 0]);
+    const weeklyOpacity = useTransform(scrollYProgress, [0.3, 0.5, 0.6], [0, 1, 0]);
+    const monthlyOpacity = useTransform(scrollYProgress, [0.5, 0.7, 0.9], [0, 1, 0]);
+
     useEffect(() => {
         const fetchQuotes = async () => {
             try {
                 const query = `
-          *[_type == "quote"] {
-            _id,
-            content,
-            author,
-            type,
-            publishedAt,
-            image
-          }
-        `;
+                    *[_type == "quote"] {
+                        _id,
+                        content,
+                        author,
+                        type,
+                        publishedAt,
+                        image
+                    }
+                `;
 
                 const fetchedQuotes = await client.fetch(query);
 
-                // Kategorilere göre ayırma
+                // Categorize by type
                 const daily = fetchedQuotes.find((q: Quote) => q.type === 'daily') || null;
                 const weekly = fetchedQuotes.find((q: Quote) => q.type === 'weekly') || null;
                 const monthly = fetchedQuotes.find((q: Quote) => q.type === 'monthly') || null;
@@ -50,7 +74,7 @@ export default function QuotePage() {
                 setQuotes({ daily, weekly, monthly });
                 setLoading(false);
             } catch (error) {
-                console.error("Alıntılar yüklenirken hata oluştu:", error);
+                console.error("Error loading quotes:", error);
                 setLoading(false);
             }
         };
@@ -58,139 +82,170 @@ export default function QuotePage() {
         fetchQuotes();
     }, []);
 
-    const fadeInVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: (i: number) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                delay: i * 0.2,
-                duration: 0.8,
-                ease: "easeOut"
-            }
-        })
-    };
-
-    // Alıntı kartı bileşeni
-    const QuoteCard = ({
+    // Quote section component with parallax
+    const ParallaxQuoteSection = ({
         quote,
         title,
-        index,
-        bgGradient
+        motionStyle,
+        opacityStyle,
+        ref,
+        index
     }: {
         quote: Quote | null;
         title: string;
+        motionStyle: any;
+        opacityStyle: any;
+        ref: React.RefObject<HTMLDivElement>;
         index: number;
-        bgGradient: string;
     }) => {
         if (!quote) return (
             <motion.div
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={fadeInVariants}
-                className={`rounded-xl shadow-xl p-8 ${bgGradient} h-full flex flex-col justify-between`}
+                ref={ref}
+                className="h-screen flex items-center justify-center"
+                style={{ y: motionStyle }}
             >
-                <h3 className="text-2xl font-bold mb-4 text-white">{title}</h3>
-                <p className="text-gray-200 italic">Yükleniyor...</p>
+                <div className="text-center text-white">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+                    <p className="text-xl">Yükleniyor...</p>
+                </div>
             </motion.div>
         );
 
         return (
             <motion.div
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={fadeInVariants}
-                className={`rounded-xl shadow-xl p-8 ${bgGradient} h-full flex flex-col justify-between relative overflow-hidden`}
+                ref={ref}
+                className="h-screen flex items-center justify-center relative overflow-hidden"
+                style={{ y: motionStyle }}
             >
                 {quote.image && (
-                    <div className="absolute inset-0 opacity-20 bg-black">
+                    <motion.div
+                        className="absolute inset-0 w-full h-full"
+                        style={{ opacity: opacityStyle }}
+                    >
                         <img
-                            src={urlFor(quote.image).width(800).url()}
+                            src={urlFor(quote.image).width(1920).url()}
                             alt=""
-                            className="w-full h-full object-cover mix-blend-overlay"
+                            className="w-full h-full object-cover"
                         />
-                    </div>
+                        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+                    </motion.div>
                 )}
 
-                <div className="relative z-10">
-                    <h3 className="text-2xl font-bold mb-4 text-white">{title}</h3>
-                    <p className="text-xl text-white font-medium italic leading-relaxed mb-6">"{quote.content}"</p>
+                <div className="relative z-10 max-w-4xl mx-auto px-6 py-12 backdrop-blur-sm bg-black bg-opacity-30 rounded-xl">
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: true }}
+                    >
+                        <h3 className="text-3xl sm:text-4xl font-bold mb-6 text-white">{title}</h3>
+                        <p className="text-2xl sm:text-3xl text-white font-medium italic leading-relaxed mb-8">"{quote.content}"</p>
 
-                    <div className="mt-auto">
-                        <p className="text-gray-200 text-right font-semibold">— {quote.author}</p>
-                        <p className="text-gray-300 text-sm text-right mt-2">
-                            {new Date(quote.publishedAt).toLocaleDateString('tr-TR', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            })}
-                        </p>
-                    </div>
+                        <div className="mt-auto">
+                            <p className="text-xl text-white font-semibold">— {quote.author}</p>
+                            <p className="text-gray-300 text-sm mt-2">
+                                {new Date(quote.publishedAt).toLocaleDateString('tr-TR', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
+                            </p>
+                        </div>
+                    </motion.div>
                 </div>
             </motion.div>
         );
     };
 
     return (
-        <main className="min-h-screen pt-24 pb-16 bg-gradient-to-b from-gray-900 to-black">
-            <div className="container mx-auto px-4">
-                {/* Sayfa başlığı */}
+        <main ref={containerRef} className="relative min-h-screen bg-black">
+            {/* Hero section with parallax effect */}
+            <motion.div
+                ref={headerRef}
+                className="h-screen flex items-center justify-center relative overflow-hidden"
+                style={{ y: headerParallax }}
+            >
                 <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="text-center mb-12"
+                    className="absolute inset-0 bg-gradient-to-b from-purple-900 to-black"
+                    style={{ opacity: headerOpacity }}
                 >
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Günün, Haftanın ve Ayın Alıntıları</h1>
-                    <p className="text-gray-300 text-lg md:w-2/3 mx-auto">
-                        Düşündüren, ilham veren ve sizi harekete geçiren seçkin alıntılar. Her gün, her hafta ve her ay yenilenen özenle seçilmiş sözler.
-                    </p>
+                    <div className="absolute inset-0 bg-[url('/images/stars.png')] bg-repeat opacity-50"></div>
                 </motion.div>
 
-                {/* Ana içerik */}
-                {loading ? (
-                    <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <QuoteCard
-                            quote={quotes.daily}
-                            title="Günün Alıntısı"
-                            index={0}
-                            bgGradient="bg-gradient-to-br from-purple-600 to-blue-700"
-                        />
+                <div className="relative z-10 text-center px-4">
+                    <motion.h1
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                        className="text-5xl md:text-7xl font-bold text-white mb-6"
+                    >
+                        Düşünceye Davet
+                    </motion.h1>
 
-                        <QuoteCard
-                            quote={quotes.weekly}
-                            title="Haftanın Alıntısı"
-                            index={1}
-                            bgGradient="bg-gradient-to-br from-yellow-600 to-orange-700"
-                        />
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.3 }}
+                        className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12"
+                    >
+                        Günün, Haftanın ve Ayın ilham veren alıntılarıyla yolculuğunuza derinlik katın
+                    </motion.p>
 
-                        <QuoteCard
-                            quote={quotes.monthly}
-                            title="Ayın Alıntısı"
-                            index={2}
-                            bgGradient="bg-gradient-to-br from-green-600 to-teal-700"
-                        />
-                    </div>
-                )}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1, delay: 0.6 }}
+                        className="animate-bounce"
+                    >
+                        <svg className="w-8 h-8 mx-auto text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </motion.div>
+                </div>
+            </motion.div>
 
-                {/* Alt bilgi */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.8 }}
-                    className="mt-16 text-center"
-                >
-                    <p className="text-gray-400 italic">
-                        Her bir alıntı, hayatınıza farklı bir perspektif ve derinlik katmak için özenle seçilmiştir.
-                    </p>
-                </motion.div>
-            </div>
+            {/* Quote sections with parallax effects */}
+            {loading ? (
+                <div className="h-screen flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-500"></div>
+                </div>
+            ) : (
+                <>
+                    <ParallaxQuoteSection
+                        quote={quotes.daily}
+                        title="Günün Alıntısı"
+                        motionStyle={dailyParallax}
+                        opacityStyle={dailyOpacity}
+                        ref={dailyRef}
+                        index={0}
+                    />
+
+                    <ParallaxQuoteSection
+                        quote={quotes.weekly}
+                        title="Haftanın Alıntısı"
+                        motionStyle={weeklyParallax}
+                        opacityStyle={weeklyOpacity}
+                        ref={weeklyRef}
+                        index={1}
+                    />
+
+                    <ParallaxQuoteSection
+                        quote={quotes.monthly}
+                        title="Ayın Alıntısı"
+                        motionStyle={monthlyParallax}
+                        opacityStyle={monthlyOpacity}
+                        ref={monthlyRef}
+                        index={2}
+                    />
+                </>
+            )}
+
+            {/* Footer */}
+            <footer className="py-8 text-center bg-black text-gray-400">
+                <p className="italic max-w-2xl mx-auto px-4">
+                    "İlham peşinde koşmayın. Çalışmaya devam edin ve ilham sizi kovalar." — Hayao Miyazaki
+                </p>
+            </footer>
         </main>
     );
 }
