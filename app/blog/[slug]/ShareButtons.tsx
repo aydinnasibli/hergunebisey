@@ -9,9 +9,8 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ title, slug }: ShareButtonsProps) {
-    const [copySuccess, setCopySuccess] = useState(false)
-    const [baseUrl, setBaseUrl] = useState('')
     const [showTooltip, setShowTooltip] = useState(false)
+    const [baseUrl, setBaseUrl] = useState('')
 
     // Set the base URL on the client side to avoid SSR issues
     useEffect(() => {
@@ -26,12 +25,10 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
     const handleCopyLink = async () => {
         try {
             await navigator.clipboard.writeText(fullUrl)
-            setCopySuccess(true)
             setShowTooltip(true)
 
-            // Reset the success message after 2 seconds
+            // Reset the tooltip after 2 seconds
             setTimeout(() => {
-                setCopySuccess(false)
                 setShowTooltip(false)
             }, 2000)
         } catch (err) {

@@ -9,10 +9,6 @@ import ShareButtons from './ShareButtons' // Import the client component
 
 export const revalidate = 60 // revalidate this page every 60 seconds
 
-// Define proper types for params
-interface PageParams {
-    params: { slug: string }
-}
 
 // Define BlogPost type
 interface BlogPost {
@@ -260,11 +256,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
 
             {/* Footer */}
-            <footer className="bg-gray-900 text-gray-400 py-6 border-t border-gray-800">
-                <div className="container mx-auto px-6 text-center text-sm">
-                    <p>© 2025 Blog Adı. Tüm hakları saklıdır.</p>
-                </div>
-            </footer>
+
         </div>
     )
 }
