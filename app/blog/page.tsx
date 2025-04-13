@@ -284,8 +284,8 @@ export default function BlogPage() {
                                     whileHover={{ y: -8, transition: { duration: 0.3 } }}
                                 >
                                     <Link href={`/blog/${post.slug.current}`}>
-                                        <div className="relative group bg-black/25 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/20">
-                                            <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+                                        <div className="relative group bg-black/25 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/25">
+                                            <div className="absolute inset-0    transition-opacity duration-300 z-10"></div>
 
                                             {post.mainImage ? (
                                                 <div className="relative h-64 w-full overflow-hidden">
@@ -302,7 +302,7 @@ export default function BlogPage() {
                                                         {post.categories?.map((category: string, i: number) => (
                                                             <span
                                                                 key={i}
-                                                                className="text-xs font-medium bg-yellow-500 text-gray-900 rounded-lg px-3 py-1 shadow-md"
+                                                                className="text-xs  text-white font-medium bg-black  rounded-lg px-3 py-1 shadow-md"
                                                             >
                                                                 {category}
                                                             </span>
@@ -328,7 +328,7 @@ export default function BlogPage() {
                                             )}
 
                                             <div className="p-6 flex flex-col flex-grow">
-                                                <h2 className="text-2xl font-bold mb-3 text-gray-100 line-clamp-2 group-hover:text-yellow-500 transition-colors duration-300">
+                                                <h2 className="text-2xl font-bold mb-3 text-gray-100 line-clamp-2  transition-colors duration-300">
                                                     {post.title}
                                                 </h2>
 
