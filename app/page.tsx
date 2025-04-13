@@ -508,7 +508,7 @@ const Home = () => {
                     {visibleContents.map((post, index) => (
                       <div
                         key={`${post._id}-${index}`}
-                        className={`relative w-44 h-64 rounded-lg overflow-hidden transition-all duration-500 cursor-pointer
+                        className={`relative w-36 h-52 rounded-lg overflow-hidden transition-all duration-500 cursor-pointer
                     ${index === 0 ? 'opacity-100 scale-100 shadow-xl' : index === 1 ? 'opacity-80 scale-95 hover:opacity-90' : 'opacity-60 scale-90 hover:opacity-70'}`}
                         style={{
                           transform: `translateX(${index * -24}px)`,
@@ -562,15 +562,7 @@ const Home = () => {
                   </button>
                 </div>
 
-                {/* Slide Count Progress Bar - more visible */}
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-1/2 md:w-1/3">
-                  <div className="h-1 bg-white/20 w-full rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-yellow-500 transition-all duration-300 rounded-full"
-                      style={{ width: `${sliderCountProgress}%` }}
-                    ></div>
-                  </div>
-                </div>
+
 
                 {/* More visible slide counter */}
                 <div className="absolute right-8 md:right-16 bottom-8 md:bottom-10">
@@ -583,7 +575,7 @@ const Home = () => {
                 </div>
 
                 {/* Timer progress indicator */}
-                <div className="absolute right-24 md:right-40 bottom-10 md:bottom-12 w-20 md:w-24 h-1 bg-white/20 overflow-hidden rounded-full">
+                <div className="absolute right-8 md:right-17 bottom-8 md:bottom-8 w-20 md:w-24 h-1 bg-white/20 overflow-hidden rounded-full">
                   <div
                     className="h-full bg-yellow-500/80 transition-all duration-100 ease-linear rounded-full"
                     style={{ width: `${progress}%` }}
