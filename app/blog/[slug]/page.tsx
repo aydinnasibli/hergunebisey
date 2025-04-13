@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import ShareButtons from './ShareButtons' // Import the client component
-import { PortableTextBlock } from '@portabletext/react'
+import { PortableTextBlock } from 'sanity'
 export const revalidate = 60 // revalidate this page every 60 seconds
 
 
@@ -18,7 +18,7 @@ interface BlogPost {
     excerpt?: string;
     mainImage?: SanityImageSource;
     publishedAt: string;
-    body?: PortableTextBlock[];
+    body?: PortableTextBlock;
     categories?: string[];
     author?: {
         name: string;
