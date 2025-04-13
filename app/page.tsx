@@ -158,10 +158,6 @@ const Home = () => {
     }
   }
 
-  // Calculate slider progress (which slide out of total)
-  const sliderCountProgress = blogPosts.length > 1
-    ? ((currentSlide) / (blogPosts.length - 1)) * 100
-    : 0;
 
   // Splitting title into main and subtitle parts (first word and rest)
   const getTitleParts = (title: string) => {
