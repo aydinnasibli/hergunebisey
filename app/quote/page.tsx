@@ -181,7 +181,7 @@ export default function QuotePage() {
             </div>
         );
     };
-
+    type MotionStyle = ReturnType<typeof useTransform>;
     // Enhanced Parallax Quote Section with darker design
     const ParallaxQuoteSection = ({
         quote,
@@ -193,8 +193,8 @@ export default function QuotePage() {
     }: {
         quote: Quote | null;
         title: string;
-        motionStyle: any;
-        opacityStyle: any;
+        motionStyle: MotionStyle;
+        opacityStyle: MotionStyle;
         index: number;
         type: 'daily' | 'weekly' | 'monthly';
     }) => {
