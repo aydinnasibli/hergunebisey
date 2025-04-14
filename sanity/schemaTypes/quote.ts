@@ -41,19 +41,19 @@ export const quote = {
             description: 'Alıntının yayın tarihi'
         },
         {
-            name: 'image',
-            title: 'Arkaplan Görseli',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
-            description: 'Alıntı için yüksek çözünürlüklü arkaplan görseli (önerilen: 1920x1080px)'
-        },
-        {
-            name: 'imageCredit',
-            title: 'Görsel Kredisi',
+            name: 'color',
+            title: 'Alıntı Renk Teması',
             type: 'string',
-            description: 'Arkaplan görseli için kaynak veya fotoğrafçı kredisi (varsa)'
+            options: {
+                list: [
+                    { title: 'Altın', value: 'gold' },
+                    { title: 'Mavi', value: 'blue' },
+                    { title: 'Yeşil', value: 'green' },
+                    { title: 'Mor', value: 'purple' },
+                    { title: 'Turuncu', value: 'orange' }
+                ]
+            },
+            description: 'Alıntının görsel teması için renk seçimi'
         },
         {
             name: 'tags',
@@ -70,7 +70,6 @@ export const quote = {
         select: {
             title: 'author',
             subtitle: 'content',
-            media: 'image',
         },
         prepare(selection: any) {
             const { title, subtitle } = selection;
