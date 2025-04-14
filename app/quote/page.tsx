@@ -181,7 +181,9 @@ export default function QuotePage() {
             </div>
         );
     };
+
     type MotionStyle = ReturnType<typeof useTransform>;
+
     // Enhanced Parallax Quote Section with darker design
     const ParallaxQuoteSection = ({
         quote,
@@ -205,9 +207,12 @@ export default function QuotePage() {
             offset: ["start end", "end start"]
         });
 
-        // Additional parallax effects specific to each section
+        // Define all hooks at the top level
         const contentY = useTransform(sectionScroll, [0, 1], [100, -100]);
         const patternParallax = useTransform(sectionScroll, [0, 1], [0, -50]);
+        const quoteMarkTopParallax = useTransform(sectionScroll, [0, 1], [-10, 10]);
+        const quoteMarkBottomParallax = useTransform(sectionScroll, [0, 1], [10, -10]);
+
         const [isHovered, setIsHovered] = useState(false);
 
         if (!quote) return (
@@ -329,7 +334,7 @@ export default function QuotePage() {
                                 className={index === 0 ? "absolute -top-16 -left-8 text-8xl text-indigo-600/20 font-serif" :
                                     index === 1 ? "absolute -top-16 -left-8 text-8xl text-violet-600/20 font-serif" :
                                         "absolute -top-16 -left-8 text-8xl text-blue-600/20 font-serif"}
-                                style={{ y: useTransform(sectionScroll, [0, 1], [-10, 10]) }}
+                                style={{ y: quoteMarkTopParallax }}
                             >
                                 "
                             </motion.div>
@@ -337,7 +342,7 @@ export default function QuotePage() {
                                 className={index === 0 ? "absolute -bottom-24 -right-8 text-8xl text-indigo-600/20 font-serif" :
                                     index === 1 ? "absolute -bottom-24 -right-8 text-8xl text-violet-600/20 font-serif" :
                                         "absolute -bottom-24 -right-8 text-8xl text-blue-600/20 font-serif"}
-                                style={{ y: useTransform(sectionScroll, [0, 1], [10, -10]) }}
+                                style={{ y: quoteMarkBottomParallax }}
                             >
                                 "
                             </motion.div>
@@ -466,7 +471,7 @@ export default function QuotePage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
                         >
-                            GünlGünlük, haftalık ve aylık alıntılarla düşüncelerinizi zenginleştirin ve motivasyonunuzu yükseltin.
+                            Günlük, haftalık ve aylık alıntılarla düşüncelerinizi zenginleştirin ve motivasyonunuzu yükseltin.
                         </motion.p>
 
                         <motion.div
