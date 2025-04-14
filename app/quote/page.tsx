@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { client } from '@/lib/sanity';
-import { motion, useScroll, useTransform, } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 
 // Quote definition
 interface Quote {
@@ -182,8 +182,7 @@ export default function QuotePage() {
         );
     };
 
-    type MotionStyle = ReturnType<typeof useTransform>;
-
+    // Updated to correctly type MotionValue<number>
     // Enhanced Parallax Quote Section with darker design
     const ParallaxQuoteSection = ({
         quote,
@@ -195,8 +194,8 @@ export default function QuotePage() {
     }: {
         quote: Quote | null;
         title: string;
-        motionStyle: MotionStyle;
-        opacityStyle: MotionStyle;
+        motionStyle: MotionValue<number>;
+        opacityStyle: MotionValue<number>;
         index: number;
         type: 'daily' | 'weekly' | 'monthly';
     }) => {
