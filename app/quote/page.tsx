@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { client } from '@/lib/sanity';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, } from 'framer-motion';
 
 // Quote definition
 interface Quote {
@@ -23,7 +23,6 @@ export default function QuotePage() {
         monthly: null,
     });
 
-    const [loading, setLoading] = useState(true);
 
     // Refs for parallax sections
     const containerRef = useRef<HTMLDivElement>(null);
@@ -98,10 +97,9 @@ export default function QuotePage() {
                 const monthly = fetchedQuotes.find((q: Quote) => q.type === 'monthly') || null;
 
                 setQuotes({ daily, weekly, monthly });
-                setLoading(false);
+
             } catch (error) {
                 console.error("Error loading quotes:", error);
-                setLoading(false);
             }
         };
 
@@ -129,11 +127,7 @@ export default function QuotePage() {
         return darkAccents[index % darkAccents.length];
     };
 
-    // Get actual quote by type
-    const getQuoteByType = (type: 'daily' | 'weekly' | 'monthly' | null) => {
-        if (!type) return null;
-        return quotes[type];
-    };
+
 
     // Particle animation component
     // Improved FloatingParticles component with better animation and positioning
