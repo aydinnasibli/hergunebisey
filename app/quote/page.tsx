@@ -40,7 +40,7 @@ interface ParallaxQuoteSectionProps {
     index: number;
     type: 'daily' | 'weekly' | 'monthly';
     color: string;
-    sectionRef: React.RefObject<HTMLDivElement>;
+    sectionRef: React.RefObject<HTMLDivElement | null>; // Changed from React.RefObject<HTMLDivElement>
 }
 
 
