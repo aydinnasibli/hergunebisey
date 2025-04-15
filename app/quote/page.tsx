@@ -27,7 +27,6 @@ interface ParallaxQuoteSectionProps {
     quote: Quote | null;
     title: string;
     motionStyle: MotionValue<number>;
-    opacityStyle: MotionValue<number>;
     rotateX: MotionValue<number>;
     scaleStyle: MotionValue<number>;
     index: number;
@@ -109,7 +108,6 @@ export default function QuotePage() {
     const headerScale = useTransform(smoothScrollProgress, [0, 0.15], [1, 0.9]);
     const headerRotate = useTransform(smoothScrollProgress, [0, 0.2], [0, -3]);
 
-    const headerOpacity = useTransform(smoothScrollProgress, [0, 0.22], [1, 0]);
 
     // Update these values for smoother transitions
     // Reduce the parallax motion values to create less space
@@ -307,7 +305,6 @@ export default function QuotePage() {
         quote,
         title,
         motionStyle,
-        opacityStyle,
         rotateX,
         scaleStyle,
         index,
@@ -326,7 +323,6 @@ export default function QuotePage() {
             damping: 20,
             restDelta: 0.001
         });
-        const patternYTransform = useTransform(smoothSectionScroll, [0, 1], [0, -80]);
 
         // Additional parallax effects specific to each section
         // Remove the parallax pop-up effect by setting static values (0)
@@ -587,7 +583,6 @@ export default function QuotePage() {
                 quote={quotes.daily}
                 title="Günün Alıntısı"
                 motionStyle={dailyParallax}
-                opacityStyle={dailyOpacity}
                 rotateX={dailyRotateX}
                 scaleStyle={dailyScale}
                 index={0}
@@ -601,7 +596,6 @@ export default function QuotePage() {
                 quote={quotes.weekly}
                 title="Haftanın Alıntısı"
                 motionStyle={weeklyParallax}
-                opacityStyle={weeklyOpacity}
                 rotateX={weeklyRotateX}
                 scaleStyle={weeklyScale}
                 index={1}
@@ -615,7 +609,6 @@ export default function QuotePage() {
                 quote={quotes.monthly}
                 title="Ayın Alıntısı"
                 motionStyle={monthlyParallax}
-                opacityStyle={monthlyOpacity}
                 rotateX={monthlyRotateX}
                 scaleStyle={monthlyScale}
                 index={2}
