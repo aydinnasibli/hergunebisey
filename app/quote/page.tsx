@@ -1,7 +1,17 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { client } from '@/lib/sanity';
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+    motion,
+    useScroll,
+    useTransform,
+    MotionValue,
+    useSpring,
+    AnimatePresence,
+    cubicBezier,
+    useMotionValue
+} from 'framer-motion';
 
 // Quote definition
 interface Quote {
@@ -11,6 +21,37 @@ interface Quote {
     type: 'daily' | 'weekly' | 'monthly';
     publishedAt: string;
 }
+
+// Add proper type definitions for DynamicShapes
+interface ShapeConfig {
+    type: 'circle' | 'square' | 'triangle' | 'hexagon';
+    baseX: number;
+    baseY: number;
+    size: number;
+    rotation: number;
+    opacity: number;
+}
+
+interface ParallaxQuoteSectionProps {
+    quote: Quote | null;
+    title: string;
+    motionStyle: MotionValue<number>;
+    opacityStyle: MotionValue<number>;
+    rotateX: MotionValue<number>;
+    scaleStyle: MotionValue<number>;
+    index: number;
+    type: 'daily' | 'weekly' | 'monthly';
+    color: string;
+    sectionRef: React.RefObject<HTMLDivElement>;
+}
+
+
+
+interface DynamicShapesProps {
+    sectionType: string;
+}
+
+
 
 export default function QuotePage() {
     const [quotes, setQuotes] = useState<{
@@ -23,59 +64,138 @@ export default function QuotePage() {
         monthly: null,
     });
 
+    // Client-side only rendering guard
+    const [isClient, setIsClient] = useState(false);
 
-    // Refs for parallax sections
+    // Mouse position for hover effects
+
+    // Viewport size for responsive calculations
+    const [viewport, setViewport] = useState({ width: 0, height: 0 });
+
+    // Active section for enhanced focus
+    const [activeSection, setActiveSection] = useState<string | null>(null);
+
+    // Main container ref
     const containerRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
 
-    // Main scroll progress for the entire page
+    const headerRef = useRef<HTMLDivElement>(null);
+    const dailyRef = useRef<HTMLDivElement>(null);
+    const weeklyRef = useRef<HTMLDivElement>(null);
+    const monthlyRef = useRef<HTMLDivElement>(null);
+
+    // Main scroll progress with smoother animation
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start", "end"]
     });
 
-    // Enhanced parallax effects for different sections
-    const headerParallax = useTransform(scrollYProgress, [0, 0.3], [0, -200]);
-    const dailyParallax = useTransform(scrollYProgress, [0.1, 0.4], [100, -100]);
-    const weeklyParallax = useTransform(scrollYProgress, [0.3, 0.6], [100, -100]);
-    const monthlyParallax = useTransform(scrollYProgress, [0.5, 0.8], [100, -100]);
+    // Smoothed scroll progress for more fluid animations
+    const smoothScrollProgress = useSpring(scrollYProgress, {
+        stiffness: 50,       // Reduced from 100
+        damping: 20,         // Reduced from 30
+        restDelta: 0.01      // Less precision for better performance
+    });
 
-    // Enhanced background effects based on scroll
-    const headerOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-    const dailyOpacity = useTransform(scrollYProgress, [0.1, 0.3, 0.4], [0, 1, 0]);
-    const weeklyOpacity = useTransform(scrollYProgress, [0.3, 0.5, 0.6], [0, 1, 0]);
-    const monthlyOpacity = useTransform(scrollYProgress, [0.5, 0.7, 0.9], [0, 1, 0]);
+    // Advanced parallax effects with custom easing
+    const customEase = cubicBezier(0.16, 1, 0.3, 1);
 
-    // Additional parallax effects for quote content
-    const quoteScale = useTransform(scrollYProgress, [0, 0.5], [0.9, 1.1]);
+    // Hero header effects
+    const headerParallax = useTransform(smoothScrollProgress, [0, 0.25], [0, -100]);
+    const headerScale = useTransform(smoothScrollProgress, [0, 0.15], [1, 0.9]);
+    const headerRotate = useTransform(smoothScrollProgress, [0, 0.2], [0, -3]);
 
-    // Replace the current scrollToSection function with this new approach
-    const scrollToSection = (section: 'daily' | 'weekly' | 'monthly') => {
-        // Calculate the position to scroll to based on viewport height
-        // First section (hero) is at 0, then daily at 1×viewHeight, weekly at 2×viewHeight, etc.
-        let scrollPosition;
+    const headerOpacity = useTransform(smoothScrollProgress, [0, 0.22], [1, 0]);
 
-        switch (section) {
-            case 'daily':
-                scrollPosition = window.innerHeight * 0.9; // 1 viewport height
-                break;
-            case 'weekly':
-                scrollPosition = window.innerHeight * 1.9; // 2 viewport heights
-                break;
-            case 'monthly':
-                scrollPosition = window.innerHeight * 2.9; // 3 viewport heights
-                break;
-            default:
-                scrollPosition = 0;
+    // Section effects with overlapping transitions for smoother blending
+    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.45], [100, -50]);
+    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.65], [100, -50]);
+    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.85], [100, -50]);
+    // Progressive reveal and fade effects
+    const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.4, 0.45], [0, 1, 1, 0.8]);
+    const weeklyOpacity = useTransform(smoothScrollProgress, [0.35, 0.45, 0.6, 0.65], [0, 1, 1, 0.8]);
+    const monthlyOpacity = useTransform(smoothScrollProgress, [0.55, 0.65, 0.8, 0.9], [0, 1, 1, 0.8]);
+
+    // 3D rotation effects based on scroll position
+    const dailyRotateX = useTransform(smoothScrollProgress, [0.15, 0.4], [15, 0]);
+    const weeklyRotateX = useTransform(smoothScrollProgress, [0.35, 0.6], [15, 0]);
+    const monthlyRotateX = useTransform(smoothScrollProgress, [0.55, 0.8], [15, 0]);
+
+    // Scale effects for emphasizing active sections
+    const dailyScale = useTransform(smoothScrollProgress, [0.2, 0.3, 0.4], [0.9, 1.05, 0.95]);
+    const weeklyScale = useTransform(smoothScrollProgress, [0.4, 0.5, 0.6], [0.9, 1.05, 0.95]);
+    const monthlyScale = useTransform(smoothScrollProgress, [0.6, 0.7, 0.8], [0.9, 1.05, 0.95]);
+
+
+    // Handle viewport sizing
+    useEffect(() => {
+        const handleResize = () => {
+            setViewport({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        };
+
+        if (typeof window !== 'undefined') {
+            handleResize();
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+            };
+        }
+    }, []);
+
+    // Track active section based on scroll position
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!containerRef.current) return;
+
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+            const sections = [
+                { ref: headerRef, id: 'header' },
+                { ref: dailyRef, id: 'daily' },
+                { ref: weeklyRef, id: 'weekly' },
+                { ref: monthlyRef, id: 'monthly' }
+            ];
+
+            for (const section of sections) {
+                if (!section.ref.current) continue;
+
+                const rect = section.ref.current.getBoundingClientRect();
+                const sectionTop = rect.top + window.scrollY;
+                const sectionBottom = sectionTop + rect.height;
+
+                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                    setActiveSection(section.id);
+                    break;
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    // Client-side setup
+    useEffect(() => {
+        setIsClient(true);
+
+        // Add smooth scroll behavior with better performance
+        if (typeof window !== 'undefined') {
+            document.documentElement.style.scrollBehavior = 'smooth';
         }
 
-        // Scroll to the calculated position
-        window.scrollTo({
-            top: scrollPosition,
-            behavior: 'smooth'
-        });
-    };
+        return () => {
+            if (typeof window !== 'undefined') {
+                document.documentElement.style.scrollBehavior = '';
+            }
+        };
+    }, []);
 
+    // Fetch quotes from Sanity
     useEffect(() => {
         const fetchQuotes = async () => {
             try {
@@ -91,15 +211,65 @@ export default function QuotePage() {
 
                 const fetchedQuotes = await client.fetch(query);
 
-                // Categorize by type
-                const daily = fetchedQuotes.find((q: Quote) => q.type === 'daily') || null;
-                const weekly = fetchedQuotes.find((q: Quote) => q.type === 'weekly') || null;
-                const monthly = fetchedQuotes.find((q: Quote) => q.type === 'monthly') || null;
+                // Add error handling for empty results
+                if (!fetchedQuotes || fetchedQuotes.length === 0) {
+                    console.error("No quotes found in the database");
+                    return;
+                }
+
+                // Categorize by type with default values
+                const daily = fetchedQuotes.find((q: Quote) => q.type === 'daily') || {
+                    _id: 'default-daily',
+                    content: 'Her güne pozitif bir not ile başla.',
+                    author: 'Hergünebi\'şey',
+                    type: 'daily',
+                    publishedAt: new Date().toISOString()
+                };
+
+                const weekly = fetchedQuotes.find((q: Quote) => q.type === 'weekly') || {
+                    _id: 'default-weekly',
+                    content: 'Haftanın her günü yeni bir fırsat sunar.',
+                    author: 'Hergünebi\'şey',
+                    type: 'weekly',
+                    publishedAt: new Date().toISOString()
+                };
+
+                const monthly = fetchedQuotes.find((q: Quote) => q.type === 'monthly') || {
+                    _id: 'default-monthly',
+                    content: 'Her ay yeni hedefler belirlemek için bir şans.',
+                    author: 'Hergünebi\'şey',
+                    type: 'monthly',
+                    publishedAt: new Date().toISOString()
+                };
 
                 setQuotes({ daily, weekly, monthly });
 
             } catch (error) {
                 console.error("Error loading quotes:", error);
+                // Set default quotes when error occurs
+                setQuotes({
+                    daily: {
+                        _id: 'error-daily',
+                        content: 'Her güne pozitif bir not ile başla.',
+                        author: 'Hergünebi\'şey',
+                        type: 'daily',
+                        publishedAt: new Date().toISOString()
+                    },
+                    weekly: {
+                        _id: 'error-weekly',
+                        content: 'Haftanın her günü yeni bir fırsat sunar.',
+                        author: 'Hergünebi\'şey',
+                        type: 'weekly',
+                        publishedAt: new Date().toISOString()
+                    },
+                    monthly: {
+                        _id: 'error-monthly',
+                        content: 'Her ay yeni hedefler belirlemek için bir şans.',
+                        author: 'Hergünebi\'şey',
+                        type: 'monthly',
+                        publishedAt: new Date().toISOString()
+                    }
+                });
             }
         };
 
@@ -111,248 +281,425 @@ export default function QuotePage() {
 
 
 
-    // Dark themed background gradients
-    const getDarkBackgroundGradient = (index: number) => {
-        const darkGradients = [
-            'from-indigo-950 via-gray-900 to-black',   // Dark indigo to black
-            'from-violet-950 via-gray-900 to-black',   // Dark violet to black  
-            'from-blue-950 via-gray-900 to-black'      // Dark blue to black
-        ];
-        return darkGradients[index % darkGradients.length];
-    };
+    // Optimized DynamicShapes component with reduced complexity
+    // Enhanced DynamicShapes component with more interesting visuals and animations
+    const DynamicShapes = ({ sectionType }: DynamicShapesProps) => {
+        // More varied and visually interesting shapes for each section
+        const shapes: Record<string, ShapeConfig[]> = {
+            header: [
+                { type: 'circle', baseX: 10, baseY: 20, size: 220, rotation: 0, opacity: 0.15 },
+                { type: 'circle', baseX: 80, baseY: 70, size: 160, rotation: 0, opacity: 0.12 },
+                { type: 'hexagon', baseX: 75, baseY: 15, size: 140, rotation: 25, opacity: 0.08 }
+            ],
+            daily: [
+                { type: 'circle', baseX: 15, baseY: 25, size: 180, rotation: 0, opacity: 0.15 },
+                { type: 'square', baseX: 70, baseY: 60, size: 120, rotation: 45, opacity: 0.08 },
+                { type: 'triangle', baseX: 85, baseY: 30, size: 140, rotation: 180, opacity: 0.10 }
+            ],
+            weekly: [
+                { type: 'hexagon', baseX: 75, baseY: 25, size: 160, rotation: 10, opacity: 0.15 },
+                { type: 'circle', baseX: 20, baseY: 65, size: 140, rotation: 0, opacity: 0.08 },
+                { type: 'triangle', baseX: 12, baseY: 20, size: 120, rotation: 0, opacity: 0.10 }
+            ],
+            monthly: [
+                { type: 'circle', baseX: 80, baseY: 20, size: 200, rotation: 0, opacity: 0.15 },
+                { type: 'square', baseX: 25, baseY: 70, size: 140, rotation: 15, opacity: 0.08 },
+                { type: 'hexagon', baseX: 15, baseY: 25, size: 160, rotation: 30, opacity: 0.10 }
+            ]
+        };
 
-    // Dark accent colors
-    const getDarkAccentColor = (index: number) => {
-        const darkAccents = ['indigo-600', 'violet-600', 'blue-600'];
-        return darkAccents[index % darkAccents.length];
-    };
+        // Check if this section is currently active
+        const isActive = activeSection === sectionType;
 
+        // Use appropriate shapes based on section type
+        const sectionShapes = shapes[sectionType] || shapes.header;
 
+        // Helper function to get shape color based on section type with better color gradients
+        const getShapeColor = (type: string, opacity = 0.8) => {
+            switch (type) {
+                case 'daily': return `rgba(234, 179, 8, ${opacity})`; // Yellow
+                case 'weekly': return `rgba(147, 51, 234, ${opacity})`; // Purple
+                case 'monthly': return `rgba(59, 130, 246, ${opacity})`; // Blue
+                default: return `rgba(234, 179, 8, ${opacity})`;
+            }
+        };
 
-    // Particle animation component
-    // Improved FloatingParticles component with better animation and positioning
-    const FloatingParticles = () => {
-        // Pre-generate random positions and sizes for consistent rendering
-        const particles = Array.from({ length: 15 }).map((_, i) => ({
-            id: i,
-            initialX: `${Math.random() * 100}%`,
-            initialY: `${Math.random() * 100}%`,
-            destinationX: `${Math.random() * 100}%`,
-            destinationY: `${Math.random() * 100}%`,
-            scale: Math.random() * 0.5 + 0.5,
-            duration: Math.random() * 20 + 10,
-            delay: Math.random() * 5,
-            size: Math.random() > 0.7 ? 2 : 1, // Varying particle sizes
-        }));
+        // Get secondary color for gradient effects
+        const getSecondaryColor = (type: string, opacity = 0.4) => {
+            switch (type) {
+                case 'daily': return `rgba(250, 204, 21, ${opacity})`; // Lighter yellow
+                case 'weekly': return `rgba(168, 85, 247, ${opacity})`; // Lighter purple
+                case 'monthly': return `rgba(96, 165, 250, ${opacity})`; // Lighter blue
+                default: return `rgba(250, 204, 21, ${opacity})`;
+            }
+        };
+
+        // Random floating animation durations for more organic movement
+        const getRandomDuration = () => {
+            return 20 + Math.random() * 20; // Between 20-40 seconds
+        };
 
         return (
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {particles.map((particle) => (
+                {sectionShapes.map((shape, index) => {
+                    // Base style with better positioning
+                    const baseStyle = {
+                        width: `${shape.size}px`,
+                        height: shape.type === 'hexagon' ? `${shape.size * 0.866}px` : `${shape.size}px`,
+                        left: `${shape.baseX}%`,
+                        top: `${shape.baseY}%`,
+                        opacity: isActive ? shape.opacity * 1.5 : shape.opacity, // Brighten when active
+                        transform: `rotate(${shape.rotation}deg)`,
+                        transition: 'opacity 0.8s ease-in-out',
+                    };
+
+                    // Create animation variants based on shape type
+                    // Fix for the DynamicShapes component variants
+                    const variants = {
+                        float: {
+                            x: [20, -20, 20],
+                            y: [10, -10, 10],
+                            rotate: [shape.rotation, shape.rotation + 15, shape.rotation],
+                            transition: {
+                                duration: getRandomDuration(),
+                                repeat: Infinity,
+                                repeatType: "reverse" as const,  // Type assertion needed
+                                ease: "easeInOut"
+                            }
+                        }
+                    };
+
+                    // Enhanced gradient effects with dual colors for each shape
+                    const gradientStyle = {
+                        background: `radial-gradient(circle, ${getSecondaryColor(sectionType)} 0%, ${getShapeColor(sectionType, 0.1)} 70%, transparent 100%)`,
+                        boxShadow: isActive ? `0 0 40px 5px ${getShapeColor(sectionType, 0.1)}` : 'none'
+                    };
+
+                    // Render different shape types with animations and effects
+                    switch (shape.type) {
+                        case 'circle':
+                            return (
+                                <motion.div
+                                    key={index}
+                                    className="absolute border-2 backdrop-blur-sm"
+                                    style={{
+                                        ...baseStyle,
+                                        borderRadius: '50%',
+                                        borderColor: getShapeColor(sectionType, 0.4),
+                                        ...gradientStyle
+                                    }}
+                                    variants={variants}
+                                    animate="float"
+                                />
+                            );
+                        case 'square':
+                            return (
+                                <motion.div
+                                    key={index}
+                                    className="absolute border-2 backdrop-blur-sm"
+                                    style={{
+                                        ...baseStyle,
+                                        borderColor: getShapeColor(sectionType, 0.4),
+                                        ...gradientStyle
+                                    }}
+                                    variants={variants}
+                                    animate="float"
+                                />
+                            );
+                        case 'triangle':
+                            return (
+                                <motion.div
+                                    key={index}
+                                    className="absolute backdrop-blur-sm"
+                                    style={{
+                                        ...baseStyle,
+                                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                                        border: `2px solid ${getShapeColor(sectionType, 0.4)}`,
+                                        ...gradientStyle
+                                    }}
+                                    variants={variants}
+                                    animate="float"
+                                />
+                            );
+                        case 'hexagon':
+                            return (
+                                <motion.div
+                                    key={index}
+                                    className="absolute border-2 backdrop-blur-sm"
+                                    style={{
+                                        ...baseStyle,
+                                        clipPath: 'polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)',
+                                        borderColor: getShapeColor(sectionType, 0.4),
+                                        ...gradientStyle
+                                    }}
+                                    variants={variants}
+                                    animate="float"
+                                />
+                            );
+                        default:
+                            return null;
+                    }
+                })}
+
+                {/* Add subtle particles for additional depth */}
+                {isActive && Array.from({ length: 10 }).map((_, i) => {
+                    const size = 2 + Math.random() * 4;
+                    return (
+                        <motion.div
+                            key={`particle-${i}`}
+                            className="absolute rounded-full"
+                            style={{
+                                width: `${size}px`,
+                                height: `${size}px`,
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                background: getShapeColor(sectionType, 0.7),
+                                opacity: 0.4,
+                            }}
+                            animate={{
+                                y: [0, -100],
+                                x: [0, Math.random() * 40 - 20],
+                                opacity: [0.4, 0],
+                            }}
+                            transition={{
+                                duration: 5 + Math.random() * 5,
+                                repeat: Infinity,
+                                delay: Math.random() * 5,
+                            }}
+                        />
+                    );
+                })}
+
+                {/* Optional light beam effect for active sections */}
+                {isActive && (
                     <motion.div
-                        key={particle.id}
-                        className={`absolute w-${particle.size} h-${particle.size} bg-white rounded-full opacity-30`}
-                        initial={{
-                            x: particle.initialX,
-                            y: particle.initialY,
-                            scale: particle.scale,
-                            opacity: 0,
+                        className="absolute"
+                        style={{
+                            width: '120%',
+                            height: '10px',
+                            left: '-10%',
+                            top: '50%',
+                            background: `linear-gradient(90deg, transparent 0%, ${getShapeColor(sectionType, 0.1)} 50%, transparent 100%)`,
+                            transform: 'rotate(-30deg)',
+                            filter: 'blur(8px)'
                         }}
                         animate={{
-                            x: [particle.initialX, particle.destinationX, particle.initialX],
-                            y: [particle.initialY, particle.destinationY, particle.initialY],
-                            opacity: [0.1, 0.4, 0.1],
+                            opacity: [0, 0.5, 0],
+                            scale: [0.8, 1, 0.8],
                         }}
                         transition={{
-                            duration: particle.duration,
-                            delay: particle.delay,
+                            duration: 8,
                             repeat: Infinity,
-                            repeatType: "reverse",
-                            ease: "easeInOut",
-                        }}
-                        style={{
-                            // Use inline styles for more predictable width/height values
-                            width: `${particle.size * 4}px`,
-                            height: `${particle.size * 4}px`,
-                            left: particle.initialX,
-                            top: particle.initialY,
                         }}
                     />
-                ))}
+                )}
             </div>
         );
     };
+    // Enhanced Parallax Quote Section with 3D transformations and interactions
+    // Enhanced Parallax Quote Section with 3D transformations and interactions
 
-    // Updated to correctly type MotionValue<number>
-    // Enhanced Parallax Quote Section with darker design
+    // Enhanced Parallax Quote Section using shadcn/ui
     const ParallaxQuoteSection = ({
         quote,
         title,
         motionStyle,
         opacityStyle,
+        rotateX,
+        scaleStyle,
         index,
-        type
-    }: {
-        quote: Quote | null;
-        title: string;
-        motionStyle: MotionValue<number>;
-        opacityStyle: MotionValue<number>;
-        index: number;
-        type: 'daily' | 'weekly' | 'monthly';
-    }) => {
-        // Individual section scroll for enhanced parallax effect
-        const sectionRef = useRef<HTMLDivElement>(null);
+        type,
+        color,
+        sectionRef
+    }: ParallaxQuoteSectionProps) => {
+        // Individual section scroll tracking
         const { scrollYProgress: sectionScroll } = useScroll({
             target: sectionRef,
             offset: ["start end", "end start"]
         });
 
-        // Define all hooks at the top level
-        const contentY = useTransform(sectionScroll, [0, 1], [100, -100]);
-        const patternParallax = useTransform(sectionScroll, [0, 1], [0, -50]);
-        const quoteMarkTopParallax = useTransform(sectionScroll, [0, 1], [-10, 10]);
-        const quoteMarkBottomParallax = useTransform(sectionScroll, [0, 1], [10, -10]);
+        // Spring-based smoother section scroll for better feel
+        const smoothSectionScroll = useSpring(sectionScroll, {
+            stiffness: 80,
+            damping: 20,
+            restDelta: 0.001
+        });
 
-        const [isHovered, setIsHovered] = useState(false);
+        // Additional parallax effects specific to each section
+        const contentY = useTransform(smoothSectionScroll, [0, 1], [100, -100], { ease: customEase });
+        const quoteMarkTopParallax = useTransform(smoothSectionScroll, [0, 1], [-20, 20]);
+        const quoteMarkBottomParallax = useTransform(smoothSectionScroll, [0, 1], [20, -20]);
 
+        // Is this section currently active
+        const isActive = activeSection === type;
+
+        // Get color variables based on quote type
+        const getColorClasses = () => {
+            switch (type) {
+                case 'daily':
+                    return {
+                        accent: 'bg-yellow-500',
+                        text: 'text-yellow-500',
+                        border: 'border-yellow-500/20',
+                        glow: 'bg-yellow-500/5',
+                        icon: 'text-yellow-500'
+                    };
+                case 'weekly':
+                    return {
+                        accent: 'bg-purple-500',
+                        text: 'text-purple-500',
+                        border: 'border-purple-500/20',
+                        glow: 'bg-purple-500/5',
+                        icon: 'text-purple-500'
+                    };
+                case 'monthly':
+                    return {
+                        accent: 'bg-blue-500',
+                        text: 'text-blue-500',
+                        border: 'border-blue-500/20',
+                        glow: 'bg-blue-500/5',
+                        icon: 'text-blue-500'
+                    };
+                default:
+                    return {
+                        accent: 'bg-yellow-500',
+                        text: 'text-yellow-500',
+                        border: 'border-yellow-500/20',
+                        glow: 'bg-yellow-500/5',
+                        icon: 'text-yellow-500'
+                    };
+            }
+        };
+
+        const colors = getColorClasses();
+
+        // Loading state with themed colors
         if (!quote) return (
             <motion.div
+                ref={sectionRef}
                 className="h-screen flex items-center justify-center"
                 style={{ y: motionStyle }}
             >
                 <div className="text-center text-white">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 mx-auto mb-4"></div>
+                    <div className={`animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 ${colors.border.replace('/20', '')} mx-auto mb-4`}></div>
                     <p className="text-xl">Yükleniyor...</p>
                 </div>
             </motion.div>
         );
 
-        // Calculate darker colors
-        const bgGradient = getDarkBackgroundGradient(index);
-        const accentColor = getDarkAccentColor(index);
+        // Calculate dynamic background gradient
+        const getBgGradient = () => {
+            switch (type) {
+                case 'daily':
+                    return 'from-gray-950 via-gray-900 to-black';
+                case 'weekly':
+                    return 'from-gray-950 via-gray-900 to-black';
+                case 'monthly':
+                    return 'from-gray-950 via-gray-900 to-black';
+                default:
+                    return 'from-gray-950 via-gray-900 to-black';
+            }
+        };
 
         return (
             <motion.div
                 ref={sectionRef}
-                id={`${type}-section`} // Move the id here to ensure it's on the outer container
+                id={`${type}-section`}
                 className="h-screen flex items-center justify-center relative overflow-hidden"
                 style={{ y: motionStyle }}
             >
-                {/* Darker background with subtle patterns */}
+                {/* Dynamic background without particles */}
                 <motion.div
-                    className={`absolute inset-0 w-full h-full bg-gradient-to-br ${bgGradient}`}
-                    style={{
-                        opacity: opacityStyle,
-                    }}
+                    className={`absolute inset-0 w-full h-full bg-gradient-to-br ${getBgGradient()}`}
+                    style={{ opacity: opacityStyle }}
                 >
-                    {/* Animated particles */}
-                    <FloatingParticles />
+                    {/* Dynamic shapes with mouse interaction */}
+                    <DynamicShapes sectionType={type} />
 
-                    {/* Subtle decorative patterns */}
+                    {/* Subtle decorative patterns with parallax */}
                     <motion.div
-                        className="absolute inset-0 opacity-10"
-                        style={{ y: patternParallax }}
+                        className="absolute inset-0 opacity-5"
+                        style={{
+                            y: useTransform(smoothSectionScroll, [0, 1], [0, -50]),
+                        }}
                     >
-                        {/* Grid pattern */}
-                        <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-20"></div>
-
-                        {/* Minimal floating shapes */}
-                        <div className="absolute top-20 left-20 w-40 h-40 rounded-full border border-white/5"></div>
-                        <div className="absolute bottom-40 right-20 w-64 h-64 rounded-full border border-white/5"></div>
-                        <div className="absolute top-1/4 right-1/4 w-20 h-20 rotate-45 border border-white/5"></div>
-                        <div className="absolute bottom-1/3 left-1/3 w-32 h-32 rounded-full border border-white/5"></div>
+                        <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-10"></div>
                     </motion.div>
 
-                    {/* Glow effects - Fixed classes to avoid hydration issues */}
-                    <div className={`absolute top-1/4 left-1/3 w-32 h-32 rounded-full bg-${accentColor}/5 filter blur-3xl`}></div>
-                    <div className={`absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full bg-${accentColor}/5 filter blur-3xl`}></div>
+                    {/* Custom glow effects */}
+                    <div className={`absolute top-1/4 left-1/3 w-64 h-64 rounded-full ${colors.glow} filter blur-3xl`}></div>
+                    <div className={`absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full ${colors.glow} filter blur-3xl`}></div>
 
-                    {/* Darker gradient overlay */}
+                    {/* Gradient overlay for better contrast */}
                     <div className="absolute inset-0 bg-gradient-radial from-transparent to-black/90"></div>
                 </motion.div>
 
-                {/* Content with enhanced parallax effect */}
+                {/* Use shadcn/ui Card component */}
                 <motion.div
-                    className="relative z-10 max-w-4xl mx-auto px-8 py-16 backdrop-blur-sm rounded-xl border border-white/5"
-                    style={{ y: contentY, scale: quoteScale }}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    whileHover={{
-                        boxShadow: `0 0 30px 0 rgba(${index === 0 ? '79, 70, 229' : index === 1 ? '124, 58, 237' : '37, 99, 235'}, 0.2)`,
-                        transition: { duration: 0.3 }
+                    className="relative z-10 w-full max-w-4xl mx-8"
+                    style={{
+                        y: contentY,
+                        scale: scaleStyle,
+                        rotateX: rotateX,
+                        transformPerspective: 1000,
                     }}
                 >
-                    <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        viewport={{ once: true }}
-                        className="flex flex-col items-center"
-                    >
-                        {/* Animated decorative elements - Fixed to use specific classes instead of dynamic ones */}
-                        <motion.div
-                            className={index === 0 ? "w-16 h-1 bg-indigo-600 mb-8" :
-                                index === 1 ? "w-16 h-1 bg-violet-600 mb-8" :
-                                    "w-16 h-1 bg-blue-600 mb-8"}
-                            whileInView={{ width: "4rem" }}
-                            initial={{ width: "0rem" }}
-                            transition={{ duration: 1 }}
-                        ></motion.div>
-
-                        <div className="flex items-center mb-10">
-                            {/* Icon based on quote type - Fixed to use specific classes instead of dynamic ones */}
+                    <Card className={`backdrop-blur-sm bg-black/40 border ${colors.border}`}>
+                        <CardHeader className="text-center">
                             <motion.div
-                                className={index === 0 ? "mr-3 text-indigo-600" :
-                                    index === 1 ? "mr-3 text-violet-600" :
-                                        "mr-3 text-blue-600"}
-                                initial={{ rotate: 0 }}
-                                animate={{ rotate: isHovered ? 360 : 0 }}
-                                transition={{ duration: 1, ease: "easeInOut" }}
-                            >
-                                {type === 'daily' && (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                                    </svg>
-                                )}
-                                {type === 'weekly' && (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                                    </svg>
-                                )}
-                                {type === 'monthly' && (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                                    </svg>
-                                )}
-                            </motion.div>
-                            <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-wide">{title}</h3>
-                        </div>
+                                className={`w-16 h-1 ${colors.accent} mb-4 mx-auto`}
+                                whileInView={{ width: isActive ? "6rem" : "4rem" }}
+                                initial={{ width: "0rem" }}
+                                animate={{ width: isActive ? "6rem" : "4rem" }}
+                                transition={{ duration: 1 }}
+                            ></motion.div>
 
-                        {/* Subtle quote marks with parallax effect - Fixed classes */}
-                        <div className="relative w-full">
-                            <motion.div
-                                className={index === 0 ? "absolute -top-16 -left-8 text-8xl text-indigo-600/20 font-serif" :
-                                    index === 1 ? "absolute -top-16 -left-8 text-8xl text-violet-600/20 font-serif" :
-                                        "absolute -top-16 -left-8 text-8xl text-blue-600/20 font-serif"}
-                                style={{ y: quoteMarkTopParallax }}
-                            >
+                            <div className="flex items-center justify-center mb-4">
+                                <div className={`mr-3 ${colors.icon}`}>
+                                    {type === 'daily' && (
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                                        </svg>
+                                    )}
+                                    {type === 'weekly' && (
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                                        </svg>
+                                    )}
+                                    {type === 'monthly' && (
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                                        </svg>
+                                    )}
+                                </div>
+                                <h3 className={`text-3xl sm:text-4xl font-bold text-white tracking-wide`}>{title}</h3>
+                            </div>
+                        </CardHeader>
+
+                        <CardContent className="relative">
+                            {/* Quote marks with simplified parallax */}
+                            <div className={`absolute -top-12 -left-4 text-6xl ${colors.text.replace('text-', 'text-')}/20 font-serif`}>
                                 "
-                            </motion.div>
-                            <motion.div
-                                className={index === 0 ? "absolute -bottom-24 -right-8 text-8xl text-indigo-600/20 font-serif" :
-                                    index === 1 ? "absolute -bottom-24 -right-8 text-8xl text-violet-600/20 font-serif" :
-                                        "absolute -bottom-24 -right-8 text-8xl text-blue-600/20 font-serif"}
-                                style={{ y: quoteMarkBottomParallax }}
-                            >
+                            </div>
+                            <div className={`absolute -bottom-20 -right-4 text-6xl ${colors.text.replace('text-', 'text-')}/20 font-serif`}>
                                 "
-                            </motion.div>
+                            </div>
 
-                            <p className="text-2xl sm:text-3xl text-white font-medium italic leading-relaxed mb-10 text-center">
+                            {/* Quote text */}
+                            <motion.p
+                                className="text-2xl sm:text-3xl text-white font-medium italic leading-relaxed mb-10 text-center py-6"
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                transition={{ duration: 1 }}
+                            >
                                 {quote.content}
-                            </p>
-                        </div>
+                            </motion.p>
+                        </CardContent>
 
-                        <div className="mt-auto text-center">
-                            <p className="text-xl text-white font-semibold">— {quote.author}</p>
+                        <CardFooter className="flex justify-center flex-col text-center">
+                            <p className={`text-xl font-semibold ${colors.text}`}>
+                                — {quote.author}
+                            </p>
                             <p className="text-gray-400 text-sm mt-2">
                                 {new Date(quote.publishedAt).toLocaleDateString('tr-TR', {
                                     year: 'numeric',
@@ -360,154 +707,106 @@ export default function QuotePage() {
                                     day: 'numeric'
                                 })}
                             </p>
-                        </div>
-
-                        {/* Enhanced sharing buttons with hover effects and tooltips */}
-
-
-                    </motion.div>
+                        </CardFooter>
+                    </Card>
                 </motion.div>
             </motion.div>
         );
     };
 
-    // Enhanced navigation menu with fixed smooth scrolling
-    const NavigationMenu = () => {
-        return (
-            <motion.div
-                className="fixed left-1/2 transform -translate-x-1/2 bottom-8 z-30"
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-            >
-                <div className="bg-black/50 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-4 border border-white/10">
-                    <button
-                        onClick={() => scrollToSection('daily')}
-                        className="text-white/70 hover:text-white px-3 py-1 rounded-full hover:bg-indigo-900/30 transition-colors flex items-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                        </svg>
-                        <span className="hidden sm:inline text-sm">Günlük</span>
-                    </button>
-                    <button
-                        onClick={() => scrollToSection('weekly')}
-                        className="text-white/70 hover:text-white px-3 py-1 rounded-full hover:bg-indigo-900/30 transition-colors flex items-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                        </svg>
-                        <span className="hidden sm:inline text-sm">Haftalık</span>
-                    </button>
-                    <button
-                        onClick={() => scrollToSection('monthly')}
-                        className="text-white/70 hover:text-white px-3 py-1 rounded-full hover:bg-indigo-900/30 transition-colors flex items-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                        </svg>
-                        <span className="hidden sm:inline text-sm">Aylık</span>
-                    </button>
-                </div>
-            </motion.div>
-        );
-    };
-
-    // Hero header section with parallax effects
+    // Simplified HeroHeader without particle effects and reduced animations
     const HeroHeader = () => {
         return (
             <motion.div
                 ref={headerRef}
                 className="h-screen flex items-center justify-center relative overflow-hidden"
-                style={{ y: headerParallax }}
+                style={{
+                    y: headerParallax,
+                    scale: headerScale,
+                    rotateX: headerRotate,
+                }}
             >
                 <motion.div
-                    className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-800 to-black"
+                    className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-900 to-black"
                     style={{ opacity: headerOpacity }}
                 >
-                    {/* Animated background elements */}
-                    <FloatingParticles />
+                    {/* Dynamic shapes only - no particles */}
+                    <DynamicShapes sectionType="header" />
 
                     {/* Subtle grid pattern */}
-                    <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-10"></div>
-
-                    {/* Decorative elements */}
-                    <div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full bg-indigo-900/20 filter blur-3xl"></div>
-                    <div className="absolute bottom-1/4 right-1/3 w-96 h-96 rounded-full bg-blue-900/10 filter blur-3xl"></div>
-
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-radial from-transparent to-black/80"></div>
+                    <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5"></div>
                 </motion.div>
 
-                <div className="container mx-auto px-4 relative z-10">
-                    <motion.div
-                        className="text-center"
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
+                {/* Main hero content with animated entrance */}
+                <motion.div
+                    className="relative z-10 text-center px-6"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
+                >
+                    <motion.h1
+                        className="text-5xl md:text-7xl font-bold text-white mb-6"
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
                     >
-                        <motion.div
-                            className="w-20 h-1 bg-indigo-600 mx-auto mb-8"
-                            initial={{ width: 0 }}
-                            animate={{ width: "5rem" }}
-                            transition={{ duration: 1, delay: 0.3 }}
-                        ></motion.div>
-
-                        <motion.h1
-                            className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-6 tracking-tight"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
+                        <span className="text-yellow-500">Hergünebi'</span>şey
+                    </motion.h1>
+                    <motion.p
+                        className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10"
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.5, duration: 0.8 }}
+                    >
+                        Günlük ilham veren alıntılarla, düşüncelerinizi ve gününüzü aydınlatın.
+                    </motion.p>
+                    <motion.div
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.7, duration: 0.8 }}
+                    >
+                        <motion.button
+                            className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-8 rounded-md transition-all"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => document.getElementById('daily-section')?.scrollIntoView({ behavior: 'smooth' })}
                         >
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500">
-                                İlham Verici
-                            </span> Alıntılar
-                        </motion.h1>
-
-                        <motion.p
-                            className="text-xl text-gray-300 max-w-3xl mx-auto mb-12"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
-                        >
-                            Günlük, haftalık ve aylık alıntılarla düşüncelerinizi zenginleştirin ve motivasyonunuzu yükseltin.
-                        </motion.p>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
-                        >
-                            <button
-                                onClick={() => scrollToSection('daily')}
-                                className="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-full inline-flex items-center gap-2 transition-colors"
-                            >
-                                Keşfet
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-                                </svg>
-                            </button>
-                        </motion.div>
+                            Günün Alıntısı
+                        </motion.button>
                     </motion.div>
-                </div>
+
+                    {/* Animated scroll indicator */}
+                    <motion.div
+                        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+                        animate={{
+                            y: [0, 10, 0],
+                            opacity: [0.5, 0.8, 0.5]
+                        }}
+                        transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: "reverse"
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </motion.div>
+                </motion.div>
             </motion.div>
         );
     };
 
-    // Client-side only rendering guard - helps with hydration issues
-    const [isClient, setIsClient] = useState(false);
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
+    // Loading screen while client-side rendering
     if (!isClient) {
-        return <div className="h-screen flex items-center justify-center bg-black">
-            <div className="text-center text-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 mx-auto mb-4"></div>
-                <p className="text-xl">Sayfa yükleniyor...</p>
+        return (
+            <div className="h-screen flex items-center justify-center bg-black">
+                <div className="text-center text-white">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+                    <p className="text-xl">Sayfa yükleniyor...</p>
+                </div>
             </div>
-        </div>;
+        );
     }
 
     return (
@@ -515,38 +814,54 @@ export default function QuotePage() {
             {/* Hero Header */}
             <HeroHeader />
 
-            {/* Daily Quote Section */}
+            {/* Daily Quote Section with yellow theme */}
             <ParallaxQuoteSection
                 quote={quotes.daily}
                 title="Günün Alıntısı"
                 motionStyle={dailyParallax}
                 opacityStyle={dailyOpacity}
+                rotateX={dailyRotateX}
+                scaleStyle={dailyScale}
                 index={0}
                 type="daily"
+                color="yellow"
+                sectionRef={dailyRef}
             />
 
-            {/* Weekly Quote Section */}
+            {/* Weekly Quote Section with purple theme */}
             <ParallaxQuoteSection
                 quote={quotes.weekly}
                 title="Haftanın Alıntısı"
                 motionStyle={weeklyParallax}
                 opacityStyle={weeklyOpacity}
+                rotateX={weeklyRotateX}
+                scaleStyle={weeklyScale}
                 index={1}
                 type="weekly"
+                color="purple"
+                sectionRef={weeklyRef}
             />
 
-            {/* Monthly Quote Section */}
+            {/* Monthly Quote Section with blue theme */}
             <ParallaxQuoteSection
                 quote={quotes.monthly}
                 title="Ayın Alıntısı"
                 motionStyle={monthlyParallax}
                 opacityStyle={monthlyOpacity}
+                rotateX={monthlyRotateX}
+                scaleStyle={monthlyScale}
                 index={2}
                 type="monthly"
+                color="blue"
+                sectionRef={monthlyRef}
             />
 
-            {/* Navigation Menu */}
-            <NavigationMenu />
+
+
+            {/* Minimal copyright text */}
+            <div className="h-16 bg-black flex items-center justify-center">
+                <p className="text-gray-500 text-sm">© 2025 Hergünebi'şey. Tüm Hakları Saklıdır.</p>
+            </div>
         </div>
     );
 }
