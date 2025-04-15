@@ -8,9 +8,7 @@ import {
     useTransform,
     MotionValue,
     useSpring,
-    AnimatePresence,
     cubicBezier,
-    useMotionValue
 } from 'framer-motion';
 
 // Quote definition
@@ -512,7 +510,6 @@ export default function QuotePage() {
         scaleStyle,
         index,
         type,
-        color,
         sectionRef
     }: ParallaxQuoteSectionProps) => {
         // Individual section scroll tracking
