@@ -52,6 +52,7 @@ interface DynamicShapesProps {
 
 
 export default function QuotePage() {
+
     const [quotes, setQuotes] = useState<{
         daily: Quote | null;
         weekly: Quote | null;
@@ -547,6 +548,7 @@ export default function QuotePage() {
             damping: 20,
             restDelta: 0.001
         });
+        const patternYTransform = useTransform(smoothSectionScroll, [0, 1], [0, -80]);
 
         // Additional parallax effects specific to each section
         const contentY = useTransform(smoothSectionScroll, [0, 1], [150, -150], { ease: customEase }); // Increased from [100, -100]
@@ -629,7 +631,6 @@ export default function QuotePage() {
                     return 'from-gray-950 via-gray-900 to-black';
             }
         };
-        const patternYTransform = useTransform(smoothSectionScroll, [0, 1], [0, -80]);
         return (
             <motion.div
                 ref={sectionRef}
@@ -637,12 +638,10 @@ export default function QuotePage() {
                 className="min-h-screen flex items-center justify-center relative overflow-hidden py-20" // Added py-20 padding
                 style={{ y: motionStyle }}
             >
-                {/* Dynamic background without particles */}
                 <motion.div
                     className={`absolute inset-0 w-full h-full bg-gradient-to-br ${getBgGradient()}`}
                     style={{ opacity: opacityStyle }}
                 >
-                    {/* Dynamic shapes with mouse interaction */}
                     <DynamicShapes sectionType={type} />
 
                     {/* Subtle decorative patterns with parallax */}
