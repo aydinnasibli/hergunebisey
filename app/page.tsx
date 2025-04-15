@@ -192,30 +192,30 @@ const Home = () => {
         {/* Content */}
         <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wide">
+            <div className="w-16 h-1 bg-yellow-500 mx-auto mb-4 sm:mb-8"></div>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-2 sm:mb-4 tracking-wide">
               HERGÜNEBİ'ŞEY
             </h1>
-            <h2 className="text-2xl md:text-3xl mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl mb-4 sm:mb-8">
               Her gün yeni bir keşif, ilham ve bilgi
             </h2>
-            <p className="text-lg max-w-2xl mx-auto mb-12 text-white/90">
+            <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
               Blog yazılarından podcastlere, düşündürücü alıntılardan ilham veren hikayelere -
               hayatınıza her gün yeni bir şey katma fırsatı sunuyoruz. Türkiye'nin en seçkin
               içerik platformuna hoş geldiniz.
             </p>
             <button
               onClick={scrollToCarousel}
-              className="px-8 py-4 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
+              className="px-6 py-3 sm:px-8 sm:py-4 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-xs sm:text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
             >
               İçerikleri Keşfet
             </button>
           </div>
 
           {/* Scroll indicator */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-            <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+          <div className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+            <p className="text-xs sm:text-sm uppercase tracking-widest mb-1 sm:mb-2">Aşağı Kaydır</p>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-6 sm:h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
             </svg>
           </div>
@@ -234,49 +234,49 @@ const Home = () => {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+          <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12">
             <div className="w-full lg:w-1/2">
-              <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">NELER YAPIYORUZ?</h2>
-              <p className="text-lg text-white/80 mb-6">
+              <div className="w-10 h-1 bg-yellow-500 mb-4 sm:mb-6"></div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">NELER YAPIYORUZ?</h2>
+              <p className="text-base sm:text-lg text-white/80 mb-4 sm:mb-6">
                 Hergünebi'şey, günlük hayatınıza ilham, bilgi ve değer katmak için
                 oluşturulmuş bir içerik platformudur. Deneyimli yazarlarımız ve
                 uzmanlarımızın kaleminden çıkan blog yazıları, derinlemesine konuları
                 ele aldığımız podcast'ler ve düşündürücü alıntılarla her gün yeni bir şey
                 öğrenmenizi sağlıyoruz.
               </p>
-              <p className="text-lg text-white/80 mb-8">
+              <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
                 İçeriklerimiz, kişisel gelişimden teknolojiye, kültür ve sanattan günlük yaşama
                 kadar geniş bir yelpazede sizlere ulaşıyor. Amacımız, okuyucularımıza her gün
                 yeni bir bakış açısı kazandırmak ve hayatlarına dokunmaktır.
               </p>
-              <button className="px-8 py-3 border border-white rounded-full uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors duration-300">
+              <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
                 Hikayemiz
               </button>
             </div>
-            <div className="w-full lg:w-1/2 grid grid-cols-2 gap-4">
-              <div className="h-64 rounded-lg overflow-hidden">
+            <div className="w-full lg:w-1/2 grid grid-cols-2 gap-2 sm:gap-4 mt-8 lg:mt-0">
+              <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=2069"
                   alt="Blog yazıları"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="h-64 rounded-lg overflow-hidden mt-12">
+              <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
                 <img
                   src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=2076"
                   alt="Podcast kayıtları"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="h-64 rounded-lg overflow-hidden">
+              <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035"
                   alt="İlham verici alıntılar"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="h-64 rounded-lg overflow-hidden mt-12">
+              <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
                 <img
                   src="https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=2070"
                   alt="Kültürel içerikler"
@@ -298,27 +298,26 @@ const Home = () => {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl mx-auto">
-            <div className="w-10 h-1 bg-yellow-500 mx-auto mb-16"></div>
+            <div className="w-8 sm:w-10 h-1 bg-yellow-500 mx-auto mb-8 sm:mb-16"></div>
 
             <div className="relative">
               {/* Large quote marks */}
-              <div className="absolute -top-16 -left-8 text-9xl text-yellow-500/20 font-serif">"</div>
-              <div className="absolute -bottom-32 -right-8 text-9xl text-yellow-500/20 font-serif">"</div>
+              <div className="absolute -top-8 sm:-top-16 -left-4 sm:-left-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
+              <div className="absolute -bottom-16 sm:-bottom-32 -right-4 sm:-right-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
 
-              <h2 className="text-3xl md:text-5xl font-bold mb-10 text-center leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10 text-center leading-tight">
                 Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
               </h2>
 
-              <div className="flex items-center justify-center mb-10">
-
+              <div className="flex items-center justify-center mb-6 sm:mb-10">
                 <div>
-                  <h3 className="text-xl italic font-normal">Aristo</h3>
+                  <h3 className="text-lg sm:text-xl italic font-normal">Aristo</h3>
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-center mt-10">
-              <button className="px-8 py-3 border border-white rounded-full uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors duration-300">
+            <div className="flex justify-center mt-6 sm:mt-10">
+              <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
                 Tüm Alıntılar
               </button>
             </div>
