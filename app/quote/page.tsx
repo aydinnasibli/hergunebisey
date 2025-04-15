@@ -361,7 +361,7 @@ export default function QuotePage() {
         };
 
         // Define variants outside of rendering loop
-        const getVariants = (rotation) => ({
+        const getVariants = (rotation: number) => ({
             float: {
                 x: [20, -20, 20],
                 y: [10, -10, 10],
