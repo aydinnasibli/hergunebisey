@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
 import { client } from '@/lib/sanity';
+import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import {
     motion,
@@ -20,15 +21,7 @@ interface Quote {
     publishedAt: string;
 }
 
-// Add proper type definitions for DynamicShapes
-interface ShapeConfig {
-    type: 'circle' | 'square' | 'triangle' | 'hexagon';
-    baseX: number;
-    baseY: number;
-    size: number;
-    rotation: number;
-    opacity: number;
-}
+
 
 interface ParallaxQuoteSectionProps {
     quote: Quote | null;
@@ -45,9 +38,6 @@ interface ParallaxQuoteSectionProps {
 
 
 
-interface DynamicShapesProps {
-    sectionType: string;
-}
 
 
 
@@ -107,11 +97,10 @@ export default function QuotePage() {
     });
     // Smoothed scroll progress for more fluid animations
     const smoothScrollProgress = useSpring(scrollYProgress, {
-        stiffness: 50,       // Reduced from 100
-        damping: 20,         // Reduced from 30
-        restDelta: 0.01      // Less precision for better performance
+        stiffness: 40,
+        damping: 25,
+        restDelta: 0.01
     });
-
     // Advanced parallax effects with custom easing
     const customEase = cubicBezier(0.16, 1, 0.3, 1);
 
@@ -123,9 +112,10 @@ export default function QuotePage() {
     const headerOpacity = useTransform(smoothScrollProgress, [0, 0.22], [1, 0]);
 
     // Update these values for smoother transitions
-    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.4], [100, -50], { clamp: false });
-    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.6], [100, -50], { clamp: false });
-    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.8], [100, -50], { clamp: false });
+    // Reduce the parallax motion values to create less space
+    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.4], [50, -25], { clamp: false });
+    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.6], [50, -25], { clamp: false });
+    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.8], [50, -25], { clamp: false });
     // Progressive reveal and fade effects
     // Progressive reveal and fade effects - FIXED
     const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.35, 0.45], [0, 1, 1, 0.8]);
@@ -137,10 +127,9 @@ export default function QuotePage() {
     const monthlyRotateX = useTransform(smoothScrollProgress, [0.55, 0.8], [15, 0]);
 
     // Scale effects for emphasizing active sections
-    const dailyScale = useTransform(smoothScrollProgress, [0.2, 0.3, 0.4], [0.9, 1.05, 0.95]);
-    const weeklyScale = useTransform(smoothScrollProgress, [0.4, 0.5, 0.6], [0.9, 1.05, 0.95]);
-    const monthlyScale = useTransform(smoothScrollProgress, [0.6, 0.7, 0.8], [0.9, 1.05, 0.95]);
-
+    const dailyScale = useTransform(smoothScrollProgress, [0.2, 0.3, 0.4], [0.98, 1.0, 0.98]);
+    const weeklyScale = useTransform(smoothScrollProgress, [0.4, 0.5, 0.6], [0.98, 1.0, 0.98]);
+    const monthlyScale = useTransform(smoothScrollProgress, [0.6, 0.7, 0.8], [0.98, 1.0, 0.98]);
 
     useEffect(() => {
         setIsClient(true);
@@ -297,232 +286,21 @@ export default function QuotePage() {
     }, []);
 
 
-
-    // Optimized DynamicShapes component with reduced complexity
-    // Enhanced DynamicShapes component with more interesting visuals and animations
-    const DynamicShapes = ({ sectionType }: DynamicShapesProps) => {
-        // Check if this section is currently active
-        const isActive = activeSection === sectionType;
-
-        // More varied and visually interesting shapes for each section
-        const shapes: Record<string, ShapeConfig[]> = {
-            header: [
-                { type: 'circle', baseX: 10, baseY: 20, size: 240, rotation: 0, opacity: 0.15 },
-                { type: 'circle', baseX: 80, baseY: 70, size: 180, rotation: 0, opacity: 0.12 },
-                { type: 'hexagon', baseX: 75, baseY: 15, size: 160, rotation: 25, opacity: 0.08 },
-                { type: 'triangle', baseX: 20, baseY: 80, size: 120, rotation: 45, opacity: 0.1 }
-            ],
-            daily: [
-                { type: 'circle', baseX: 15, baseY: 25, size: 200, rotation: 0, opacity: 0.15 },
-                { type: 'square', baseX: 70, baseY: 60, size: 140, rotation: 45, opacity: 0.10 },
-                { type: 'triangle', baseX: 85, baseY: 30, size: 160, rotation: 180, opacity: 0.12 },
-                { type: 'circle', baseX: 30, baseY: 75, size: 100, rotation: 0, opacity: 0.08 }
-            ],
-            weekly: [
-                { type: 'hexagon', baseX: 75, baseY: 25, size: 180, rotation: 10, opacity: 0.15 },
-                { type: 'circle', baseX: 20, baseY: 65, size: 160, rotation: 0, opacity: 0.10 },
-                { type: 'triangle', baseX: 12, baseY: 20, size: 140, rotation: 0, opacity: 0.12 },
-                { type: 'square', baseX: 82, baseY: 80, size: 120, rotation: 30, opacity: 0.08 }
-            ],
-            monthly: [
-                { type: 'circle', baseX: 80, baseY: 20, size: 220, rotation: 0, opacity: 0.15 },
-                { type: 'square', baseX: 25, baseY: 70, size: 160, rotation: 15, opacity: 0.10 },
-                { type: 'hexagon', baseX: 15, baseY: 25, size: 180, rotation: 30, opacity: 0.12 },
-                { type: 'triangle', baseX: 65, baseY: 78, size: 120, rotation: 60, opacity: 0.08 }
-            ]
-        };
-
-        // Use appropriate shapes based on section type
-        const sectionShapes = shapes[sectionType] || shapes.header;
-
-        // Helper function to get shape color based on section type with better color gradients
-        const getShapeColor = (type: string, opacity = 0.8) => {
-            switch (type) {
-                case 'daily': return `rgba(234, 179, 8, ${opacity})`;
-                case 'weekly': return `rgba(147, 51, 234, ${opacity})`;
-                case 'monthly': return `rgba(59, 130, 246, ${opacity})`;
-                default: return `rgba(234, 179, 8, ${opacity})`;
-            }
-        };
-
-        // Get secondary color for gradient effects
-        const getSecondaryColor = (type: string, opacity = 0.4) => {
-            switch (type) {
-                case 'daily': return `rgba(250, 204, 21, ${opacity})`;
-                case 'weekly': return `rgba(168, 85, 247, ${opacity})`;
-                case 'monthly': return `rgba(96, 165, 250, ${opacity})`;
-                default: return `rgba(250, 204, 21, ${opacity})`;
-            }
-        };
-
-        // Random floating animation durations for more organic movement
-        const getRandomDuration = () => {
-            return 25 + Math.random() * 20;
-        };
-
-        // Define variants outside of rendering loop
-        const getVariants = (rotation: number) => ({
-            float: {
-                x: [20, -20, 20],
-                y: [10, -10, 10],
-                rotate: [rotation, rotation + 15, rotation],
-                transition: {
-                    duration: getRandomDuration(),
-                    repeat: Infinity,
-                    repeatType: "reverse" as const,
-                    ease: "easeInOut"
-                }
-            }
-        });
-
+    const GlobalBackground = () => {
         return (
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {sectionShapes.map((shape, index) => {
-                    // Base style with better positioning
-                    const baseStyle = {
-                        width: `${shape.size}px`,
-                        height: shape.type === 'hexagon' ? `${shape.size * 0.866}px` : `${shape.size}px`,
-                        left: `${shape.baseX}%`,
-                        top: `${shape.baseY}%`,
-                        opacity: isActive ? shape.opacity * 1.5 : shape.opacity,
-                        transform: `rotate(${shape.rotation}deg)`,
-                        transition: 'opacity 0.8s ease-in-out',
-                    };
-
-                    // Get variants using the function
-                    const variants = getVariants(shape.rotation);
-
-                    // Enhanced gradient effects with dual colors for each shape
-                    const gradientStyle = {
-                        background: `radial-gradient(circle, ${getSecondaryColor(sectionType)} 0%, ${getShapeColor(sectionType, 0.1)} 70%, transparent 100%)`,
-                        boxShadow: isActive ? `0 0 40px 5px ${getShapeColor(sectionType, 0.1)}` : 'none'
-                    };
-
-                    // Render different shape types with animations and effects
-                    switch (shape.type) {
-                        case 'circle':
-                            return (
-                                <motion.div
-                                    key={index}
-                                    className="absolute border-2 backdrop-blur-sm"
-                                    style={{
-                                        ...baseStyle,
-                                        borderRadius: '50%',
-                                        borderColor: getShapeColor(sectionType, 0.4),
-                                        ...gradientStyle
-                                    }}
-                                    variants={variants}
-                                    animate="float"
-                                />
-                            );
-                        case 'square':
-                            return (
-                                <motion.div
-                                    key={index}
-                                    className="absolute border-2 backdrop-blur-sm"
-                                    style={{
-                                        ...baseStyle,
-                                        borderColor: getShapeColor(sectionType, 0.4),
-                                        ...gradientStyle
-                                    }}
-                                    variants={variants}
-                                    animate="float"
-                                />
-                            );
-                        case 'triangle':
-                            return (
-                                <motion.div
-                                    key={index}
-                                    className="absolute backdrop-blur-sm"
-                                    style={{
-                                        ...baseStyle,
-                                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-                                        border: `2px solid ${getShapeColor(sectionType, 0.4)}`,
-                                        ...gradientStyle
-                                    }}
-                                    variants={variants}
-                                    animate="float"
-                                />
-                            );
-                        case 'hexagon':
-                            return (
-                                <motion.div
-                                    key={index}
-                                    className="absolute border-2 backdrop-blur-sm"
-                                    style={{
-                                        ...baseStyle,
-                                        clipPath: 'polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%)',
-                                        borderColor: getShapeColor(sectionType, 0.4),
-                                        ...gradientStyle
-                                    }}
-                                    variants={variants}
-                                    animate="float"
-                                />
-                            );
-                        default:
-                            return null;
-                    }
-                })}
-
-                {/* Add subtle particles for additional depth - Only if active */}
-                {isActive && (
-                    <>
-                        {Array.from({ length: 10 }).map((_, i) => {
-                            const size = 2 + Math.random() * 4;
-                            return (
-                                <motion.div
-                                    key={`particle-${i}`}
-                                    className="absolute rounded-full"
-                                    style={{
-                                        width: `${size}px`,
-                                        height: `${size}px`,
-                                        left: `${Math.random() * 100}%`,
-                                        top: `${Math.random() * 100}%`,
-                                        background: getShapeColor(sectionType, 0.7),
-                                        opacity: 0.4,
-                                    }}
-                                    animate={{
-                                        y: [0, -100],
-                                        x: [0, Math.random() * 40 - 20],
-                                        opacity: [0.4, 0],
-                                    }}
-                                    transition={{
-                                        duration: 5 + Math.random() * 5,
-                                        repeat: Infinity,
-                                        delay: Math.random() * 5,
-                                    }}
-                                />
-                            );
-                        })}
-
-                        {/* Optional light beam effect for active sections */}
-                        <motion.div
-                            className="absolute"
-                            style={{
-                                width: '120%',
-                                height: '10px',
-                                left: '-10%',
-                                top: '50%',
-                                background: `linear-gradient(90deg, transparent 0%, ${getShapeColor(sectionType, 0.1)} 50%, transparent 100%)`,
-                                transform: 'rotate(-30deg)',
-                                filter: 'blur(8px)'
-                            }}
-                            animate={{
-                                opacity: [0, 0.5, 0],
-                                scale: [0.8, 1, 0.8],
-                            }}
-                            transition={{
-                                duration: 8,
-                                repeat: Infinity,
-                            }}
-                        />
-                    </>
-                )}
+            <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                <Image
+                    src="/wp.jpg"
+                    alt="Background"
+                    fill
+                    quality={75}
+                    priority
+                    className="object-cover opacity-90"
+                />
             </div>
         );
     };
-    // Enhanced Parallax Quote Section with 3D transformations and interactions
-    // Enhanced Parallax Quote Section with 3D transformations and interactions
+
 
     // Enhanced Parallax Quote Section using shadcn/ui
     const ParallaxQuoteSection = ({
@@ -551,10 +329,11 @@ export default function QuotePage() {
         const patternYTransform = useTransform(smoothSectionScroll, [0, 1], [0, -80]);
 
         // Additional parallax effects specific to each section
-        const contentY = useTransform(smoothSectionScroll, [0, 1], [150, -150], { ease: customEase }); // Increased from [100, -100]
-        const contentX = useTransform(smoothSectionScroll, [0, 1], [index % 2 === 0 ? -30 : 30, 0]); // Added subtle horizontal movement
-        const quoteMarkTopParallax = useTransform(smoothSectionScroll, [0, 1], [-30, 30]); // Increased from [-20, 20]
-        const quoteMarkBottomParallax = useTransform(smoothSectionScroll, [0, 1], [30, -30]); // Increased from [20, -20]
+        // Remove the parallax pop-up effect by setting static values (0)
+        const contentY = useTransform(smoothSectionScroll, [0, 1], [0, 0], { ease: customEase });
+        const contentX = useTransform(smoothSectionScroll, [0, 1], [0, 0]);
+        const quoteMarkTopParallax = useTransform(smoothSectionScroll, [0, 1], [-30, 30]);
+        const quoteMarkBottomParallax = useTransform(smoothSectionScroll, [0, 1], [30, -30]);
         const cardRotateZ = useTransform(smoothSectionScroll, [0, 1], [index % 2 === 0 ? -2 : 2, 0]);
 
         // Is this section currently active
@@ -567,28 +346,28 @@ export default function QuotePage() {
                     return {
                         accent: 'bg-yellow-500',
                         text: 'text-yellow-500',
-                        border: 'border-yellow-500/30', // Increased opacity from /20 to /30
-                        glow: 'bg-yellow-500/10', // Increased from /5 to /10
+                        border: 'border-yellow-500/30',
+                        glow: 'bg-yellow-500/10',
                         icon: 'text-yellow-500',
-                        gradient: 'from-yellow-500/20 to-transparent' // New gradient class
+                        gradient: 'from-yellow-500/20 to-transparent'
                     };
                 case 'weekly':
                     return {
                         accent: 'bg-purple-500',
                         text: 'text-purple-500',
-                        border: 'border-purple-500/30', // Increased opacity
-                        glow: 'bg-purple-500/10', // Increased glow
+                        border: 'border-purple-500/30',
+                        glow: 'bg-purple-500/10',
                         icon: 'text-purple-500',
-                        gradient: 'from-purple-500/20 to-transparent' // New gradient class
+                        gradient: 'from-purple-500/20 to-transparent'
                     };
                 case 'monthly':
                     return {
                         accent: 'bg-blue-500',
                         text: 'text-blue-500',
-                        border: 'border-blue-500/30', // Increased opacity
-                        glow: 'bg-blue-500/10', // Increased glow
+                        border: 'border-blue-500/30',
+                        glow: 'bg-blue-500/10',
                         icon: 'text-blue-500',
-                        gradient: 'from-blue-500/20 to-transparent' // New gradient class
+                        gradient: 'from-blue-500/20 to-transparent'
                     };
                 default:
                     return {
@@ -618,77 +397,49 @@ export default function QuotePage() {
             </motion.div>
         );
 
-        // Calculate dynamic background gradient
-        const getBgGradient = () => {
-            switch (type) {
-                case 'daily':
-                    return 'from-gray-950 via-gray-900 to-black';
-                case 'weekly':
-                    return 'from-gray-950 via-gray-900 to-black';
-                case 'monthly':
-                    return 'from-gray-950 via-gray-900 to-black';
-                default:
-                    return 'from-gray-950 via-gray-900 to-black';
-            }
-        };
         return (
             <motion.div
                 ref={sectionRef}
                 id={`${type}-section`}
-                className="min-h-screen flex items-center justify-center relative overflow-hidden py-20" // Added py-20 padding
+                className="min-h-screen flex items-center justify-center relative overflow-hidden py-8"
                 style={{ y: motionStyle }}
             >
-                <motion.div
-                    className={`absolute inset-0 w-full h-full bg-gradient-to-br ${getBgGradient()}`}
-                    style={{ opacity: opacityStyle }}
-                >
-                    <DynamicShapes sectionType={type} />
-
-                    {/* Subtle decorative patterns with parallax */}
-                    <motion.div
-                        className="absolute inset-0 opacity-5"
-                        style={{
-                            y: patternYTransform, // Use the pre-defined transform variable
-                        }}
-                    >
-                        <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-10"></div>
-                    </motion.div>
-
-                    <div className={`absolute top-1/4 left-1/3 w-96 h-96 rounded-full ${colors.glow} filter blur-3xl`}></div>
-                    <div className={`absolute bottom-1/3 right-1/4 w-128 h-128 rounded-full ${colors.glow} filter blur-3xl`}></div>
-
-                    {/* Gradient overlay for better contrast */}
-                    <div className="absolute inset-0 bg-gradient-radial from-transparent to-black/90"></div>
-                </motion.div>
+                {/* REMOVED: Background section and DynamicShapes */}
 
                 {/* Use shadcn/ui Card component */}
                 <motion.div
-                    className="relative z-10 w-full max-w-4xl mt-48 mx-8"
+                    className="relative z-10 w-full max-w-4xl mx-8"
                     style={{
                         y: contentY,
-                        x: contentX, // Added horizontal movement
+                        x: contentX,
                         scale: scaleStyle,
                         rotateX: rotateX,
-                        rotateZ: cardRotateZ, // Added Z-axis rotation
-                        transformPerspective: 1200, // Increased from 1000
+                        rotateZ: cardRotateZ,
+                        transformPerspective: 1200,
+                    }}
+                    whileHover={{
+                        scale: 1.02,
+                        y: -5,
+                        transition: { duration: 1, ease: "easeOut" }
                     }}
                 >
                     <Card className={`backdrop-blur-lg bg-black/50 border ${colors.border} shadow-lg shadow-${type === 'daily' ? 'yellow' : type === 'weekly' ? 'purple' : 'blue'}-500/10`}>
+                        {/* Rest of your card content remains the same */}
                         <CardHeader className="text-center relative overflow-hidden">
                             <div className={`absolute inset-0 bg-gradient-to-b ${colors.gradient} opacity-20`}></div>
 
                             <motion.div
-                                className={`w-20 h-1 ${colors.accent} mb-6 mx-auto rounded-full`} // Increased width and margin
-                                whileInView={{ width: isActive ? "8rem" : "5rem" }} // Increased from 6rem/4rem
-                                initial={{ width: "0rem" }}
-                                animate={{ width: isActive ? "8rem" : "5rem" }}
-                                transition={{ duration: 1 }}
+                                className={`w-20 h-1 ${colors.accent} mb-6 mx-auto rounded-full`}
+                                whileInView={{ width: isActive ? "7rem" : "5rem" }}
+                                initial={{ width: "5rem" }}
+                                animate={{ width: isActive ? "7rem" : "5rem" }}
+                                transition={{ duration: 0.5 }}
                             ></motion.div>
 
-                            <div className="flex items-center justify-center mb-6"> {/* Increased margin */}
-                                <div className={`mr-4 ${colors.icon}`}> {/* Increased margin */}
+                            <div className="flex items-center justify-center mb-6">
+                                <div className={`mr-4 ${colors.icon}`}>
                                     {type === 'daily' && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"> {/* Increased size */}
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
                                         </svg>
                                     )}
@@ -703,34 +454,30 @@ export default function QuotePage() {
                                         </svg>
                                     )}
                                 </div>
-                                <h3 className={`text-3xl sm:text-5xl font-bold text-white tracking-wide`}>{title}</h3> {/* Increased font size */}
+                                <h3 className={`text-3xl sm:text-5xl font-bold text-white tracking-wide`}>{title}</h3>
                             </div>
                         </CardHeader>
 
-                        <CardContent className="relative px-8 py-6"> {/* Increased padding */}
-                            {/* Quote marks with enhanced parallax */}
+                        <CardContent className="relative px-8 py-6">
                             <motion.div
-                                className={`absolute -top-14 -left-6 text-7xl ${colors.text.replace('text-', 'text-')}/20 font-serif`} // Larger text and positioning
+                                className="absolute -top-14 -left-6 text-7xl text-white/30 font-serif"
                                 style={{ y: quoteMarkTopParallax }}
                             >
                                 "
                             </motion.div>
                             <motion.div
-                                className={`absolute -bottom-20 -right-6 text-7xl ${colors.text.replace('text-', 'text-')}/20 font-serif`} // Larger text and positioning
+                                className="absolute -bottom-20 -right-6 text-7xl text-white/30 font-serif"
                                 style={{ y: quoteMarkBottomParallax }}
                             >
                                 "
                             </motion.div>
 
-                            {/* Quote text with enhanced animation */}
-                            {/* Quote text with enhanced animation - FIXED */}
-                            {/* Quote text with one-time animation */}
                             <motion.p
                                 className="text-2xl sm:text-4xl text-white font-medium italic leading-relaxed mb-12 text-center py-8"
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 1.2, ease: "easeOut" }}
-                                key={`quote-content-${quote._id}`} // Add key prop to force single animation
+                                transition={{ duration: 0.8, ease: "easeOut" }}
+                                key={`quote-content-${quote._id}`}
                             >
                                 {quote.content}
                             </motion.p>
@@ -742,7 +489,7 @@ export default function QuotePage() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
-                                key={`quote-author-${quote._id}`} // Add key prop
+                                key={`quote-author-${quote._id}`}
                             >
                                 — {quote.author}
                             </motion.p>
@@ -751,7 +498,7 @@ export default function QuotePage() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.8, delay: 0.4 }}
-                                key={`quote-date-${quote._id}`} // Add key prop
+                                key={`quote-date-${quote._id}`}
                             >
                                 {new Date(quote.publishedAt).toLocaleDateString('tr-TR', {
                                     year: 'numeric',
@@ -778,16 +525,7 @@ export default function QuotePage() {
                     rotateX: headerRotate,
                 }}
             >
-                <motion.div
-                    className="absolute inset-0 bg-gradient-to-b from-gray-950 via-gray-900 to-black"
-                    style={{ opacity: headerOpacity }}
-                >
-                    {/* Dynamic shapes only - no particles */}
-                    <DynamicShapes sectionType="header" />
-
-                    {/* Subtle grid pattern */}
-                    <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-5"></div>
-                </motion.div>
+                {/* REMOVED: Background and DynamicShapes */}
 
                 {/* Main hero content with animated entrance */}
                 <motion.div
@@ -797,7 +535,7 @@ export default function QuotePage() {
                     transition={{ duration: 1.2, ease: "easeOut" }}
                 >
                     <motion.h1
-                        key="hero-title" // Add key 
+                        key="hero-title"
                         className="text-5xl md:text-7xl font-bold text-white mb-6"
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -813,27 +551,13 @@ export default function QuotePage() {
                     >
                         Günlük ilham veren alıntılarla, düşüncelerinizi ve gününüzü aydınlatın.
                     </motion.p>
-
-
-                    {/* Animated scroll indicator */}
-
                 </motion.div>
-                <motion.div
-                    className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-                    animate={{
-                        y: [0, 10, 0],
-                        opacity: [0.5, 0.8, 0.5]
-                    }}
-                    transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatType: "reverse"
-                    }}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
+                <div className="absolute bottom-10  text-white left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+                    <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
                     </svg>
-                </motion.div>
+                </div>
             </motion.div>
         );
     };
@@ -852,6 +576,9 @@ export default function QuotePage() {
 
     return (
         <div ref={containerRef} className="bg-black min-h-screen">
+            {/* Global background */}
+            <GlobalBackground />
+
             {/* Hero Header */}
             <HeroHeader />
 
@@ -896,9 +623,6 @@ export default function QuotePage() {
                 color="blue"
                 sectionRef={monthlyRef}
             />
-
-
-
         </div>
     );
 }
