@@ -114,12 +114,6 @@ export default function QuotePage() {
     const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.4], [50, -25], { clamp: false });
     const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.6], [50, -25], { clamp: false });
     const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.8], [50, -25], { clamp: false });
-    // Progressive reveal and fade effects
-    // Progressive reveal and fade effects - FIXED
-    const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.35, 0.45], [0, 1, 1, 0.8]);
-    const weeklyOpacity = useTransform(smoothScrollProgress, [0.35, 0.45, 0.55, 0.65], [0, 1, 1, 0.8]);
-    const monthlyOpacity = useTransform(smoothScrollProgress, [0.55, 0.65, 0.75, 0.85], [0, 1, 1, 0.8]);
-    // 3D rotation effects based on scroll position
     const dailyRotateX = useTransform(smoothScrollProgress, [0.15, 0.4], [15, 0]);
     const weeklyRotateX = useTransform(smoothScrollProgress, [0.35, 0.6], [15, 0]);
     const monthlyRotateX = useTransform(smoothScrollProgress, [0.55, 0.8], [15, 0]);
