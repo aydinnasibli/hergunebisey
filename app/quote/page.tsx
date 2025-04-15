@@ -86,9 +86,8 @@ export default function QuotePage() {
     // Main scroll progress with smoother animation
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ["start", "end"]
+        offset: ["start", "end start"] // Changed from ["start", "end"]
     });
-
     // Smoothed scroll progress for more fluid animations
     const smoothScrollProgress = useSpring(scrollYProgress, {
         stiffness: 50,       // Reduced from 100
@@ -107,13 +106,13 @@ export default function QuotePage() {
     const headerOpacity = useTransform(smoothScrollProgress, [0, 0.22], [1, 0]);
 
     // Section effects with overlapping transitions for smoother blending
-    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.45], [100, -50]);
-    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.65], [100, -50]);
-    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.85], [100, -50]);
+    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.4], [100, -50]);
+    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.6], [100, -50]);
+    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.8], [100, -50]);
     // Progressive reveal and fade effects
-    const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.4, 0.45], [0, 1, 1, 0.8]);
-    const weeklyOpacity = useTransform(smoothScrollProgress, [0.35, 0.45, 0.6, 0.65], [0, 1, 1, 0.8]);
-    const monthlyOpacity = useTransform(smoothScrollProgress, [0.55, 0.65, 0.8, 0.9], [0, 1, 1, 0.8]);
+    const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.35, 0.4], [0, 1, 1, 0.7]);
+    const weeklyOpacity = useTransform(smoothScrollProgress, [0.35, 0.45, 0.55, 0.6], [0, 1, 1, 0.7]);
+    const monthlyOpacity = useTransform(smoothScrollProgress, [0.55, 0.65, 0.75, 0.8], [0, 1, 1, 0.7]);
 
     // 3D rotation effects based on scroll position
     const dailyRotateX = useTransform(smoothScrollProgress, [0.15, 0.4], [15, 0]);
@@ -150,7 +149,7 @@ export default function QuotePage() {
         const handleScroll = () => {
             if (!containerRef.current) return;
 
-            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            const scrollPosition = window.scrollY + window.innerHeight / 3; // Changed from /2 to /3
 
             const sections = [
                 { ref: headerRef, id: 'header' },
@@ -287,24 +286,28 @@ export default function QuotePage() {
         // More varied and visually interesting shapes for each section
         const shapes: Record<string, ShapeConfig[]> = {
             header: [
-                { type: 'circle', baseX: 10, baseY: 20, size: 220, rotation: 0, opacity: 0.15 },
-                { type: 'circle', baseX: 80, baseY: 70, size: 160, rotation: 0, opacity: 0.12 },
-                { type: 'hexagon', baseX: 75, baseY: 15, size: 140, rotation: 25, opacity: 0.08 }
+                { type: 'circle', baseX: 10, baseY: 20, size: 240, rotation: 0, opacity: 0.15 }, // Increased size
+                { type: 'circle', baseX: 80, baseY: 70, size: 180, rotation: 0, opacity: 0.12 }, // Increased size
+                { type: 'hexagon', baseX: 75, baseY: 15, size: 160, rotation: 25, opacity: 0.08 }, // Increased size
+                { type: 'triangle', baseX: 20, baseY: 80, size: 120, rotation: 45, opacity: 0.1 } // Added an extra shape
             ],
             daily: [
-                { type: 'circle', baseX: 15, baseY: 25, size: 180, rotation: 0, opacity: 0.15 },
-                { type: 'square', baseX: 70, baseY: 60, size: 120, rotation: 45, opacity: 0.08 },
-                { type: 'triangle', baseX: 85, baseY: 30, size: 140, rotation: 180, opacity: 0.10 }
+                { type: 'circle', baseX: 15, baseY: 25, size: 200, rotation: 0, opacity: 0.15 }, // Increased size
+                { type: 'square', baseX: 70, baseY: 60, size: 140, rotation: 45, opacity: 0.10 }, // Increased opacity
+                { type: 'triangle', baseX: 85, baseY: 30, size: 160, rotation: 180, opacity: 0.12 }, // Increased size and opacity
+                { type: 'circle', baseX: 30, baseY: 75, size: 100, rotation: 0, opacity: 0.08 } // Added extra shape
             ],
             weekly: [
-                { type: 'hexagon', baseX: 75, baseY: 25, size: 160, rotation: 10, opacity: 0.15 },
-                { type: 'circle', baseX: 20, baseY: 65, size: 140, rotation: 0, opacity: 0.08 },
-                { type: 'triangle', baseX: 12, baseY: 20, size: 120, rotation: 0, opacity: 0.10 }
+                { type: 'hexagon', baseX: 75, baseY: 25, size: 180, rotation: 10, opacity: 0.15 }, // Increased size
+                { type: 'circle', baseX: 20, baseY: 65, size: 160, rotation: 0, opacity: 0.10 }, // Increased size and opacity
+                { type: 'triangle', baseX: 12, baseY: 20, size: 140, rotation: 0, opacity: 0.12 }, // Increased size and opacity
+                { type: 'square', baseX: 82, baseY: 80, size: 120, rotation: 30, opacity: 0.08 } // Added extra shape
             ],
             monthly: [
-                { type: 'circle', baseX: 80, baseY: 20, size: 200, rotation: 0, opacity: 0.15 },
-                { type: 'square', baseX: 25, baseY: 70, size: 140, rotation: 15, opacity: 0.08 },
-                { type: 'hexagon', baseX: 15, baseY: 25, size: 160, rotation: 30, opacity: 0.10 }
+                { type: 'circle', baseX: 80, baseY: 20, size: 220, rotation: 0, opacity: 0.15 }, // Increased size
+                { type: 'square', baseX: 25, baseY: 70, size: 160, rotation: 15, opacity: 0.10 }, // Increased size and opacity
+                { type: 'hexagon', baseX: 15, baseY: 25, size: 180, rotation: 30, opacity: 0.12 }, // Increased size and opacity
+                { type: 'triangle', baseX: 65, baseY: 78, size: 120, rotation: 60, opacity: 0.08 } // Added extra shape
             ]
         };
 
@@ -336,7 +339,7 @@ export default function QuotePage() {
 
         // Random floating animation durations for more organic movement
         const getRandomDuration = () => {
-            return 20 + Math.random() * 20; // Between 20-40 seconds
+            return 25 + Math.random() * 20; // Increased from 20-40 to 25-45 seconds
         };
 
         return (
@@ -526,9 +529,11 @@ export default function QuotePage() {
         });
 
         // Additional parallax effects specific to each section
-        const contentY = useTransform(smoothSectionScroll, [0, 1], [100, -100], { ease: customEase });
-        const quoteMarkTopParallax = useTransform(smoothSectionScroll, [0, 1], [-20, 20]);
-        const quoteMarkBottomParallax = useTransform(smoothSectionScroll, [0, 1], [20, -20]);
+        const contentY = useTransform(smoothSectionScroll, [0, 1], [150, -150], { ease: customEase }); // Increased from [100, -100]
+        const contentX = useTransform(smoothSectionScroll, [0, 1], [index % 2 === 0 ? -30 : 30, 0]); // Added subtle horizontal movement
+        const quoteMarkTopParallax = useTransform(smoothSectionScroll, [0, 1], [-30, 30]); // Increased from [-20, 20]
+        const quoteMarkBottomParallax = useTransform(smoothSectionScroll, [0, 1], [30, -30]); // Increased from [20, -20]
+        const cardRotateZ = useTransform(smoothSectionScroll, [0, 1], [index % 2 === 0 ? -2 : 2, 0]);
 
         // Is this section currently active
         const isActive = activeSection === type;
@@ -540,33 +545,37 @@ export default function QuotePage() {
                     return {
                         accent: 'bg-yellow-500',
                         text: 'text-yellow-500',
-                        border: 'border-yellow-500/20',
-                        glow: 'bg-yellow-500/5',
-                        icon: 'text-yellow-500'
+                        border: 'border-yellow-500/30', // Increased opacity from /20 to /30
+                        glow: 'bg-yellow-500/10', // Increased from /5 to /10
+                        icon: 'text-yellow-500',
+                        gradient: 'from-yellow-500/20 to-transparent' // New gradient class
                     };
                 case 'weekly':
                     return {
                         accent: 'bg-purple-500',
                         text: 'text-purple-500',
-                        border: 'border-purple-500/20',
-                        glow: 'bg-purple-500/5',
-                        icon: 'text-purple-500'
+                        border: 'border-purple-500/30', // Increased opacity
+                        glow: 'bg-purple-500/10', // Increased glow
+                        icon: 'text-purple-500',
+                        gradient: 'from-purple-500/20 to-transparent' // New gradient class
                     };
                 case 'monthly':
                     return {
                         accent: 'bg-blue-500',
                         text: 'text-blue-500',
-                        border: 'border-blue-500/20',
-                        glow: 'bg-blue-500/5',
-                        icon: 'text-blue-500'
+                        border: 'border-blue-500/30', // Increased opacity
+                        glow: 'bg-blue-500/10', // Increased glow
+                        icon: 'text-blue-500',
+                        gradient: 'from-blue-500/20 to-transparent' // New gradient class
                     };
                 default:
                     return {
                         accent: 'bg-yellow-500',
                         text: 'text-yellow-500',
-                        border: 'border-yellow-500/20',
-                        glow: 'bg-yellow-500/5',
-                        icon: 'text-yellow-500'
+                        border: 'border-yellow-500/30',
+                        glow: 'bg-yellow-500/10',
+                        icon: 'text-yellow-500',
+                        gradient: 'from-yellow-500/20 to-transparent'
                     };
             }
         };
@@ -605,7 +614,7 @@ export default function QuotePage() {
             <motion.div
                 ref={sectionRef}
                 id={`${type}-section`}
-                className="h-screen flex items-center justify-center relative overflow-hidden"
+                className="min-h-screen flex items-center justify-center relative overflow-hidden py-20" // Added py-20 padding
                 style={{ y: motionStyle }}
             >
                 {/* Dynamic background without particles */}
@@ -620,15 +629,14 @@ export default function QuotePage() {
                     <motion.div
                         className="absolute inset-0 opacity-5"
                         style={{
-                            y: useTransform(smoothSectionScroll, [0, 1], [0, -50]),
+                            y: useTransform(smoothSectionScroll, [0, 1], [0, -80]), // Increased from -50 to -80
                         }}
                     >
                         <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-10"></div>
                     </motion.div>
 
-                    {/* Custom glow effects */}
-                    <div className={`absolute top-1/4 left-1/3 w-64 h-64 rounded-full ${colors.glow} filter blur-3xl`}></div>
-                    <div className={`absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full ${colors.glow} filter blur-3xl`}></div>
+                    <div className={`absolute top-1/4 left-1/3 w-96 h-96 rounded-full ${colors.glow} filter blur-3xl`}></div>
+                    <div className={`absolute bottom-1/3 right-1/4 w-128 h-128 rounded-full ${colors.glow} filter blur-3xl`}></div>
 
                     {/* Gradient overlay for better contrast */}
                     <div className="absolute inset-0 bg-gradient-radial from-transparent to-black/90"></div>
@@ -639,74 +647,94 @@ export default function QuotePage() {
                     className="relative z-10 w-full max-w-4xl mx-8"
                     style={{
                         y: contentY,
+                        x: contentX, // Added horizontal movement
                         scale: scaleStyle,
                         rotateX: rotateX,
-                        transformPerspective: 1000,
+                        rotateZ: cardRotateZ, // Added Z-axis rotation
+                        transformPerspective: 1200, // Increased from 1000
                     }}
                 >
-                    <Card className={`backdrop-blur-sm bg-black/40 border ${colors.border}`}>
-                        <CardHeader className="text-center">
+                    <Card className={`backdrop-blur-lg bg-black/50 border ${colors.border} shadow-lg shadow-${type === 'daily' ? 'yellow' : type === 'weekly' ? 'purple' : 'blue'}-500/10`}>
+                        <CardHeader className="text-center relative overflow-hidden">
+                            <div className={`absolute inset-0 bg-gradient-to-b ${colors.gradient} opacity-20`}></div>
+
                             <motion.div
-                                className={`w-16 h-1 ${colors.accent} mb-4 mx-auto`}
-                                whileInView={{ width: isActive ? "6rem" : "4rem" }}
+                                className={`w-20 h-1 ${colors.accent} mb-6 mx-auto rounded-full`} // Increased width and margin
+                                whileInView={{ width: isActive ? "8rem" : "5rem" }} // Increased from 6rem/4rem
                                 initial={{ width: "0rem" }}
-                                animate={{ width: isActive ? "6rem" : "4rem" }}
+                                animate={{ width: isActive ? "8rem" : "5rem" }}
                                 transition={{ duration: 1 }}
                             ></motion.div>
 
-                            <div className="flex items-center justify-center mb-4">
-                                <div className={`mr-3 ${colors.icon}`}>
+                            <div className="flex items-center justify-center mb-6"> {/* Increased margin */}
+                                <div className={`mr-4 ${colors.icon}`}> {/* Increased margin */}
                                     {type === 'daily' && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"> {/* Increased size */}
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
                                         </svg>
                                     )}
                                     {type === 'weekly' && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                                         </svg>
                                     )}
                                     {type === 'monthly' && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                                         </svg>
                                     )}
                                 </div>
-                                <h3 className={`text-3xl sm:text-4xl font-bold text-white tracking-wide`}>{title}</h3>
+                                <h3 className={`text-3xl sm:text-5xl font-bold text-white tracking-wide`}>{title}</h3> {/* Increased font size */}
                             </div>
                         </CardHeader>
 
-                        <CardContent className="relative">
-                            {/* Quote marks with simplified parallax */}
-                            <div className={`absolute -top-12 -left-4 text-6xl ${colors.text.replace('text-', 'text-')}/20 font-serif`}>
+                        <CardContent className="relative px-8 py-6"> {/* Increased padding */}
+                            {/* Quote marks with enhanced parallax */}
+                            <motion.div
+                                className={`absolute -top-14 -left-6 text-7xl ${colors.text.replace('text-', 'text-')}/20 font-serif`} // Larger text and positioning
+                                style={{ y: quoteMarkTopParallax }}
+                            >
                                 "
-                            </div>
-                            <div className={`absolute -bottom-20 -right-4 text-6xl ${colors.text.replace('text-', 'text-')}/20 font-serif`}>
+                            </motion.div>
+                            <motion.div
+                                className={`absolute -bottom-20 -right-6 text-7xl ${colors.text.replace('text-', 'text-')}/20 font-serif`} // Larger text and positioning
+                                style={{ y: quoteMarkBottomParallax }}
+                            >
                                 "
-                            </div>
+                            </motion.div>
 
-                            {/* Quote text */}
+                            {/* Quote text with enhanced animation */}
                             <motion.p
-                                className="text-2xl sm:text-3xl text-white font-medium italic leading-relaxed mb-10 text-center py-6"
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                transition={{ duration: 1 }}
+                                className="text-2xl sm:text-4xl text-white font-medium italic leading-relaxed mb-12 text-center py-8" // Larger text and spacing
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1.2, ease: "easeOut" }}
                             >
                                 {quote.content}
                             </motion.p>
                         </CardContent>
 
-                        <CardFooter className="flex justify-center flex-col text-center">
-                            <p className={`text-xl font-semibold ${colors.text}`}>
+                        <CardFooter className="flex justify-center flex-col text-center pb-8"> {/* Increased padding */}
+                            <motion.p
+                                className={`text-2xl font-semibold ${colors.text}`} // Increased font size
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                            >
                                 — {quote.author}
-                            </p>
-                            <p className="text-gray-400 text-sm mt-2">
+                            </motion.p>
+                            <motion.p
+                                className="text-gray-400 text-sm mt-3" // Increased margin
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                transition={{ duration: 0.8, delay: 0.4 }}
+                            >
                                 {new Date(quote.publishedAt).toLocaleDateString('tr-TR', {
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric'
                                 })}
-                            </p>
+                            </motion.p>
                         </CardFooter>
                     </Card>
                 </motion.div>
