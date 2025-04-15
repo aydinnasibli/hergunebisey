@@ -281,36 +281,36 @@ export default function QuotePage() {
     // Optimized DynamicShapes component with reduced complexity
     // Enhanced DynamicShapes component with more interesting visuals and animations
     const DynamicShapes = ({ sectionType }: DynamicShapesProps) => {
+        // Check if this section is currently active
+        const isActive = activeSection === sectionType;
+
         // More varied and visually interesting shapes for each section
         const shapes: Record<string, ShapeConfig[]> = {
             header: [
-                { type: 'circle', baseX: 10, baseY: 20, size: 240, rotation: 0, opacity: 0.15 }, // Increased size
-                { type: 'circle', baseX: 80, baseY: 70, size: 180, rotation: 0, opacity: 0.12 }, // Increased size
-                { type: 'hexagon', baseX: 75, baseY: 15, size: 160, rotation: 25, opacity: 0.08 }, // Increased size
-                { type: 'triangle', baseX: 20, baseY: 80, size: 120, rotation: 45, opacity: 0.1 } // Added an extra shape
+                { type: 'circle', baseX: 10, baseY: 20, size: 240, rotation: 0, opacity: 0.15 },
+                { type: 'circle', baseX: 80, baseY: 70, size: 180, rotation: 0, opacity: 0.12 },
+                { type: 'hexagon', baseX: 75, baseY: 15, size: 160, rotation: 25, opacity: 0.08 },
+                { type: 'triangle', baseX: 20, baseY: 80, size: 120, rotation: 45, opacity: 0.1 }
             ],
             daily: [
-                { type: 'circle', baseX: 15, baseY: 25, size: 200, rotation: 0, opacity: 0.15 }, // Increased size
-                { type: 'square', baseX: 70, baseY: 60, size: 140, rotation: 45, opacity: 0.10 }, // Increased opacity
-                { type: 'triangle', baseX: 85, baseY: 30, size: 160, rotation: 180, opacity: 0.12 }, // Increased size and opacity
-                { type: 'circle', baseX: 30, baseY: 75, size: 100, rotation: 0, opacity: 0.08 } // Added extra shape
+                { type: 'circle', baseX: 15, baseY: 25, size: 200, rotation: 0, opacity: 0.15 },
+                { type: 'square', baseX: 70, baseY: 60, size: 140, rotation: 45, opacity: 0.10 },
+                { type: 'triangle', baseX: 85, baseY: 30, size: 160, rotation: 180, opacity: 0.12 },
+                { type: 'circle', baseX: 30, baseY: 75, size: 100, rotation: 0, opacity: 0.08 }
             ],
             weekly: [
-                { type: 'hexagon', baseX: 75, baseY: 25, size: 180, rotation: 10, opacity: 0.15 }, // Increased size
-                { type: 'circle', baseX: 20, baseY: 65, size: 160, rotation: 0, opacity: 0.10 }, // Increased size and opacity
-                { type: 'triangle', baseX: 12, baseY: 20, size: 140, rotation: 0, opacity: 0.12 }, // Increased size and opacity
-                { type: 'square', baseX: 82, baseY: 80, size: 120, rotation: 30, opacity: 0.08 } // Added extra shape
+                { type: 'hexagon', baseX: 75, baseY: 25, size: 180, rotation: 10, opacity: 0.15 },
+                { type: 'circle', baseX: 20, baseY: 65, size: 160, rotation: 0, opacity: 0.10 },
+                { type: 'triangle', baseX: 12, baseY: 20, size: 140, rotation: 0, opacity: 0.12 },
+                { type: 'square', baseX: 82, baseY: 80, size: 120, rotation: 30, opacity: 0.08 }
             ],
             monthly: [
-                { type: 'circle', baseX: 80, baseY: 20, size: 220, rotation: 0, opacity: 0.15 }, // Increased size
-                { type: 'square', baseX: 25, baseY: 70, size: 160, rotation: 15, opacity: 0.10 }, // Increased size and opacity
-                { type: 'hexagon', baseX: 15, baseY: 25, size: 180, rotation: 30, opacity: 0.12 }, // Increased size and opacity
-                { type: 'triangle', baseX: 65, baseY: 78, size: 120, rotation: 60, opacity: 0.08 } // Added extra shape
+                { type: 'circle', baseX: 80, baseY: 20, size: 220, rotation: 0, opacity: 0.15 },
+                { type: 'square', baseX: 25, baseY: 70, size: 160, rotation: 15, opacity: 0.10 },
+                { type: 'hexagon', baseX: 15, baseY: 25, size: 180, rotation: 30, opacity: 0.12 },
+                { type: 'triangle', baseX: 65, baseY: 78, size: 120, rotation: 60, opacity: 0.08 }
             ]
         };
-
-        // Check if this section is currently active
-        const isActive = activeSection === sectionType;
 
         // Use appropriate shapes based on section type
         const sectionShapes = shapes[sectionType] || shapes.header;
@@ -318,9 +318,9 @@ export default function QuotePage() {
         // Helper function to get shape color based on section type with better color gradients
         const getShapeColor = (type: string, opacity = 0.8) => {
             switch (type) {
-                case 'daily': return `rgba(234, 179, 8, ${opacity})`; // Yellow
-                case 'weekly': return `rgba(147, 51, 234, ${opacity})`; // Purple
-                case 'monthly': return `rgba(59, 130, 246, ${opacity})`; // Blue
+                case 'daily': return `rgba(234, 179, 8, ${opacity})`;
+                case 'weekly': return `rgba(147, 51, 234, ${opacity})`;
+                case 'monthly': return `rgba(59, 130, 246, ${opacity})`;
                 default: return `rgba(234, 179, 8, ${opacity})`;
             }
         };
@@ -328,17 +328,32 @@ export default function QuotePage() {
         // Get secondary color for gradient effects
         const getSecondaryColor = (type: string, opacity = 0.4) => {
             switch (type) {
-                case 'daily': return `rgba(250, 204, 21, ${opacity})`; // Lighter yellow
-                case 'weekly': return `rgba(168, 85, 247, ${opacity})`; // Lighter purple
-                case 'monthly': return `rgba(96, 165, 250, ${opacity})`; // Lighter blue
+                case 'daily': return `rgba(250, 204, 21, ${opacity})`;
+                case 'weekly': return `rgba(168, 85, 247, ${opacity})`;
+                case 'monthly': return `rgba(96, 165, 250, ${opacity})`;
                 default: return `rgba(250, 204, 21, ${opacity})`;
             }
         };
 
         // Random floating animation durations for more organic movement
         const getRandomDuration = () => {
-            return 25 + Math.random() * 20; // Increased from 20-40 to 25-45 seconds
+            return 25 + Math.random() * 20;
         };
+
+        // Define variants outside of rendering loop
+        const getVariants = (rotation) => ({
+            float: {
+                x: [20, -20, 20],
+                y: [10, -10, 10],
+                rotate: [rotation, rotation + 15, rotation],
+                transition: {
+                    duration: getRandomDuration(),
+                    repeat: Infinity,
+                    repeatType: "reverse" as const,
+                    ease: "easeInOut"
+                }
+            }
+        });
 
         return (
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -349,26 +364,13 @@ export default function QuotePage() {
                         height: shape.type === 'hexagon' ? `${shape.size * 0.866}px` : `${shape.size}px`,
                         left: `${shape.baseX}%`,
                         top: `${shape.baseY}%`,
-                        opacity: isActive ? shape.opacity * 1.5 : shape.opacity, // Brighten when active
+                        opacity: isActive ? shape.opacity * 1.5 : shape.opacity,
                         transform: `rotate(${shape.rotation}deg)`,
                         transition: 'opacity 0.8s ease-in-out',
                     };
 
-                    // Create animation variants based on shape type
-                    // Fix for the DynamicShapes component variants
-                    const variants = {
-                        float: {
-                            x: [20, -20, 20],
-                            y: [10, -10, 10],
-                            rotate: [shape.rotation, shape.rotation + 15, shape.rotation],
-                            transition: {
-                                duration: getRandomDuration(),
-                                repeat: Infinity,
-                                repeatType: "reverse" as const,  // Type assertion needed
-                                ease: "easeInOut"
-                            }
-                        }
-                    };
+                    // Get variants using the function
+                    const variants = getVariants(shape.rotation);
 
                     // Enhanced gradient effects with dual colors for each shape
                     const gradientStyle = {
@@ -442,57 +444,59 @@ export default function QuotePage() {
                     }
                 })}
 
-                {/* Add subtle particles for additional depth */}
-                {isActive && Array.from({ length: 10 }).map((_, i) => {
-                    const size = 2 + Math.random() * 4;
-                    return (
+                {/* Add subtle particles for additional depth - Only if active */}
+                {isActive && (
+                    <>
+                        {Array.from({ length: 10 }).map((_, i) => {
+                            const size = 2 + Math.random() * 4;
+                            return (
+                                <motion.div
+                                    key={`particle-${i}`}
+                                    className="absolute rounded-full"
+                                    style={{
+                                        width: `${size}px`,
+                                        height: `${size}px`,
+                                        left: `${Math.random() * 100}%`,
+                                        top: `${Math.random() * 100}%`,
+                                        background: getShapeColor(sectionType, 0.7),
+                                        opacity: 0.4,
+                                    }}
+                                    animate={{
+                                        y: [0, -100],
+                                        x: [0, Math.random() * 40 - 20],
+                                        opacity: [0.4, 0],
+                                    }}
+                                    transition={{
+                                        duration: 5 + Math.random() * 5,
+                                        repeat: Infinity,
+                                        delay: Math.random() * 5,
+                                    }}
+                                />
+                            );
+                        })}
+
+                        {/* Optional light beam effect for active sections */}
                         <motion.div
-                            key={`particle-${i}`}
-                            className="absolute rounded-full"
+                            className="absolute"
                             style={{
-                                width: `${size}px`,
-                                height: `${size}px`,
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                background: getShapeColor(sectionType, 0.7),
-                                opacity: 0.4,
+                                width: '120%',
+                                height: '10px',
+                                left: '-10%',
+                                top: '50%',
+                                background: `linear-gradient(90deg, transparent 0%, ${getShapeColor(sectionType, 0.1)} 50%, transparent 100%)`,
+                                transform: 'rotate(-30deg)',
+                                filter: 'blur(8px)'
                             }}
                             animate={{
-                                y: [0, -100],
-                                x: [0, Math.random() * 40 - 20],
-                                opacity: [0.4, 0],
+                                opacity: [0, 0.5, 0],
+                                scale: [0.8, 1, 0.8],
                             }}
                             transition={{
-                                duration: 5 + Math.random() * 5,
+                                duration: 8,
                                 repeat: Infinity,
-                                delay: Math.random() * 5,
                             }}
                         />
-                    );
-                })}
-
-                {/* Optional light beam effect for active sections */}
-                {isActive && (
-                    <motion.div
-                        className="absolute"
-                        style={{
-                            width: '120%',
-                            height: '10px',
-                            left: '-10%',
-                            top: '50%',
-                            background: `linear-gradient(90deg, transparent 0%, ${getShapeColor(sectionType, 0.1)} 50%, transparent 100%)`,
-                            transform: 'rotate(-30deg)',
-                            filter: 'blur(8px)'
-                        }}
-                        animate={{
-                            opacity: [0, 0.5, 0],
-                            scale: [0.8, 1, 0.8],
-                        }}
-                        transition={{
-                            duration: 8,
-                            repeat: Infinity,
-                        }}
-                    />
+                    </>
                 )}
             </div>
         );
