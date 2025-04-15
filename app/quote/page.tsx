@@ -629,7 +629,7 @@ export default function QuotePage() {
                     return 'from-gray-950 via-gray-900 to-black';
             }
         };
-
+        const patternYTransform = useTransform(smoothSectionScroll, [0, 1], [0, -80]);
         return (
             <motion.div
                 ref={sectionRef}
@@ -649,7 +649,7 @@ export default function QuotePage() {
                     <motion.div
                         className="absolute inset-0 opacity-5"
                         style={{
-                            y: useTransform(smoothSectionScroll, [0, 1], [0, -80]), // Increased from -50 to -80
+                            y: patternYTransform, // Use the pre-defined transform variable
                         }}
                     >
                         <div className="absolute inset-0 bg-[url('/images/grid-pattern.png')] bg-repeat opacity-10"></div>
