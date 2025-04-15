@@ -57,9 +57,27 @@ export default function QuotePage() {
         weekly: Quote | null;
         monthly: Quote | null;
     }>({
-        daily: null,
-        weekly: null,
-        monthly: null,
+        daily: {
+            _id: 'default-daily',
+            content: 'Her güne pozitif bir not ile başla.',
+            author: 'Hergünebi\'şey',
+            type: 'daily',
+            publishedAt: new Date().toISOString()
+        },
+        weekly: {
+            _id: 'default-weekly',
+            content: 'Haftanın her günü yeni bir fırsat sunar.',
+            author: 'Hergünebi\'şey',
+            type: 'weekly',
+            publishedAt: new Date().toISOString()
+        },
+        monthly: {
+            _id: 'default-monthly',
+            content: 'Her ay yeni hedefler belirlemek için bir şans.',
+            author: 'Hergünebi\'şey',
+            type: 'monthly',
+            publishedAt: new Date().toISOString()
+        }
     });
 
     // Client-side only rendering guard
@@ -67,8 +85,6 @@ export default function QuotePage() {
 
     // Mouse position for hover effects
 
-    // Viewport size for responsive calculations
-    const [viewport, setViewport] = useState({ width: 0, height: 0 });
 
     // Active section for enhanced focus
     const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -82,9 +98,11 @@ export default function QuotePage() {
     const monthlyRef = useRef<HTMLDivElement>(null);
 
     // Main scroll progress with smoother animation
+    // Main scroll progress with smoother animation - FIXED
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ["start", "end start"] // Changed from ["start", "end"]
+        offset: ["start", "end start"],
+        layoutEffect: false // Add this to prevent layout thrashing
     });
     // Smoothed scroll progress for more fluid animations
     const smoothScrollProgress = useSpring(scrollYProgress, {
@@ -103,15 +121,15 @@ export default function QuotePage() {
 
     const headerOpacity = useTransform(smoothScrollProgress, [0, 0.22], [1, 0]);
 
-    // Section effects with overlapping transitions for smoother blending
-    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.4], [100, -50]);
-    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.6], [100, -50]);
-    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.8], [100, -50]);
+    // Update these values for smoother transitions
+    const dailyParallax = useTransform(smoothScrollProgress, [0.15, 0.4], [100, -50], { clamp: false });
+    const weeklyParallax = useTransform(smoothScrollProgress, [0.35, 0.6], [100, -50], { clamp: false });
+    const monthlyParallax = useTransform(smoothScrollProgress, [0.55, 0.8], [100, -50], { clamp: false });
     // Progressive reveal and fade effects
-    const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.35, 0.4], [0, 1, 1, 0.7]);
-    const weeklyOpacity = useTransform(smoothScrollProgress, [0.35, 0.45, 0.55, 0.6], [0, 1, 1, 0.7]);
-    const monthlyOpacity = useTransform(smoothScrollProgress, [0.55, 0.65, 0.75, 0.8], [0, 1, 1, 0.7]);
-
+    // Progressive reveal and fade effects - FIXED
+    const dailyOpacity = useTransform(smoothScrollProgress, [0.15, 0.25, 0.35, 0.45], [0, 1, 1, 0.8]);
+    const weeklyOpacity = useTransform(smoothScrollProgress, [0.35, 0.45, 0.55, 0.65], [0, 1, 1, 0.8]);
+    const monthlyOpacity = useTransform(smoothScrollProgress, [0.55, 0.65, 0.75, 0.85], [0, 1, 1, 0.8]);
     // 3D rotation effects based on scroll position
     const dailyRotateX = useTransform(smoothScrollProgress, [0.15, 0.4], [15, 0]);
     const weeklyRotateX = useTransform(smoothScrollProgress, [0.35, 0.6], [15, 0]);
@@ -123,59 +141,60 @@ export default function QuotePage() {
     const monthlyScale = useTransform(smoothScrollProgress, [0.6, 0.7, 0.8], [0.9, 1.05, 0.95]);
 
 
-    // Handle viewport sizing
     useEffect(() => {
-        const handleResize = () => {
-            setViewport({
-                width: window.innerWidth,
-                height: window.innerHeight
-            });
-        };
+        setIsClient(true);
 
+        // Add smooth scroll behavior with better performance
         if (typeof window !== 'undefined') {
-            handleResize();
-            window.addEventListener('resize', handleResize);
-
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
+            document.documentElement.style.scrollBehavior = 'smooth';
         }
+
+        return () => {
+            if (typeof window !== 'undefined') {
+                document.documentElement.style.scrollBehavior = '';
+            }
+        };
     }, []);
 
     // Track active section based on scroll position
+    // REPLACE the scroll handler with this optimized version:
     useEffect(() => {
         const handleScroll = () => {
             if (!containerRef.current) return;
 
-            const scrollPosition = window.scrollY + window.innerHeight / 3; // Changed from /2 to /3
+            const scrollPosition = window.scrollY + window.innerHeight / 3;
 
-            const sections = [
-                { ref: headerRef, id: 'header' },
-                { ref: dailyRef, id: 'daily' },
-                { ref: weeklyRef, id: 'weekly' },
-                { ref: monthlyRef, id: 'monthly' }
-            ];
+            // Use requestAnimationFrame for smoother performance
+            requestAnimationFrame(() => {
+                const sections = [
+                    { ref: headerRef, id: 'header' },
+                    { ref: dailyRef, id: 'daily' },
+                    { ref: weeklyRef, id: 'weekly' },
+                    { ref: monthlyRef, id: 'monthly' }
+                ];
 
-            for (const section of sections) {
-                if (!section.ref.current) continue;
+                for (const section of sections) {
+                    if (!section.ref.current) continue;
 
-                const rect = section.ref.current.getBoundingClientRect();
-                const sectionTop = rect.top + window.scrollY;
-                const sectionBottom = sectionTop + rect.height;
+                    const rect = section.ref.current.getBoundingClientRect();
+                    const sectionTop = rect.top + window.scrollY;
+                    const sectionBottom = sectionTop + rect.height;
 
-                if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
-                    setActiveSection(section.id);
-                    break;
+                    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                        if (activeSection !== section.id) {
+                            setActiveSection(section.id);
+                        }
+                        break;
+                    }
                 }
-            }
+            });
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
-
+    }, [activeSection]); // Add activeSection to dependency array
     // Client-side setup
     useEffect(() => {
         setIsClient(true);
@@ -645,7 +664,7 @@ export default function QuotePage() {
 
                 {/* Use shadcn/ui Card component */}
                 <motion.div
-                    className="relative z-10 w-full max-w-4xl mx-8"
+                    className="relative z-10 w-full max-w-4xl mt-48 mx-8"
                     style={{
                         y: contentY,
                         x: contentX, // Added horizontal movement
@@ -705,30 +724,35 @@ export default function QuotePage() {
                             </motion.div>
 
                             {/* Quote text with enhanced animation */}
+                            {/* Quote text with enhanced animation - FIXED */}
+                            {/* Quote text with one-time animation */}
                             <motion.p
-                                className="text-2xl sm:text-4xl text-white font-medium italic leading-relaxed mb-12 text-center py-8" // Larger text and spacing
+                                className="text-2xl sm:text-4xl text-white font-medium italic leading-relaxed mb-12 text-center py-8"
                                 initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 1.2, ease: "easeOut" }}
+                                key={`quote-content-${quote._id}`} // Add key prop to force single animation
                             >
                                 {quote.content}
                             </motion.p>
                         </CardContent>
 
-                        <CardFooter className="flex justify-center flex-col text-center pb-8"> {/* Increased padding */}
+                        <CardFooter className="flex justify-center flex-col text-center pb-8">
                             <motion.p
-                                className={`text-2xl font-semibold ${colors.text}`} // Increased font size
+                                className={`text-2xl font-semibold ${colors.text}`}
                                 initial={{ opacity: 0, y: 10 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
+                                key={`quote-author-${quote._id}`} // Add key prop
                             >
                                 — {quote.author}
                             </motion.p>
                             <motion.p
-                                className="text-gray-400 text-sm mt-3" // Increased margin
+                                className="text-gray-400 text-sm mt-3"
                                 initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
+                                animate={{ opacity: 1 }}
                                 transition={{ duration: 0.8, delay: 0.4 }}
+                                key={`quote-date-${quote._id}`} // Add key prop
                             >
                                 {new Date(quote.publishedAt).toLocaleDateString('tr-TR', {
                                     year: 'numeric',
@@ -774,6 +798,7 @@ export default function QuotePage() {
                     transition={{ duration: 1.2, ease: "easeOut" }}
                 >
                     <motion.h1
+                        key="hero-title" // Add key 
                         className="text-5xl md:text-7xl font-bold text-white mb-6"
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -789,38 +814,26 @@ export default function QuotePage() {
                     >
                         Günlük ilham veren alıntılarla, düşüncelerinizi ve gününüzü aydınlatın.
                     </motion.p>
-                    <motion.div
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.7, duration: 0.8 }}
-                    >
-                        <motion.button
-                            className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-8 rounded-md transition-all"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => document.getElementById('daily-section')?.scrollIntoView({ behavior: 'smooth' })}
-                        >
-                            Günün Alıntısı
-                        </motion.button>
-                    </motion.div>
+
 
                     {/* Animated scroll indicator */}
-                    <motion.div
-                        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-                        animate={{
-                            y: [0, 10, 0],
-                            opacity: [0.5, 0.8, 0.5]
-                        }}
-                        transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            repeatType: "reverse"
-                        }}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
-                        </svg>
-                    </motion.div>
+
+                </motion.div>
+                <motion.div
+                    className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+                    animate={{
+                        y: [0, 10, 0],
+                        opacity: [0.5, 0.8, 0.5]
+                    }}
+                    transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatType: "reverse"
+                    }}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
+                    </svg>
                 </motion.div>
             </motion.div>
         );
@@ -887,10 +900,6 @@ export default function QuotePage() {
 
 
 
-            {/* Minimal copyright text */}
-            <div className="h-16 bg-black flex items-center justify-center">
-                <p className="text-gray-500 text-sm">© 2025 Hergünebi'şey. Tüm Hakları Saklıdır.</p>
-            </div>
         </div>
     );
 }
