@@ -501,7 +501,7 @@ const Home = () => {
             <div className="flex flex-col items-center mb-12">
               <div className="w-12 h-1 bg-yellow-500 mb-4"></div>
               <h2 className="text-3xl sm:text-4xl font-bold text-center">
-                GÜNÜN <span className="text-yellow-500">SÖZÜ</span>
+                ALINTI <span className="text-yellow-500">.</span>
               </h2>
             </div>
 
@@ -523,9 +523,7 @@ const Home = () => {
 
                   <div className="flex flex-col items-center">
                     <div className="flex items-center justify-center space-x-4 mb-6">
-                      <div className="w-12 h-12 rounded-full bg-yellow-500/20 backdrop-blur-sm flex items-center justify-center">
-                        <span className="text-xl font-bold text-yellow-500">A</span>
-                      </div>
+
                       <div className="flex flex-col">
                         <h3 className="text-xl sm:text-2xl font-normal">Aristo</h3>
                         <p className="text-sm text-white/60">Filozof, MÖ 384-322</p>
@@ -535,7 +533,7 @@ const Home = () => {
                     <div className="w-16 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-6"></div>
 
                     <div className="group">
-                      <Link href="/quotes" className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 backdrop-blur-sm border border-yellow-500/30 uppercase tracking-widest text-sm hover:bg-yellow-500/30 transition-colors duration-300 flex items-center space-x-2 group-hover:scale-105 transform transition-transform">
+                      <Link href="/quote" className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 backdrop-blur-sm border border-yellow-500/30 uppercase tracking-widest text-sm hover:bg-yellow-500/30 transition-colors duration-300 flex items-center space-x-2 group-hover:scale-105 transform transition-transform">
                         <span>Tüm Alıntılar</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -547,15 +545,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Daily quote change indicator */}
-            <div className="mt-8 flex items-center justify-center">
-              <div className="flex items-center space-x-2 text-white/60 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <span>Her gün farklı bir söz</span>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
