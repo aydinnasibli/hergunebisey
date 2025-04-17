@@ -41,10 +41,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         ? await getBlogPostsByCategory(post.categories[0])
         : []
 
-    // Filter out the current post and limit to 3 related posts
-    const filteredRelatedPosts = relatedPosts
-        .filter(relatedPost => relatedPost._id !== post._id)
-        .slice(0, 3)
 
     // Define proper type for the components object
     const components: PortableTextComponents = {
@@ -192,69 +188,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 </div>
             </div>
 
-            {/* Related Articles - Now showing actual related posts */}
-            <div className="container mx-auto px-4 md:px-8 py-12">
-                <h2 className="text-3xl font-bold mb-8 text-center text-yellow-400">Benzer İçerikler</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredRelatedPosts.length > 0 ? (
-                        filteredRelatedPosts.map((relatedPost) => (
-                            <div key={relatedPost._id} className="bg-gray-800/70 rounded-xl overflow-hidden shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full">
-                                <div className="h-48 relative">
-                                    {relatedPost.mainImage ? (
-                                        <Image
-                                            src={urlFor(relatedPost.mainImage).url()}
-                                            alt={relatedPost.title}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    ) : (
-                                        <div className="h-full bg-gray-700"></div>
-                                    )}
-                                    {relatedPost.categories && relatedPost.categories.length > 0 && (
-                                        <div className="absolute bottom-0 right-0 bg-yellow-500 text-black text-xs font-bold px-3 py-1">
-                                            {relatedPost.categories[0]}
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="p-5 flex flex-col flex-grow">
-                                    <time className="text-yellow-400 text-sm mb-2 font-mono">
-                                        {formatDate(relatedPost.publishedAt)}
-                                    </time>
-                                    <h3 className="text-lg font-bold mb-2 text-white hover:text-yellow-400 transition-colors">
-                                        {relatedPost.title}
-                                    </h3>
-                                    <p className="text-gray-400 mb-4 text-sm flex-grow">
-                                        {relatedPost.excerpt || 'Bu makale hakkında detaylı bilgi için tıklayın...'}
-                                    </p>
-                                    <Link
-                                        href={`/blog/${relatedPost.slug.current}`}
-                                        className="text-yellow-500 font-medium flex items-center hover:text-yellow-400 mt-auto self-start"
-                                    >
-                                        Okumaya Devam Et
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 ml-2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                                        </svg>
-                                    </Link>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        // Placeholder items if no related posts are found
-                        Array.from({ length: 3 }).map((_, index) => (
-                            <div key={index} className="bg-gray-800/70 rounded-xl overflow-hidden shadow-lg flex flex-col h-full">
-                                <div className="h-48 bg-gray-700 animate-pulse"></div>
-                                <div className="p-5 flex flex-col flex-grow">
-                                    <div className="w-1/3 h-4 bg-gray-700 animate-pulse mb-3 rounded"></div>
-                                    <div className="w-full h-6 bg-gray-700 animate-pulse mb-3 rounded"></div>
-                                    <div className="w-full h-4 bg-gray-700 animate-pulse mb-2 rounded"></div>
-                                    <div className="w-2/3 h-4 bg-gray-700 animate-pulse mb-4 rounded"></div>
-                                    <div className="w-1/2 h-5 bg-gray-700 animate-pulse mt-auto self-start rounded"></div>
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
-            </div>
+
 
 
 
