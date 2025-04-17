@@ -89,13 +89,7 @@ const Home = () => {
     }, 600);
   };
 
-  // Scroll to carousel section
-  const scrollToContent = () => {
-    const whatWeDoSection = document.getElementById('what-we-do');
-    if (whatWeDoSection) {
-      whatWeDoSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+
 
   // Start progress timer
   const startProgressTimer = () => {
