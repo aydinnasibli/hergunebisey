@@ -70,10 +70,6 @@ export default function QuotePage() {
         }
     });
 
-    // Client-side only rendering guard
-    const [isClient, setIsClient] = useState(false);
-
-    // Mouse position for hover effects
 
 
     // Active section for enhanced focus
@@ -123,20 +119,7 @@ export default function QuotePage() {
     const weeklyScale = useTransform(smoothScrollProgress, [0.4, 0.5, 0.6], [0.98, 1.0, 0.98]);
     const monthlyScale = useTransform(smoothScrollProgress, [0.6, 0.7, 0.8], [0.98, 1.0, 0.98]);
 
-    useEffect(() => {
-        setIsClient(true);
 
-        // Add smooth scroll behavior with better performance
-        if (typeof window !== 'undefined') {
-            document.documentElement.style.scrollBehavior = 'smooth';
-        }
-
-        return () => {
-            if (typeof window !== 'undefined') {
-                document.documentElement.style.scrollBehavior = '';
-            }
-        };
-    }, []);
 
     // Track active section based on scroll position
     // REPLACE the scroll handler with this optimized version:
@@ -177,21 +160,7 @@ export default function QuotePage() {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [activeSection]); // Add activeSection to dependency array
-    // Client-side setup
-    useEffect(() => {
-        setIsClient(true);
 
-        // Add smooth scroll behavior with better performance
-        if (typeof window !== 'undefined') {
-            document.documentElement.style.scrollBehavior = 'smooth';
-        }
-
-        return () => {
-            if (typeof window !== 'undefined') {
-                document.documentElement.style.scrollBehavior = '';
-            }
-        };
-    }, []);
 
     // Fetch quotes from Sanity
     useEffect(() => {
@@ -506,71 +475,42 @@ export default function QuotePage() {
     // Simplified HeroHeader without particle effects and reduced animations
     const HeroHeader = () => {
         return (
-            <motion.div
+            <div
                 ref={headerRef}
                 className="h-screen flex items-center justify-center relative overflow-hidden"
-                style={{
-                    y: headerParallax,
-                    scale: headerScale,
-                    rotateX: headerRotate,
-                }}
             >
-                {/* REMOVED: Background and DynamicShapes */}
 
                 {/* Main hero content with animated entrance */}
-                <motion.div
+                <div
                     className="relative z-10 text-center px-6"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                    <motion.h1
+                    <div
+                        className="w-16 h-1 bg-yellow-500 mx-auto mb-6" />
+                    <h1
                         key="hero-title"
                         className="text-5xl md:text-7xl font-bold text-white mb-3"
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.8 }}
                     >
                         Alıntı<span className="text-yellow-500">.</span>
-                    </motion.h1>
+                    </h1>
 
 
 
-                    <motion.p
+                    <p
                         className="text-xl md:text-lg text-gray-300 max-w-2xl mx-auto mb-6"
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
                     >
                         Günlük ilham veren alıntılarla, düşüncelerinizi ve gününüzü aydınlatın.
-                    </motion.p>
-                    <motion.div
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3, duration: 0.8 }}
-                        className="w-16 h-1 bg-yellow-500 mx-auto mb-8" />
-                </motion.div>
+                    </p>
+
+                </div>
                 <div className="absolute bottom-10  text-white left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
                     <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
                     </svg>
                 </div>
-            </motion.div>
-        );
-    };
-
-    // Loading screen while client-side rendering
-    if (!isClient) {
-        return (
-            <div className="h-screen flex items-center justify-center bg-black">
-                <div className="text-center text-white">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500 mx-auto mb-4"></div>
-                    <p className="text-xl">Sayfa yükleniyor...</p>
-                </div>
             </div>
         );
-    }
+    };
 
     return (
         <div ref={containerRef} className="bg-black min-h-screen">

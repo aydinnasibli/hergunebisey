@@ -8,7 +8,6 @@ import { formatDistance } from 'date-fns'
 import { tr } from 'date-fns/locale'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import { Search, X, ChevronRight, Clock, ChevronLeft } from 'lucide-react'
-import { motion } from 'framer-motion'
 
 interface BlogPost {
     _id: string
@@ -138,28 +137,6 @@ export default function BlogPage() {
         }
     }
 
-    // Framer Motion animations
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    }
-
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.5
-            }
-        }
-    }
-
     // Generate page numbers for pagination
     const renderPaginationNumbers = () => {
         const pageNumbers = []
@@ -176,15 +153,13 @@ export default function BlogPage() {
         // First page
         if (startPage > 1) {
             pageNumbers.push(
-                <motion.button
+                <button
                     key="page-1"
                     onClick={() => goToPage(1)}
                     className="w-10 h-10 flex items-center justify-center rounded-md bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
                     1
-                </motion.button>
+                </button>
             )
 
             // Show dots if not directly after first page
@@ -198,18 +173,16 @@ export default function BlogPage() {
         // Page numbers
         for (let i = startPage; i <= endPage; i++) {
             pageNumbers.push(
-                <motion.button
+                <button
                     key={`page-${i}`}
                     onClick={() => goToPage(i)}
                     className={`w-10 h-10 flex items-center justify-center rounded-md transition-all cursor-pointer ${currentPage === i
                         ? 'bg-yellow-500 text-gray-900 font-medium shadow-lg shadow-yellow-500/20'
                         : 'bg-white/10 text-gray-300 hover:bg-white/20'
                         }`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
                     {i}
-                </motion.button>
+                </button>
             )
         }
 
@@ -223,15 +196,13 @@ export default function BlogPage() {
             }
 
             pageNumbers.push(
-                <motion.button
+                <button
                     key={`page-${totalPages}`}
                     onClick={() => goToPage(totalPages)}
                     className="w-10 h-10 flex items-center justify-center rounded-md bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
                     {totalPages}
-                </motion.button>
+                </button>
             )
         }
 
@@ -297,21 +268,9 @@ export default function BlogPage() {
                     </div>
                 </div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <motion.div
-                        className="max-w-6xl mx-auto"
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-
-
+                    <div className="max-w-6xl mx-auto">
                         {/* Search and Filter Section */}
-                        <motion.div
-                            className="mb-12 bg-white/5 backdrop-blur-sm p-8 rounded-xl"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.4 }}
-                        >
+                        <div className="mb-12 bg-white/5 backdrop-blur-sm p-8 rounded-xl">
                             <div className="flex flex-col md:flex-row gap-8 items-center justify-between mb-6">
                                 {/* Elegant Search Bar */}
                                 <div className="relative w-full md:w-96 group">
@@ -351,59 +310,47 @@ export default function BlogPage() {
                             <div className="mt-6">
                                 <h3 className="text-yellow-500 font-medium mb-4">Kategoriler</h3>
                                 <div className="flex flex-wrap gap-3">
-                                    <motion.button
+                                    <button
                                         onClick={() => setSelectedCategory(null)}
                                         className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === null
                                             ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
                                             : 'bg-white/10 hover:bg-white/20 text-gray-300'
                                             }`}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
                                     >
                                         Tümü
-                                    </motion.button>
+                                    </button>
                                     {categories.map((category) => (
-                                        <motion.button
+                                        <button
                                             key={category._id}
                                             onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
                                             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === category.title
                                                 ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
                                                 : 'bg-white/10 hover:bg-white/20 text-gray-300'
                                                 }`}
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
                                         >
                                             {category.title}
-                                        </motion.button>
+                                        </button>
                                     ))}
                                     {(searchQuery || selectedCategory) && (
-                                        <motion.button
+                                        <button
                                             onClick={clearFilters}
                                             className="flex items-center gap-1 px-6 py-2 rounded-full text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50 cursor-pointer"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
                                         >
                                             <X className="h-4 w-4" />
                                             Filtreleri Temizle
-                                        </motion.button>
+                                        </button>
                                     )}
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Posts Grid */}
                         {isLoading ? (
-                            <motion.div
-                                className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {[...Array(9)].map((_, i) => (
-                                    <motion.div
+                                    <div
                                         key={i}
                                         className="bg-gray-800 rounded-xl overflow-hidden shadow-md animate-pulse"
-                                        variants={itemVariants}
                                     >
                                         <div className="h-48 bg-gray-700"></div>
                                         <div className="p-6">
@@ -412,38 +359,26 @@ export default function BlogPage() {
                                             <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
                                             <div className="h-4 bg-gray-700 rounded w-2/3"></div>
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 ))}
-                            </motion.div>
+                            </div>
                         ) : filteredPosts.length === 0 ? (
-                            <motion.div
-                                className="text-center py-16"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.5 }}
-                            >
+                            <div className="text-center py-16">
                                 <div className="text-xl font-medium text-gray-300 mb-2">İçerik bulunamadı</div>
                                 <p className="text-gray-400">Lütfen arama veya filtre kriterlerinizi değiştirin</p>
-                            </motion.div>
+                            </div>
                         ) : (
-                            <motion.div
-                                className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {paginatedPosts.map((post) => (
-                                    <motion.div
+                                    <div
                                         key={post._id}
-                                        variants={itemVariants}
-                                        whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                                        className="hover:-translate-y-2 transition-transform duration-300"
                                     >
                                         <Link href={`/blog/${post.slug.current}`}>
                                             <div className="relative border border-white/40 group bg-black/25 rounded-xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/25">
                                                 <div className="absolute inset-0 transition-opacity duration-300 z-10"></div>
 
                                                 {post.mainImage ? (
-
                                                     <div className="relative h-64 w-full overflow-hidden">
                                                         <div className="absolute inset-0">
                                                             <Image
@@ -534,44 +469,34 @@ export default function BlogPage() {
                                                             <span className="text-yellow-500 font-medium mr-1 transition-all duration-300 group-hover/button:mr-2">
                                                                 Makaleyi Oku
                                                             </span>
-                                                            <motion.div
-                                                                className="bg-yellow-500 rounded-full p-1"
-                                                                whileHover={{ scale: 1.1 }}
-                                                            >
+                                                            <div className="bg-yellow-500 rounded-full p-1">
                                                                 <ChevronRight className="w-4 h-4 text-gray-900" />
-                                                            </motion.div>
+                                                            </div>
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </Link>
-                                    </motion.div>
+                                    </div>
                                 ))}
-                            </motion.div>
+                            </div>
                         )}
 
                         {/* Pagination Controls */}
                         {!isLoading && filteredPosts.length > 0 && (
-                            <motion.div
-                                className="mt-16 flex flex-wrap justify-center items-center gap-2"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.2 }}
-                            >
+                            <div className="mt-16 flex flex-wrap justify-center items-center gap-2">
                                 {/* Previous Page Button */}
-                                <motion.button
+                                <button
                                     onClick={goToPreviousPage}
                                     disabled={currentPage === 1}
                                     className={`flex items-center justify-center px-4 py-2 rounded-md ${currentPage === 1
                                         ? 'bg-white/5 text-gray-500 cursor-not-allowed'
                                         : 'bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all cursor-pointer'
                                         }`}
-                                    whileHover={currentPage !== 1 ? { scale: 1.05 } : {}}
-                                    whileTap={currentPage !== 1 ? { scale: 0.95 } : {}}
                                 >
                                     <ChevronLeft className="w-5 h-5 mr-1" />
                                     <span className="hidden sm:inline">Önceki</span>
-                                </motion.button>
+                                </button>
 
                                 {/* Page Numbers */}
                                 <div className="flex items-center gap-2 px-2">
@@ -579,22 +504,20 @@ export default function BlogPage() {
                                 </div>
 
                                 {/* Next Page Button */}
-                                <motion.button
+                                <button
                                     onClick={goToNextPage}
                                     disabled={currentPage === totalPages}
                                     className={`flex items-center justify-center px-4 py-2 rounded-md ${currentPage === totalPages
                                         ? 'bg-white/5 text-gray-500 cursor-not-allowed'
                                         : 'bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all cursor-pointer'
                                         }`}
-                                    whileHover={currentPage !== totalPages ? { scale: 1.05 } : {}}
-                                    whileTap={currentPage !== totalPages ? { scale: 0.95 } : {}}
                                 >
                                     <span className="hidden sm:inline">Sonraki</span>
                                     <ChevronRight className="w-5 h-5 ml-1" />
-                                </motion.button>
-                            </motion.div>
+                                </button>
+                            </div>
                         )}
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </>
