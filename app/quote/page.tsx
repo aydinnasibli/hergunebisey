@@ -99,10 +99,6 @@ export default function QuotePage() {
     // Advanced parallax effects with custom easing
     const customEase = cubicBezier(0.16, 1, 0.3, 1);
 
-    // Hero header effects
-    const headerParallax = useTransform(smoothScrollProgress, [0, 0.25], [0, -100]);
-    const headerScale = useTransform(smoothScrollProgress, [0, 0.15], [1, 0.9]);
-    const headerRotate = useTransform(smoothScrollProgress, [0, 0.2], [0, -3]);
 
 
     // Update these values for smoother transitions
@@ -376,11 +372,7 @@ export default function QuotePage() {
                         rotateZ: cardRotateZ,
                         transformPerspective: 1200,
                     }}
-                    whileHover={{
-                        scale: 1.02,
-                        y: -5,
-                        transition: { duration: 1, ease: "easeOut" }
-                    }}
+
                 >
                     <Card className={`backdrop-blur-lg bg-black/50 border ${colors.border} shadow-lg shadow-${type === 'daily' ? 'yellow' : type === 'weekly' ? 'purple' : 'blue'}-500/10`}>
                         {/* Rest of your card content remains the same */}
