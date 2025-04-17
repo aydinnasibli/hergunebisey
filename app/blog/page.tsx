@@ -1,14 +1,13 @@
-// app/blog/page.tsx
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getBlogPosts, getCategories, urlFor } from '@/lib/sanity'
 import { formatDistance } from 'date-fns'
 import { tr } from 'date-fns/locale'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import { Search, X, ChevronRight, Clock } from 'lucide-react'
+import { Search, X, ChevronRight, Clock, ChevronLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 interface BlogPost {
@@ -33,12 +32,31 @@ interface Category {
 }
 
 export default function BlogPage() {
+    const parallaxRef = useRef<HTMLDivElement>(null);
     const [posts, setPosts] = useState<BlogPost[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(true)
+
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1)
+    const postsPerPage = 9
+    const [totalPages, setTotalPages] = useState(1)
+    const [paginatedPosts, setPaginatedPosts] = useState<BlogPost[]>([])
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (parallaxRef.current) {
+                const scrollPosition = window.scrollY;
+                parallaxRef.current.style.transform = `translateY(${scrollPosition * 0.4}px)`;
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -78,11 +96,46 @@ export default function BlogPage() {
         }
 
         setFilteredPosts(results)
+        // Reset to first page when filters change
+        setCurrentPage(1)
     }, [searchQuery, selectedCategory, posts])
+
+    // Update pagination whenever filtered posts change
+    useEffect(() => {
+        const total = Math.ceil(filteredPosts.length / postsPerPage)
+        setTotalPages(total || 1) // Ensure at least 1 page even if no results
+
+        // Get current posts for pagination
+        const indexOfLastPost = currentPage * postsPerPage
+        const indexOfFirstPost = indexOfLastPost - postsPerPage
+        setPaginatedPosts(filteredPosts.slice(indexOfFirstPost, indexOfLastPost))
+    }, [filteredPosts, currentPage])
 
     const clearFilters = () => {
         setSearchQuery('')
         setSelectedCategory(null)
+    }
+
+    // Pagination navigation
+    const goToPage = (pageNumber: number) => {
+        // Scroll to blog section
+        const blogSection = document.getElementById('blog-content')
+        if (blogSection) {
+            blogSection.scrollIntoView({ behavior: 'smooth' })
+        }
+        setCurrentPage(pageNumber)
+    }
+
+    const goToPreviousPage = () => {
+        if (currentPage > 1) {
+            goToPage(currentPage - 1)
+        }
+    }
+
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            goToPage(currentPage + 1)
+        }
     }
 
     // Framer Motion animations
@@ -107,288 +160,443 @@ export default function BlogPage() {
         }
     }
 
-    return (
-        <div className="min-h-screen pt-20 bg-black/90 text-gray-200">
-            <div className="container mx-auto px-4 py-12">
-                <motion.div
-                    className="max-w-6xl mx-auto"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+    // Generate page numbers for pagination
+    const renderPaginationNumbers = () => {
+        const pageNumbers = []
+        const maxPagesToShow = 5 // Show at most 5 page numbers
+
+        let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2))
+        let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1)
+
+        // Adjust start page if we're near the end
+        if (totalPages - startPage < maxPagesToShow - 1) {
+            startPage = Math.max(1, totalPages - maxPagesToShow + 1)
+        }
+
+        // First page
+        if (startPage > 1) {
+            pageNumbers.push(
+                <motion.button
+                    key="page-1"
+                    onClick={() => goToPage(1)}
+                    className="w-10 h-10 flex items-center justify-center rounded-md bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                    <div className="text-center mb-16">
-                        <motion.h1
-                            className="text-5xl font-bold mb-4 text-yellow-500"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
-                            Blogumuz
-                        </motion.h1>
-                        <motion.p
-                            className="text-lg text-gray-400 max-w-2xl mx-auto"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.4 }}
-                        >
-                            Ekibimizden en son içgörüleri, güncellemeleri ve hikayeleri keşfedin
-                        </motion.p>
-                        <motion.div
-                            className="w-24 h-1 bg-yellow-500 mx-auto mt-6"
-                            initial={{ width: 0 }}
-                            animate={{ width: 96 }}
-                            transition={{ duration: 0.8, delay: 0.6 }}
-                        ></motion.div>
-                    </div>
+                    1
+                </motion.button>
+            )
 
-                    {/* REDESIGNED Search and Filter Section */}
-                    <motion.div
-                        className="mb-12"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                    >
-                        <div className="flex flex-col md:flex-row gap-8 items-center justify-between">
-                            {/* Elegant Search Bar */}
-                            <div className="relative w-full md:w-96 group">
-                                <div className="absolute inset-y-0 left-0 flex items-center pl-4">
-                                    <Search className="h-5 w-5 text-yellow-500" />
-                                </div>
-                                <input
-                                    type="text"
-                                    className="block w-full pl-12 pr-4 py-3 bg-transparent border-b-2 border-gray-700 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300 focus:outline-none"
-                                    placeholder="Makalelerde ara..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                                <motion.div
-                                    className="absolute bottom-0 left-0 h-0.5 bg-yellow-500 w-0"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: searchQuery ? '100%' : 0 }}
-                                    transition={{ duration: 0.3 }}
-                                />
-                                {searchQuery && (
-                                    <button
-                                        onClick={() => setSearchQuery('')}
-                                        className="absolute right-0 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-500"
-                                    >
-                                        <X className="h-4 w-4" />
-                                    </button>
-                                )}
-                            </div>
+            // Show dots if not directly after first page
+            if (startPage > 2) {
+                pageNumbers.push(
+                    <span key="dots-1" className="px-2 text-gray-500">...</span>
+                )
+            }
+        }
 
-                            {/* Results Count */}
-                            <div className="text-gray-400 text-sm">
-                                {isLoading ? (
-                                    'İçerikler yükleniyor...'
-                                ) : (
-                                    <>Toplam <span className="text-yellow-500 font-medium">{posts.length}</span> içerikten <span className="text-yellow-500 font-medium">{filteredPosts.length}</span> tanesi gösteriliyor</>
-                                )}
-                            </div>
+        // Page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(
+                <motion.button
+                    key={`page-${i}`}
+                    onClick={() => goToPage(i)}
+                    className={`w-10 h-10 flex items-center justify-center rounded-md transition-all cursor-pointer ${currentPage === i
+                        ? 'bg-yellow-500 text-gray-900 font-medium shadow-lg shadow-yellow-500/20'
+                        : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                        }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                >
+                    {i}
+                </motion.button>
+            )
+        }
+
+        // Last page
+        if (endPage < totalPages) {
+            // Show dots if not directly before last page
+            if (endPage < totalPages - 1) {
+                pageNumbers.push(
+                    <span key="dots-2" className="px-2 text-gray-500">...</span>
+                )
+            }
+
+            pageNumbers.push(
+                <motion.button
+                    key={`page-${totalPages}`}
+                    onClick={() => goToPage(totalPages)}
+                    className="w-10 h-10 flex items-center justify-center rounded-md bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                >
+                    {totalPages}
+                </motion.button>
+            )
+        }
+
+        return pageNumbers
+    }
+
+    return (
+        <>
+            <div className="relative h-screen overflow-hidden">
+                {/* Parallax Background */}
+                <div
+                    ref={parallaxRef}
+                    className="absolute inset-0 w-full h-full"
+                    style={{
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        height: '120%',
+                        top: '-10%'
+                    }}
+                />
+
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/60 z-10"></div>
+
+                {/* Content */}
+                <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
+                        <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wide">
+                            BLOG<span className="text-yellow-500">.</span>
+                        </h1>
+                        <h2 className="text-2xl md:text-3xl mb-8">
+                            Ekibimizden en son içgörüler ve güncellemeler
+                        </h2>
+                        <p className="text-lg max-w-2xl mx-auto mb-12 text-white/90">
+                            Bilim, teknoloji, kültür ve kişisel gelişim alanlarındaki en son gelişmeleri,
+                            derinlemesine analizleri ve uzman görüşlerini içeren blog yazılarımızla bilgi
+                            dağarcığınızı genişletin.
+                        </p>
+
+                        {/* Scroll indicator */}
+                        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+                            <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                            </svg>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        {/* Categories Section - Separate */}
-                        <div className="mt-6 pb-6 border-b border-gray-800">
-                            <h3 className="text-yellow-500 font-medium mb-4">Kategoriler</h3>
-                            <div className="flex flex-wrap gap-3">
-                                <motion.button
-                                    onClick={() => setSelectedCategory(null)}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === null
-                                        ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
-                                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
-                                        }`}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    Tümü
-                                </motion.button>
+            <div id="blog-content" className="relative bg-black text-white py-24 overflow-hidden">
+                <div className="absolute inset-0 opacity-10">
+                    <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-64 left-10" >
+                        BLOG
+                    </div>
+                    <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-7/12 left-32" >
+                        OKU KEŞFET
+                    </div>
+                    <div className="absolute text-9xl font-bold text-white whitespace-nowrap bottom-10 right-10" >
+                        BLOG
+                    </div>
+                </div>
+                <div className="container mx-auto px-4 relative z-10">
+                    <motion.div
+                        className="max-w-6xl mx-auto"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
 
-                                {categories.map((category) => (
+
+                        {/* Search and Filter Section */}
+                        <motion.div
+                            className="mb-12 bg-white/5 backdrop-blur-sm p-8 rounded-xl"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
+                            <div className="flex flex-col md:flex-row gap-8 items-center justify-between mb-6">
+                                {/* Elegant Search Bar */}
+                                <div className="relative w-full md:w-96 group">
+                                    <div className="absolute inset-y-0 left-0 flex items-center pl-4">
+                                        <Search className="h-5 w-5 text-yellow-500" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="block w-full pl-12 pr-4 py-3 bg-white/10 rounded-xl border border-gray-700 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300 focus:outline-none"
+                                        placeholder="Makalelerde ara..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                    {searchQuery && (
+                                        <button
+                                            onClick={() => setSearchQuery('')}
+                                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-500"
+                                        >
+                                            <X className="h-4 w-4" />
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Results Count */}
+                                <div className="text-gray-400 text-sm">
+                                    {isLoading ? (
+                                        'İçerikler yükleniyor...'
+                                    ) : (
+                                        <>
+                                            <span className="text-yellow-500 font-medium">Sayfa{' '}{currentPage}/{totalPages}</span>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Categories Section - Redesigned */}
+                            <div className="mt-6">
+                                <h3 className="text-yellow-500 font-medium mb-4">Kategoriler</h3>
+                                <div className="flex flex-wrap gap-3">
                                     <motion.button
-                                        key={category._id}
-                                        onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === category.title
+                                        onClick={() => setSelectedCategory(null)}
+                                        className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === null
                                             ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
-                                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700'
+                                            : 'bg-white/10 hover:bg-white/20 text-gray-300'
                                             }`}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
-                                        {category.title}
+                                        Tümü
                                     </motion.button>
-                                ))}
-
-                                {(searchQuery || selectedCategory) && (
-                                    <motion.button
-                                        onClick={clearFilters}
-                                        className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50"
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <X className="h-4 w-4" />
-                                        Filtreleri Temizle
-                                    </motion.button>
-                                )}
+                                    {categories.map((category) => (
+                                        <motion.button
+                                            key={category._id}
+                                            onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
+                                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === category.title
+                                                ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
+                                                : 'bg-white/10 hover:bg-white/20 text-gray-300'
+                                                }`}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            {category.title}
+                                        </motion.button>
+                                    ))}
+                                    {(searchQuery || selectedCategory) && (
+                                        <motion.button
+                                            onClick={clearFilters}
+                                            className="flex items-center gap-1 px-6 py-2 rounded-full text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50 cursor-pointer"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <X className="h-4 w-4" />
+                                            Filtreleri Temizle
+                                        </motion.button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Posts Grid */}
-                    {isLoading ? (
-                        <motion.div
-                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            {[...Array(6)].map((_, i) => (
-                                <motion.div
-                                    key={i}
-                                    className="bg-gray-800 rounded-xl overflow-hidden shadow-md animate-pulse"
-                                    variants={itemVariants}
-                                >
-                                    <div className="h-48 bg-gray-700"></div>
-                                    <div className="p-6">
-                                        <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
-                                        <div className="h-8 bg-gray-700 rounded w-full mb-4"></div>
-                                        <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
-                                        <div className="h-4 bg-gray-700 rounded w-2/3"></div>
-                                    </div>
-                                </motion.div>
-                            ))}
                         </motion.div>
-                    ) : filteredPosts.length === 0 ? (
-                        <motion.div
-                            className="text-center py-16"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <div className="text-xl font-medium text-gray-300 mb-2">İçerik bulunamadı</div>
-                            <p className="text-gray-400">Lütfen arama veya filtre kriterlerinizi değiştirin</p>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            {filteredPosts.map((post: BlogPost) => (
-                                // app/blog/page.tsx (partial update - only showing the blog card part)
 
-                                // Inside the filteredPosts.map function where you render each post card
-                                <motion.div
-                                    key={post._id}
-                                    variants={itemVariants}
-                                    whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                                >
-                                    <Link href={`/blog/${post.slug.current}`}>
-                                        <div className="relative group bg-black/25 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/25">
-                                            <div className="absolute inset-0    transition-opacity duration-300 z-10"></div>
+                        {/* Posts Grid */}
+                        {isLoading ? (
+                            <motion.div
+                                className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                {[...Array(9)].map((_, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="bg-gray-800 rounded-xl overflow-hidden shadow-md animate-pulse"
+                                        variants={itemVariants}
+                                    >
+                                        <div className="h-48 bg-gray-700"></div>
+                                        <div className="p-6">
+                                            <div className="h-4 bg-gray-700 rounded w-3/4 mb-4"></div>
+                                            <div className="h-8 bg-gray-700 rounded w-full mb-4"></div>
+                                            <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
+                                            <div className="h-4 bg-gray-700 rounded w-2/3"></div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        ) : filteredPosts.length === 0 ? (
+                            <motion.div
+                                className="text-center py-16"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <div className="text-xl font-medium text-gray-300 mb-2">İçerik bulunamadı</div>
+                                <p className="text-gray-400">Lütfen arama veya filtre kriterlerinizi değiştirin</p>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                            >
+                                {paginatedPosts.map((post) => (
+                                    <motion.div
+                                        key={post._id}
+                                        variants={itemVariants}
+                                        whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                                    >
+                                        <Link href={`/blog/${post.slug.current}`}>
+                                            <div className="relative border border-white/40 group bg-black/25 rounded-xl overflow-hidden shadow-lg h-full flex flex-col transform transition-all duration-300 hover:shadow-yellow-500/25">
+                                                <div className="absolute inset-0 transition-opacity duration-300 z-10"></div>
 
-                                            {post.mainImage ? (
-                                                <div className="relative h-64 w-full overflow-hidden">
-                                                    <Image
-                                                        src={urlFor(post.mainImage).url()}
-                                                        alt={post.title}
-                                                        fill
-                                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                                    />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80"></div>
+                                                {post.mainImage ? (
 
-                                                    {/* Categories on image */}
-                                                    <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 z-20">
-                                                        {post.categories?.map((category: string, i: number) => (
-                                                            <span
-                                                                key={i}
-                                                                className="text-xs  text-white font-medium bg-black  rounded-lg px-3 py-1 shadow-md"
-                                                            >
-                                                                {category}
-                                                            </span>
-                                                        ))}
+                                                    <div className="relative h-64 w-full overflow-hidden">
+                                                        <div className="absolute inset-0">
+                                                            <Image
+                                                                src={urlFor(post.mainImage).url()}
+                                                                alt={post.title}
+                                                                fill
+                                                                className="object-cover transition-transform duration-700 transform-origin-center"
+                                                                style={{ transformOrigin: 'center center' }}
+                                                            />
+                                                        </div>
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none"></div>
+
+                                                        {/* Categories on image */}
+                                                        <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 z-20">
+                                                            {post.categories?.map((category, i) => (
+                                                                <span
+                                                                    key={i}
+                                                                    className="text-xs text-white font-medium bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 shadow-md"
+                                                                >
+                                                                    {category}
+                                                                </span>
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ) : (
-                                                <div className="h-64 bg-gray-700 flex items-center justify-center relative">
-                                                    <span className="text-gray-500">Görsel yok</span>
+                                                ) : (
+                                                    <div className="h-64 bg-gray-700 flex items-center justify-center relative">
+                                                        <span className="text-gray-500">Görsel yok</span>
 
-                                                    {/* Categories on placeholder */}
-                                                    <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                                                        {post.categories?.map((category: string, i: number) => (
-                                                            <span
-                                                                key={i}
-                                                                className="text-xs font-medium bg-yellow-500 text-gray-900 rounded-lg px-3 py-1 shadow-md"
-                                                            >
-                                                                {category}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            <div className="p-6 flex flex-col flex-grow">
-                                                <h2 className="text-2xl font-bold mb-3 text-gray-100 line-clamp-2  transition-colors duration-300">
-                                                    {post.title}
-                                                </h2>
-
-                                                {post.excerpt && (
-                                                    <p className="text-gray-400 mb-6 line-clamp-3 flex-grow">
-                                                        {post.excerpt}
-                                                    </p>
-                                                )}
-
-                                                {/* Author information */}
-                                                {post.author && (
-                                                    <div className="flex items-center mb-4">
-                                                        {post.author.image ? (
-                                                            <div className="relative w-8 h-8 mr-2 rounded-full overflow-hidden border border-yellow-500/50">
-                                                                <Image
-                                                                    src={urlFor(post.author.image).url()}
-                                                                    alt={post.author.name}
-                                                                    fill
-                                                                    className="object-cover"
-                                                                />
-                                                            </div>
-                                                        ) : (
-                                                            <div className="w-8 h-8 mr-2 rounded-full bg-gray-700 flex items-center justify-center text-yellow-500">
-                                                                {post.author.name.charAt(0)}
-                                                            </div>
-                                                        )}
-                                                        <span className="text-sm text-gray-300">{post.author.name}</span>
+                                                        {/* Categories on placeholder */}
+                                                        <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+                                                            {post.categories?.map((category, i) => (
+                                                                <span
+                                                                    key={i}
+                                                                    className="text-xs font-medium bg-white/10 text-white rounded-full px-3 py-1 shadow-md"
+                                                                >
+                                                                    {category}
+                                                                </span>
+                                                            ))}
+                                                        </div>
                                                     </div>
                                                 )}
 
-                                                <div className="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-700">
-                                                    <time dateTime={post.publishedAt} className="text-gray-400 flex items-center">
-                                                        <Clock className="h-4 w-4 mr-2 text-yellow-500" />
-                                                        {formatDistance(new Date(post.publishedAt), new Date(), {
-                                                            addSuffix: true,
-                                                            locale: tr
-                                                        })}
-                                                    </time>
+                                                {/* Divider Line - Adding the thin line here */}
+                                                <div className="h-px bg-white/25 w-full"></div>
 
-                                                    <span className="flex items-center group/button">
-                                                        <span className="text-yellow-500 font-medium mr-1 transition-all duration-300 group-hover/button:mr-2">
-                                                            Makaleyi Oku
+                                                <div className="p-6 flex flex-col flex-grow">
+                                                    <h2 className="text-2xl font-bold mb-3 text-gray-100 line-clamp-2 transition-colors duration-300">
+                                                        {post.title}
+                                                    </h2>
+
+                                                    {post.excerpt && (
+                                                        <p className="text-gray-400 mb-6 line-clamp-3 flex-grow">
+                                                            {post.excerpt}
+                                                        </p>
+                                                    )}
+
+                                                    {/* Author information */}
+                                                    {post.author && (
+                                                        <div className="flex items-center mb-4">
+                                                            {post.author.image ? (
+                                                                <div className="relative w-8 h-8 mr-2 rounded-full overflow-hidden border border-yellow-500/50">
+                                                                    <Image
+                                                                        src={urlFor(post.author.image).url()}
+                                                                        alt={post.author.name}
+                                                                        fill
+                                                                        className="object-cover"
+                                                                    />
+                                                                </div>
+                                                            ) : (
+                                                                <div className="w-8 h-8 mr-2 rounded-full bg-gray-700 flex items-center justify-center text-yellow-500">
+                                                                    {post.author.name.charAt(0)}
+                                                                </div>
+                                                            )}
+                                                            <span className="text-sm text-gray-300">{post.author.name}</span>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-700">
+                                                        <time dateTime={post.publishedAt} className="text-gray-400 flex items-center">
+                                                            <Clock className="h-4 w-4 mr-2 text-yellow-500" />
+                                                            {formatDistance(new Date(post.publishedAt), new Date(), {
+                                                                addSuffix: true,
+                                                                locale: tr
+                                                            })}
+                                                        </time>
+
+                                                        <span className="flex items-center group/button">
+                                                            <span className="text-yellow-500 font-medium mr-1 transition-all duration-300 group-hover/button:mr-2">
+                                                                Makaleyi Oku
+                                                            </span>
+                                                            <motion.div
+                                                                className="bg-yellow-500 rounded-full p-1"
+                                                                whileHover={{ scale: 1.1 }}
+                                                            >
+                                                                <ChevronRight className="w-4 h-4 text-gray-900" />
+                                                            </motion.div>
                                                         </span>
-                                                        <motion.div
-                                                            className="bg-yellow-500 rounded-full p-1"
-                                                            whileHover={{ scale: 1.1 }}
-                                                        >
-                                                            <ChevronRight className="w-4 h-4 text-gray-900" />
-                                                        </motion.div>
-                                                    </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </Link>
-                                </motion.div>
-                            ))}
-                        </motion.div>
-                    )}
-                </motion.div>
+                                        </Link>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        )}
+
+                        {/* Pagination Controls */}
+                        {!isLoading && filteredPosts.length > 0 && (
+                            <motion.div
+                                className="mt-16 flex flex-wrap justify-center items-center gap-2"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                            >
+                                {/* Previous Page Button */}
+                                <motion.button
+                                    onClick={goToPreviousPage}
+                                    disabled={currentPage === 1}
+                                    className={`flex items-center justify-center px-4 py-2 rounded-md ${currentPage === 1
+                                        ? 'bg-white/5 text-gray-500 cursor-not-allowed'
+                                        : 'bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all cursor-pointer'
+                                        }`}
+                                    whileHover={currentPage !== 1 ? { scale: 1.05 } : {}}
+                                    whileTap={currentPage !== 1 ? { scale: 0.95 } : {}}
+                                >
+                                    <ChevronLeft className="w-5 h-5 mr-1" />
+                                    <span className="hidden sm:inline">Önceki</span>
+                                </motion.button>
+
+                                {/* Page Numbers */}
+                                <div className="flex items-center gap-2 px-2">
+                                    {renderPaginationNumbers()}
+                                </div>
+
+                                {/* Next Page Button */}
+                                <motion.button
+                                    onClick={goToNextPage}
+                                    disabled={currentPage === totalPages}
+                                    className={`flex items-center justify-center px-4 py-2 rounded-md ${currentPage === totalPages
+                                        ? 'bg-white/5 text-gray-500 cursor-not-allowed'
+                                        : 'bg-white/10 text-gray-300 hover:bg-yellow-500 hover:text-gray-900 transition-all cursor-pointer'
+                                        }`}
+                                    whileHover={currentPage !== totalPages ? { scale: 1.05 } : {}}
+                                    whileTap={currentPage !== totalPages ? { scale: 0.95 } : {}}
+                                >
+                                    <span className="hidden sm:inline">Sonraki</span>
+                                    <ChevronRight className="w-5 h-5 ml-1" />
+                                </motion.button>
+                            </motion.div>
+                        )}
+                    </motion.div>
+                </div>
             </div>
-        </div>
+        </>
     )
 }

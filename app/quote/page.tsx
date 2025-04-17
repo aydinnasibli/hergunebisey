@@ -282,7 +282,7 @@ export default function QuotePage() {
         return (
             <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <Image
-                    src="/wp.jpg"
+                    src="/quote.jpeg"
                     alt="Background"
                     fill
                     quality={75}
@@ -526,21 +526,29 @@ export default function QuotePage() {
                 >
                     <motion.h1
                         key="hero-title"
-                        className="text-5xl md:text-7xl font-bold text-white mb-6"
+                        className="text-5xl md:text-7xl font-bold text-white mb-3"
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3, duration: 0.8 }}
                     >
-                        <span className="text-yellow-500">Hergünebi'</span>şey
+                        Alıntı<span className="text-yellow-500">.</span>
                     </motion.h1>
+
+
+
                     <motion.p
-                        className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-10"
+                        className="text-xl md:text-lg text-gray-300 max-w-2xl mx-auto mb-6"
                         initial={{ y: 50, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
                     >
                         Günlük ilham veren alıntılarla, düşüncelerinizi ve gününüzü aydınlatın.
                     </motion.p>
+                    <motion.div
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
+                        className="w-16 h-1 bg-yellow-500 mx-auto mb-8" />
                 </motion.div>
                 <div className="absolute bottom-10  text-white left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
                     <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>

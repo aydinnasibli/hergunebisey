@@ -146,7 +146,7 @@ const Footer = () => {
                                 <a
                                     key={index}
                                     href={social.href}
-                                    className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-colors hover:bg-white/10"
+                                    className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-colors hover:bg-yellow-500"
                                     aria-label={`${social.name}'da bizi takip edin`}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -222,10 +222,6 @@ const Footer = () => {
                         © {currentYear} Hergünebi&apos;şey. Tüm hakları saklıdır.
                     </p>
 
-                    <div className="flex items-center">
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                        <span className="text-white/70 text-sm italic">Her Gün Yeni Bir Keşif</span>
-                    </div>
                 </div>
             </div>
         </footer>

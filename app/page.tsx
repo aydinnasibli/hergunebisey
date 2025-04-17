@@ -90,10 +90,10 @@ const Home = () => {
   };
 
   // Scroll to carousel section
-  const scrollToCarousel = () => {
-    const carouselSection = document.getElementById('content-carousel');
-    if (carouselSection) {
-      carouselSection.scrollIntoView({ behavior: 'smooth' });
+  const scrollToContent = () => {
+    const whatWeDoSection = document.getElementById('what-we-do');
+    if (whatWeDoSection) {
+      whatWeDoSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -193,19 +193,14 @@ const Home = () => {
         <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="w-16 h-1 bg-yellow-500 mx-auto mb-4 sm:mb-8"></div>
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-2 sm:mb-4 tracking-wide">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-8 tracking-wide">
               HERGÜNEBİ'ŞEY
             </h1>
-            <h2 className="text-xl sm:text-2xl md:text-3xl mb-4 sm:mb-8">
-              Her gün yeni bir keşif, ilham ve bilgi
-            </h2>
             <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
-              Blog yazılarından podcastlere, düşündürücü alıntılardan ilham veren hikayelere -
-              hayatınıza her gün yeni bir şey katma fırsatı sunuyoruz. Türkiye'nin en seçkin
-              içerik platformuna hoş geldiniz.
+              Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da<br /> alıntıların bulunduğu platform.
             </p>
             <button
-              onClick={scrollToCarousel}
+              onClick={scrollToContent}
               className="px-6 py-3 sm:px-8 sm:py-4 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-xs sm:text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
             >
               İçerikleri Keşfet
@@ -233,22 +228,16 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div id='what-we-do' className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12">
             <div className="w-full lg:w-1/2">
               <div className="w-10 h-1 bg-yellow-500 mb-4 sm:mb-6"></div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">NELER YAPIYORUZ?</h2>
               <p className="text-base sm:text-lg text-white/80 mb-4 sm:mb-6">
-                Hergünebi'şey, günlük hayatınıza ilham, bilgi ve değer katmak için
-                oluşturulmuş bir içerik platformudur. Deneyimli yazarlarımız ve
-                uzmanlarımızın kaleminden çıkan blog yazıları, derinlemesine konuları
-                ele aldığımız podcast'ler ve düşündürücü alıntılarla her gün yeni bir şey
-                öğrenmenizi sağlıyoruz.
+                Bu sitede bilim, felsefe, tarih, teknoloji, kültür ve diğer pek çok farklı kategoride üç farklı formatta içerik paylaşıyoruz. Evrene kıyasla kısacık ömrümüzde elimizden geldiğince merakımızı gidermek amacıyla ilgimizi çeken hemen her konuda kendimizce bir şeyler yazıp çiziyoruz. Bu esnada da düşüncelerimizi kendimize saklamayıp ilgilenen herkesle de paylaşmaya çalışıyoruz.
               </p>
               <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
-                İçeriklerimiz, kişisel gelişimden teknolojiye, kültür ve sanattan günlük yaşama
-                kadar geniş bir yelpazede sizlere ulaşıyor. Amacımız, okuyucularımıza her gün
-                yeni bir bakış açısı kazandırmak ve hayatlarına dokunmaktır.
+                Sitenin adının hergünebi’şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
               </p>
               <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
                 Hikayemiz
@@ -299,7 +288,6 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl mx-auto">
             <div className="w-8 sm:w-10 h-1 bg-yellow-500 mx-auto mb-8 sm:mb-16"></div>
-
             <div className="relative">
               {/* Large quote marks */}
               <div className="absolute -top-8 sm:-top-16 -left-4 sm:-left-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>

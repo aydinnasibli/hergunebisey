@@ -133,12 +133,10 @@ const PodcastPage = () => {
                 <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
                     <div className="max-w-4xl mx-auto">
                         <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
-                        <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wide">
+                        <h1 className="text-5xl md:text-7xl font-bold mb-4 md:mb-8 tracking-wide">
                             PODCAST<span className="text-yellow-500">.</span>
                         </h1>
-                        <h2 className="text-2xl md:text-3xl mb-8">
-                            Her anınıza eşlik edecek içerikler
-                        </h2>
+
                         <p className="text-lg max-w-2xl mx-auto mb-12 text-white/90">
                             Uzmanlarla derinlemesine sohbetler, ilham verici hikayeler ve Türkiye'nin gündemine
                             farklı bakış açıları sunan podcast yayınlarımız yolda, sporda veya evde -
@@ -275,8 +273,8 @@ const PodcastPage = () => {
                                     key={category.id}
                                     onClick={() => setActiveCategory(category.id)}
                                     className={`px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
-                                            ? 'bg-yellow-500 text-black'
-                                            : 'bg-white/10 hover:bg-white/20'
+                                        ? 'bg-yellow-500 text-black'
+                                        : 'bg-white/10 hover:bg-white/20'
                                         }`}
                                 >
                                     {category.name}
