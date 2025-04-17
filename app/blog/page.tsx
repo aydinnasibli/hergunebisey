@@ -166,7 +166,7 @@ export default function BlogPage() {
         const maxPagesToShow = 5 // Show at most 5 page numbers
 
         let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2))
-        let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1)
+        const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1)
 
         // Adjust start page if we're near the end
         if (totalPages - startPage < maxPagesToShow - 1) {

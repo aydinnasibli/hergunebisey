@@ -36,10 +36,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         notFound()
     }
 
-    // Fetch related posts from the same category
-    const relatedPosts: BlogPost[] = post.categories && post.categories.length > 0
-        ? await getBlogPostsByCategory(post.categories[0])
-        : []
 
 
     // Define proper type for the components object
