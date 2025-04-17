@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useRef } from 'react';
-
+import Link from 'next/link';
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +152,7 @@ const Home = () => {
                   <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Tarih</span>
                 </div>
 
-                <a
+                <Link
                   href="/blog"
                   className="px-8 py-3 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300 inline-flex items-center"
                 >
@@ -160,7 +160,7 @@ const Home = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
-                </a>
+                </Link>
               </div>
 
               <div className="w-full lg:w-1/2">
