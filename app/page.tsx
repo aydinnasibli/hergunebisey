@@ -161,7 +161,7 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">BLOG<span className="text-yellow-500">.</span></h2>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">Yazılar<span className="text-yellow-500">.</span></h2>
 
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div className="w-full lg:w-1/2">
@@ -284,7 +284,7 @@ const Home = () => {
             <div className="flex flex-col md:flex-row items-center gap-12">
               <div className="w-full md:w-1/2">
                 <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-                <h2 className="text-4xl md:text-6xl font-bold mb-6">DİNLE<span className="text-yellow-500">.</span></h2>
+                <h2 className="text-4xl md:text-6xl font-bold mb-6">Podcast<span className="text-yellow-500">.</span></h2>
                 <p className="text-lg text-white/80 mb-8">
                   Podcastlerimizde uzmanlarla derinlemesine sohbetler, ilham verici hikayeler
                   ve Türkiye'nin gündemine farklı bakış açıları sunuyoruz. Yolda, sporda
