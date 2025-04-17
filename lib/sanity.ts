@@ -67,19 +67,6 @@ export const getCategories = async () => {
   `)
 }
 
-export const getLatestBlogPostsForCarousel = async (limit = 5) => {
-  return client.fetch(`
-    *[_type == "blog"] | order(publishedAt desc)[0..${limit - 1}] {
-      _id,
-      title,
-      slug,
-      excerpt,
-      mainImage,
-      publishedAt,
-      "categories": categories[]->title
-    }
-  `)
-}
 
 // Client-side helpers for fetching data
 export const fetchBlogPosts = async () => {

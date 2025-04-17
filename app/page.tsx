@@ -1,167 +1,21 @@
 "use client"
 import { useState, useEffect, useRef } from 'react';
-import { getLatestBlogPostsForCarousel } from '../lib/sanity';
-import { urlFor } from '../lib/sanity';
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
-
-// Blog post type definition
-type BlogPost = {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  excerpt: string;
-  mainImage: SanityImageSource;
-  publishedAt: string;
-  categories: string[];
-};
-
-const SLIDE_DURATION = 6000; // milliseconds (6 seconds)
 
 const Home = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [showCarousel, setShowCarousel] = useState(false);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const slideshowRef = useRef<NodeJS.Timeout | null>(null);
-  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
-  // Fetch blog posts from Sanity
-  useEffect(() => {
-    const fetchBlogPosts = async () => {
-      try {
-        const posts = await getLatestBlogPostsForCarousel(5);
-        setBlogPosts(posts);
-      } catch (error) {
-        console.error("Error fetching blog posts:", error);
-      }
-    };
-
-    fetchBlogPosts();
-  }, []);
-
-  // Parallax effect for intro section
+  // Reinstate the parallax effect
   useEffect(() => {
     const handleScroll = () => {
       if (parallaxRef.current) {
         const scrollPosition = window.scrollY;
-        const threshold = window.innerHeight * 0.8;
-
-        // Background parallax effect
         parallaxRef.current.style.transform = `translateY(${scrollPosition * 0.4}px)`;
-
-        // Show carousel when threshold is passed
-        if (scrollPosition > threshold && !showCarousel) {
-          setShowCarousel(true);
-        }
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [showCarousel]);
-
-  // Move to next slide
-  const handleNextSlide = () => {
-    if (blogPosts.length === 0) return;
-
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev === blogPosts.length - 1 ? 0 : prev + 1));
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 600); // Wait for transition to complete
-  };
-
-  // Move to previous slide
-  const handlePrevSlide = () => {
-    if (isTransitioning || blogPosts.length === 0) return;
-
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev === 0 ? blogPosts.length - 1 : prev - 1));
-
-    // Reset progress bar
-    setProgress(0);
-    startProgressTimer();
-
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 600);
-  };
-
-
-
-  // Start progress timer
-  const startProgressTimer = () => {
-    // Clear existing intervals
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
-
-    // Reset progress
-    setProgress(0);
-
-    // Start progress counter that updates 10 times per second (100ms)
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        const newProgress = prev + (100 / (SLIDE_DURATION / 100));
-        return newProgress > 100 ? 100 : newProgress;
-      });
-    }, 100);
-
-    progressIntervalRef.current = interval;
-  };
-
-  // Auto-rotating slideshow
-  useEffect(() => {
-    if (!showCarousel || blogPosts.length === 0) return;
-
-    // Clear existing timers and restart counter
-    if (slideshowRef.current) {
-      clearTimeout(slideshowRef.current);
-    }
-
-    // Start progress timer
-    startProgressTimer();
-
-    // Set timer for auto-advancing slides
-    slideshowRef.current = setTimeout(() => {
-      handleNextSlide();
-    }, SLIDE_DURATION);
-
-    return () => {
-      // Clean up counters when component changes or unmounts
-      if (slideshowRef.current) {
-        clearTimeout(slideshowRef.current);
-      }
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-    };
-  }, [currentSlide, showCarousel, blogPosts.length]);
-
-  // Current content
-  const currentContent = blogPosts[currentSlide];
-
-  // Visible content cards (starting from current)
-  const visibleContents = [];
-  if (blogPosts.length > 0) {
-    for (let i = 0; i < 4; i++) {
-      const index = (currentSlide + i) % blogPosts.length;
-      visibleContents.push(blogPosts[index]);
-    }
-  }
-
-
-  // Splitting title into main and subtitle parts (first word and rest)
-  const getTitleParts = (title: string) => {
-    if (!title) return { main: '', sub: '' };
-    const words = title.split(' ');
-    return {
-      main: words[0],
-      sub: words.slice(1).join(' ')
-    };
-  };
+  }, []);
 
   return (
     <div className="relative w-full">
@@ -193,7 +47,6 @@ const Home = () => {
             <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
               Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da<br /> alıntıların bulunduğu platform.
             </p>
-
           </div>
 
           {/* Scroll indicator */}
@@ -226,7 +79,7 @@ const Home = () => {
                 Bu sitede bilim, felsefe, tarih, teknoloji, kültür ve diğer pek çok farklı kategoride üç farklı formatta içerik paylaşıyoruz. Evrene kıyasla kısacık ömrümüzde elimizden geldiğince merakımızı gidermek amacıyla ilgimizi çeken hemen her konuda kendimizce bir şeyler yazıp çiziyoruz. Bu esnada da düşüncelerimizi kendimize saklamayıp ilgilenen herkesle de paylaşmaya çalışıyoruz.
               </p>
               <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
-                Sitenin adının hergünebi’şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
+                Sitenin adının hergünebi'şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
               </p>
               <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
                 Hikayemiz
@@ -265,42 +118,106 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {/* Quote Section */}
-      <div className="relative bg-black text-white py-20 overflow-hidden">
+
+      {/* Blog Section */}
+      <div className="relative bg-gradient-to-b from-black to-gray-900 text-white py-24 overflow-hidden">
         {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '30%', left: '5%' }}>
-            DÜŞÜN İLHAM AL
-          </div>
+        <div className="absolute inset-0 opacity-5">
+          <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
+              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="white" strokeWidth="0.5" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="w-8 sm:w-10 h-1 bg-yellow-500 mx-auto mb-8 sm:mb-16"></div>
-            <div className="relative">
-              {/* Large quote marks */}
-              <div className="absolute -top-8 sm:-top-16 -left-4 sm:-left-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
-              <div className="absolute -bottom-16 sm:-bottom-32 -right-4 sm:-right-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
+          <div className="max-w-6xl mx-auto">
+            <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">BLOG<span className="text-yellow-500">.</span></h2>
 
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10 text-center leading-tight">
-                Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
-              </h2>
+            <div className="flex flex-col lg:flex-row gap-12 items-center">
+              <div className="w-full lg:w-1/2">
+                <p className="text-lg text-white/80 mb-8">
+                  Günlük hayattan düşüncelere, bilimsel konulardan felsefi sorgulamalara kadar uzanan geniş bir
+                  yelpazede kaleme aldığımız yazılarımızı blogumuzda bulabilirsiniz. Her yazıda farklı bir bakış
+                  açısı, belki de hiç düşünmediğiniz bir perspektif sizleri bekliyor.
+                </p>
 
-              <div className="flex items-center justify-center mb-6 sm:mb-10">
-                <div>
-                  <h3 className="text-lg sm:text-xl italic font-normal">Aristo</h3>
+                <div className="flex flex-wrap gap-3 mb-8">
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Düşünce</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Bilim</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Teknoloji</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Felsefe</span>
+                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Tarih</span>
+                </div>
+
+                <a
+                  href="/blog"
+                  className="px-8 py-3 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300 inline-flex items-center"
+                >
+                  Tüm Yazılar
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </a>
+              </div>
+
+              <div className="w-full lg:w-1/2">
+                <div className="relative">
+                  {/* Decorative elements */}
+                  <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-yellow-500"></div>
+                  <div className="absolute -bottom-6 -right-6 w-12 h-12 border-b-2 border-r-2 border-yellow-500"></div>
+
+                  {/* Image collage */}
+                  <div className="grid grid-cols-3 gap-2 p-2 bg-white/5 backdrop-blur-sm">
+                    <div className="col-span-2 h-64 overflow-hidden">
+                      <img
+                        src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070"
+                        alt="Blog teması"
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="h-32 overflow-hidden">
+                        <img
+                          src="https://images.unsplash.com/photo-1432821596592-e2c18b78144f?q=80&w=2070"
+                          alt="Blog yazısı"
+                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                      <div className="h-32 overflow-hidden">
+                        <img
+                          src="https://images.unsplash.com/photo-1519791883288-dc8bd696e667?q=80&w=2070"
+                          alt="Blog yazısı"
+                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    </div>
+                    <div className="h-32 overflow-hidden">
+                      <img
+                        src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?q=80&w=2070"
+                        alt="Blog yazısı"
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="h-32 col-span-2 overflow-hidden">
+                      <img
+                        src="https://images.unsplash.com/photo-1468779036391-52341f60b55d?q=80&w=2068"
+                        alt="Blog yazısı"
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="flex justify-center mt-6 sm:mt-10">
-              <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
-                Tüm Alıntılar
-              </button>
             </div>
           </div>
         </div>
       </div>
+
+
+
       {/* Podcast Section */}
       <div className="relative w-full bg-black text-white py-24 overflow-hidden">
         {/* Background gradient and pattern */}
@@ -404,160 +321,42 @@ const Home = () => {
           </div>
         </div>
       </div>
+      {/* Quote Section */}
+      <div className="relative bg-black text-white py-20 overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '30%', left: '5%' }}>
+            DÜŞÜN İLHAM AL
+          </div>
+        </div>
 
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="w-8 sm:w-10 h-1 bg-yellow-500 mx-auto mb-8 sm:mb-16"></div>
+            <div className="relative">
+              {/* Large quote marks */}
+              <div className="absolute -top-8 sm:-top-16 -left-4 sm:-left-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
+              <div className="absolute -bottom-16 sm:-bottom-32 -right-4 sm:-right-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
 
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10 text-center leading-tight">
+                Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
+              </h2>
 
-
-
-
-      {blogPosts.length > 0 && currentContent && (
-        <div id="content-carousel" className="relative w-full h-screen overflow-hidden bg-black">
-          {/* Background image with proper overlay gradient */}
-          <div
-            className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${isTransitioning ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-              }`}
-            style={{
-              backgroundImage: `url(${urlFor(currentContent.mainImage).url()})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          />
-
-          {/* Improved overlay with gradient for better text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30" />
-
-          {/* Main content */}
-          <div className="relative z-10 h-full text-white flex flex-col">
-            {/* Main Content Area */}
-            <div className="flex-1 flex flex-col">
-              {/* Content Section */}
-              <div className="flex flex-1 px-4 md:px-16">
-                {/* Left side - Text content */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                  <div className={`transition-all duration-700 ${isTransitioning ? 'opacity-0 translate-y-10' : 'opacity-100 translate-y-0'}`}>
-                    <div className="mb-6">
-                      <div className="w-12 h-1 bg-yellow-500 mb-4"></div>
-                      <div className="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-yellow-500">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                        </svg>
-                        <p className="text-lg uppercase tracking-wider">{currentContent.categories?.[0] || "Blog"}</p>
-                      </div>
-                    </div>
-
-                    {/* Title with consistent styling */}
-                    <h1 className="text-5xl md:text-7xl font-bold mb-2 tracking-wide">
-                      {getTitleParts(currentContent.title).main}
-                    </h1>
-                    <h2 className="text-4xl md:text-6xl font-bold mb-8 text-white/90 tracking-wide">
-                      {getTitleParts(currentContent.title).sub}
-                    </h2>
-
-                    <p className="max-w-md text-white/80 text-lg mb-12">
-                      {currentContent.excerpt}
-                    </p>
-
-                    <div className="flex items-center gap-6">
-                      <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-                        </svg>
-                      </button>
-
-                      <a
-                        href={`/blog/${currentContent.slug.current}`}
-                        className="px-8 py-4 bg-transparent border border-yellow-500 text-yellow-500 rounded-full uppercase tracking-widest text-sm font-medium hover:bg-yellow-500 hover:text-black transition-colors duration-300"
-                      >
-                        İçeriği Oku
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right side - Slide cards for desktop */}
-                <div className="hidden lg:flex w-1/2 items-end justify-end">
-                  <div className="flex gap-2 relative mb-5 mr-1">
-                    {visibleContents.map((post, index) => (
-                      <div
-                        key={`${post._id}-${index}`}
-                        className={`relative w-36 h-52 rounded-lg overflow-hidden transition-all duration-500 cursor-pointer
-                    ${index === 0 ? 'opacity-100 scale-100 shadow-xl' : index === 1 ? 'opacity-80 scale-95 hover:opacity-90' : 'opacity-60 scale-90 hover:opacity-70'}`}
-                        style={{
-                          transform: `translateX(${index * -24}px)`,
-                          zIndex: 4 - index,
-                        }}
-                        onClick={() => index !== 0 && setCurrentSlide((currentSlide + index) % blogPosts.length)}
-                      >
-                        <div className="absolute inset-0">
-                          <div
-                            className="w-full h-full bg-cover bg-center"
-                            style={{ backgroundImage: `url(${urlFor(post.mainImage).url()})` }}
-                          />
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20"></div>
-                        <div className="absolute top-4 right-4">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-yellow-500">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                          </svg>
-                        </div>
-                        <div className="absolute bottom-0 left-0 p-3 text-white">
-                          <div className="w-6 h-0.5 bg-yellow-500 mb-1"></div>
-                          <p className="text-xs uppercase mb-1 text-yellow-500">{post.categories?.[0] || "Blog"}</p>
-                          <h3 className="text-sm font-bold leading-tight">{getTitleParts(post.title).main}</h3>
-                          <h4 className="text-xs font-bold text-white/80 leading-tight">{getTitleParts(post.title).sub}</h4>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Control Section - improved styling */}
-              <div className="p-8 md:p-12 flex justify-center items-center relative">
-                <div className="flex items-center gap-6">
-                  <button
-                    onClick={handlePrevSlide}
-                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors cursor-pointer"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-yellow-500">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                    </svg>
-                  </button>
-
-                  <button
-                    onClick={handleNextSlide}
-                    className="w-12 h-12 md:w-14 md:h-14 border border-yellow-500/70 rounded-full flex items-center justify-center hover:bg-yellow-500/10 transition-colors cursor-pointer"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-yellow-500">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                  </button>
-                </div>
-
-
-
-                {/* More visible slide counter */}
-                <div className="absolute right-8 md:right-16 bottom-8 md:bottom-10">
-                  <div className="flex items-baseline">
-                    <span className="text-4xl md:text-6xl font-bold text-yellow-500">
-                      {(currentSlide + 1).toString().padStart(2, '0')}
-                    </span>
-                    <span className="text-lg text-white/50 ml-1">/{blogPosts.length.toString().padStart(2, '0')}</span>
-                  </div>
-                </div>
-
-                {/* Timer progress indicator */}
-                <div className="absolute right-8 md:right-17 bottom-8 md:bottom-8 w-20 md:w-24 h-1 bg-white/20 overflow-hidden rounded-full">
-                  <div
-                    className="h-full bg-yellow-500/80 transition-all duration-100 ease-linear rounded-full"
-                    style={{ width: `${progress}%` }}
-                  ></div>
+              <div className="flex items-center justify-center mb-6 sm:mb-10">
+                <div>
+                  <h3 className="text-lg sm:text-xl italic font-normal">Aristo</h3>
                 </div>
               </div>
             </div>
+
+            <div className="flex justify-center mt-6 sm:mt-10">
+              <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
+                Tüm Alıntılar
+              </button>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

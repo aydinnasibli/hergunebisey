@@ -294,16 +294,7 @@ export default function BlogPage() {
                                     )}
                                 </div>
 
-                                {/* Results Count */}
-                                <div className="text-gray-400 text-sm">
-                                    {isLoading ? (
-                                        'İçerikler yükleniyor...'
-                                    ) : (
-                                        <>
-                                            <span className="text-yellow-500 font-medium">Sayfa{' '}{currentPage}/{totalPages}</span>
-                                        </>
-                                    )}
-                                </div>
+
                             </div>
 
                             {/* Categories Section - Redesigned */}
