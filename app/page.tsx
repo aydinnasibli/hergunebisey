@@ -322,7 +322,7 @@ const Home = () => {
               <div className="w-full md:w-1/2">
                 <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
                 <h2 className="text-4xl md:text-6xl font-bold mb-6">
-                  Podcast<span className="text-yellow-500">.</span>
+                  PODCAST<span className="text-yellow-500">.</span>
                 </h2>
                 <p className="text-lg text-white/80 mb-8">
                   Podcastlerimizde uzmanlarla derinlemesine sohbetler, ilham verici hikayeler
