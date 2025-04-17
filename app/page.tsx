@@ -1,10 +1,12 @@
 "use client"
+
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
-  // Reinstate the parallax effect
   useEffect(() => {
     const handleScroll = () => {
       if (parallaxRef.current) {
@@ -18,21 +20,22 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full bg-black text-white">
       {/* Hero Section (with Parallax) */}
       <div className="relative h-screen overflow-hidden">
-        {/* Parallax Background */}
-        <div
-          ref={parallaxRef}
-          className="absolute inset-0 w-full h-full"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1502209524164-acea936639a2?q=80&w=2070)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            height: '120%', // Extra height for parallax
-            top: '-10%'     // Position for upward movement
-          }}
-        />
+        {/* Parallax Background - Using position relative with Next.js Image */}
+        <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
+          <div className="relative w-full h-[120%] -top-[10%]">
+            <Image
+              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+              alt="Hero background"
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+        </div>
 
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/50 z-10"></div>
@@ -45,7 +48,7 @@ const Home = () => {
               HERGÜNEBİ'ŞEY
             </h1>
             <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
-              Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da<br /> alıntıların bulunduğu platform.
+              Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.
             </p>
           </div>
 
@@ -81,38 +84,54 @@ const Home = () => {
               <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
                 Sitenin adının hergünebi'şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
               </p>
-              <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
+              <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
                 Hikayemiz
-              </button>
+              </Link>
             </div>
             <div className="w-full lg:w-1/2 grid grid-cols-2 gap-2 sm:gap-4 mt-8 lg:mt-0">
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=2069"
-                  alt="Blog yazıları"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?q=80&w=2080&auto=format&fit=crop"
+                    alt="Blog yazıları"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
-                <img
-                  src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=2076"
-                  alt="Podcast kayıtları"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="https://images.unsplash.com/photo-1589903308904-1010c2294adc?q=80&w=2070&auto=format&fit=crop"
+                    alt="Podcast kayıtları"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035"
-                  alt="İlham verici alıntılar"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070&auto=format&fit=crop"
+                    alt="İlham verici alıntılar"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
-                <img
-                  src="https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=2070"
-                  alt="Kültürel içerikler"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2073&auto=format&fit=crop"
+                    alt="Kültürel içerikler"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -120,16 +139,24 @@ const Home = () => {
       </div>
 
       {/* Blog Section */}
-      <div className="relative bg-gradient-to-b from-black to-gray-900 text-white py-24 overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
-              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="white" strokeWidth="0.5" />
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
+      <div className="relative bg-black text-white py-24 overflow-hidden">
+        {/* Updated background pattern - subtle geometric shapes */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute w-full h-full">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1" fill="white" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#dots)" />
+            </svg>
+          </div>
         </div>
+
+        {/* Accent lines */}
+        <div className="absolute right-0 top-0 h-full w-1 bg-gradient-to-b from-yellow-500/0 via-yellow-500/30 to-yellow-500/0"></div>
+        <div className="absolute left-0 bottom-0 h-1 w-1/3 bg-gradient-to-r from-yellow-500/0 to-yellow-500/30"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
@@ -164,49 +191,68 @@ const Home = () => {
               </div>
 
               <div className="w-full lg:w-1/2">
-                <div className="relative">
-                  {/* Decorative elements */}
-                  <div className="absolute -top-6 -left-6 w-12 h-12 border-t-2 border-l-2 border-yellow-500"></div>
-                  <div className="absolute -bottom-6 -right-6 w-12 h-12 border-b-2 border-r-2 border-yellow-500"></div>
+                <div className="relative backdrop-blur-sm p-3 bg-white/5 rounded-lg">
+                  {/* Decorative accent */}
+                  <div className="absolute top-0 left-0 w-full h-full rounded-lg border border-yellow-500/20 -m-2 z-0"></div>
 
-                  {/* Image collage */}
-                  <div className="grid grid-cols-3 gap-2 p-2 bg-white/5 backdrop-blur-sm">
-                    <div className="col-span-2 h-64 overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070"
-                        alt="Blog teması"
-                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <div className="h-32 overflow-hidden">
-                        <img
-                          src="https://images.unsplash.com/photo-1432821596592-e2c18b78144f?q=80&w=2070"
-                          alt="Blog yazısı"
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="h-32 overflow-hidden">
-                        <img
-                          src="https://images.unsplash.com/photo-1519791883288-dc8bd696e667?q=80&w=2070"
-                          alt="Blog yazısı"
-                          className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                  {/* Image collage with rounded corners */}
+                  <div className="grid grid-cols-3 gap-3 relative z-10">
+                    <div className="col-span-2 h-64 overflow-hidden rounded-lg">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=2070&auto=format&fit=crop"
+                          alt="Blog teması"
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 66vw"
                         />
                       </div>
                     </div>
-                    <div className="h-32 overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?q=80&w=2070"
-                        alt="Blog yazısı"
-                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                      />
+                    <div className="flex flex-col gap-3">
+                      <div className="h-32 overflow-hidden rounded-lg">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src="https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=2074&auto=format&fit=crop"
+                            alt="Blog yazısı"
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        </div>
+                      </div>
+                      <div className="h-32 overflow-hidden rounded-lg">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+                            alt="Blog yazısı"
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="h-32 col-span-2 overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1468779036391-52341f60b55d?q=80&w=2068"
-                        alt="Blog yazısı"
-                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                      />
+                    <div className="h-32 overflow-hidden rounded-lg">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop"
+                          alt="Blog yazısı"
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                    </div>
+                    <div className="h-32 col-span-2 overflow-hidden rounded-lg">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=2074&auto=format&fit=crop"
+                          alt="Blog yazısı"
+                          fill
+                          className="object-cover hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 66vw"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -216,11 +262,9 @@ const Home = () => {
         </div>
       </div>
 
-
-
       {/* Podcast Section */}
       <div className="relative w-full bg-black text-white py-24 overflow-hidden">
-        {/* Background gradient and pattern */}
+        {/* Background pattern */}
         <div className="absolute inset-0 bg-gradient-to-b from-black to-blue-900/30"></div>
         <div className="absolute inset-0 opacity-10">
           <div className="absolute right-0 top-0 w-full h-full overflow-hidden">
@@ -235,16 +279,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div
-          className="container mx-auto px-4 relative z-10"
-          style={{
-            backgroundImage: "url(https://images.unsplash.com/photo-1502209524164-acea936639a2?q=80&w=2070)",
-            backgroundSize: "cover",
-            backgroundPosition: "center right",
-            backgroundAttachment: "fixed",
-            backgroundBlendMode: "overlay"
-          }}
-        >
+        <div className="container mx-auto px-4 relative z-10">
           <div className="rounded-2xl overflow-hidden bg-black/70 backdrop-blur-md p-10 md:p-16">
             <div className="flex flex-col md:flex-row items-center gap-12">
               <div className="w-full md:w-1/2">
@@ -264,12 +299,12 @@ const Home = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <a
+                  <Link
                     href="/podcast"
                     className="px-8 py-3 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
                   >
                     Podcastler
-                  </a>
+                  </Link>
 
                   <button className="w-12 h-12 rounded-full border border-white/50 flex items-center justify-center hover:bg-white/10 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -321,38 +356,39 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {/* Quote Section */}
-      <div className="relative bg-black text-white py-20 overflow-hidden">
+
+      {/* Quote Section - Increased height */}
+      <div className="relative bg-black text-white py-12 overflow-hidden"> {/* Increased py-20 to py-40 */}
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '30%', left: '5%' }}>
+          <div className="absolute text-3xl md:text-8xl font-bold text-white whitespace-nowrap" style={{ top: '50%', left: '5%' }}>
             DÜŞÜN İLHAM AL
           </div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="w-8 sm:w-10 h-1 bg-yellow-500 mx-auto mb-8 sm:mb-16"></div>
+          <div className="max-w-5xl mx-auto py-16"> {/* Added padding */}
+            <div className="w-12 sm:w-16 h-1 bg-yellow-500 mx-auto mb-12 sm:mb-20"></div> {/* Increased sizes */}
             <div className="relative">
-              {/* Large quote marks */}
-              <div className="absolute -top-8 sm:-top-16 -left-4 sm:-left-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
-              <div className="absolute -bottom-16 sm:-bottom-32 -right-4 sm:-right-8 text-6xl sm:text-9xl text-yellow-500/20 font-serif">"</div>
+              {/* Larger quote marks */}
+              <div className="absolute -top-12 sm:-top-24 -left-4 sm:-left-12 text-8xl sm:text-12xl text-yellow-500/20 font-serif">"</div>
+              <div className="absolute -bottom-24 sm:-bottom-40 -right-4 sm:-right-12 text-8xl sm:text-12xl text-yellow-500/20 font-serif">"</div>
 
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-6 sm:mb-10 text-center leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-10 sm:mb-16 text-center leading-tight px-4">
                 Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
               </h2>
 
-              <div className="flex items-center justify-center mb-6 sm:mb-10">
+              <div className="flex items-center justify-center mb-12 sm:mb-16"> {/* Increased margins */}
                 <div>
-                  <h3 className="text-lg sm:text-xl italic font-normal">Aristo</h3>
+                  <h3 className="text-xl sm:text-2xl italic font-normal">Aristo</h3> {/* Increased text size */}
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-center mt-6 sm:mt-10">
-              <button className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
+            <div className="flex justify-center mt-10 sm:mt-16"> {/* Increased margins */}
+              <Link href="/quotes" className="px-8 py-3 sm:px-10 sm:py-4 border-2 border-white rounded-full uppercase tracking-widest text-sm sm:text-base hover:bg-white hover:text-black transition-colors duration-300">
                 Tüm Alıntılar
-              </button>
+              </Link>
             </div>
           </div>
         </div>
