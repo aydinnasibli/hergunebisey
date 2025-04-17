@@ -1,6 +1,6 @@
 // app/blog/[slug]/page.tsx
 import Image from 'next/image'
-import { getBlogPostBySlug, getBlogPostsByCategory, urlFor } from '@/lib/sanity'
+import { getBlogPostBySlug, urlFor } from '@/lib/sanity'
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
