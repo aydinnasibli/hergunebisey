@@ -199,12 +199,7 @@ const Home = () => {
             <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
               Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da<br /> alıntıların bulunduğu platform.
             </p>
-            <button
-              onClick={scrollToContent}
-              className="px-6 py-3 sm:px-8 sm:py-4 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-xs sm:text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
-            >
-              İçerikleri Keşfet
-            </button>
+
           </div>
 
           {/* Scroll indicator */}
