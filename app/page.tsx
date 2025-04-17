@@ -298,7 +298,7 @@ const Home = () => {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
               <div
                 key={item}
-                className="w-2 bg-white rounded-t-full"
+                className="w-20 bg-white rounded-t-full"
                 style={{
                   height: `${Math.floor(Math.random() * 40) + 10}px`,
                   animation: `soundWave ${Math.random() * 1 + 0.5}s ease-in-out infinite alternate`
