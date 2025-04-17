@@ -77,7 +77,7 @@ const Home = () => {
           <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12">
             <div className="w-full lg:w-1/2">
               <div className="w-10 h-1 bg-yellow-500 mb-4 sm:mb-6"></div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">NELER YAPIYORUZ<span className="text-yellow-500">?</span></h2>
+              <h2 className="text-4xl md:text-6xl font-bold mb-4 sm:mb-6">NELER YAPIYORUZ<span className="text-yellow-500">?</span></h2>
               <p className="text-base sm:text-lg text-white/80 mb-4 sm:mb-6">
                 Bu sitede bilim, felsefe, tarih, teknoloji, kültür ve diğer pek çok farklı kategoride üç farklı formatta içerik paylaşıyoruz. Evrene kıyasla kısacık ömrümüzde elimizden geldiğince merakımızı gidermek amacıyla ilgimizi çeken hemen her konuda kendimizce bir şeyler yazıp çiziyoruz. Bu esnada da düşüncelerimizi kendimize saklamayıp ilgilenen herkesle de paylaşmaya çalışıyoruz.
               </p>
@@ -161,7 +161,7 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">Yazılar<span className="text-yellow-500">.</span></h2>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">YAZILAR<span className="text-yellow-500">.</span></h2>
 
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div className="w-full lg:w-1/2">
@@ -298,7 +298,7 @@ const Home = () => {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
               <div
                 key={item}
-                className="w-4 bg-yellow-500 rounded-t-full"
+                className="w-4 bg-white rounded-t-full"
                 style={{
                   height: `${Math.floor(Math.random() * 40) + 10}px`,
                   animation: `soundWave ${Math.random() * 1 + 0.5}s ease-in-out infinite alternate`
