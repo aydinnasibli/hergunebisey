@@ -45,7 +45,7 @@ const Home = () => {
           <div className="max-w-4xl mx-auto">
             <div className="w-16 h-1 bg-yellow-500 mx-auto mb-4 sm:mb-8"></div>
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-8 tracking-wide">
-              HERGÜNEBİ'ŞEY
+              HERGÜNEBİ'ŞEY<span className="text-yellow-500">.</span>
             </h1>
             <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
               Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.
@@ -77,7 +77,7 @@ const Home = () => {
           <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12">
             <div className="w-full lg:w-1/2">
               <div className="w-10 h-1 bg-yellow-500 mb-4 sm:mb-6"></div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">NELER YAPIYORUZ?</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">NELER YAPIYORUZ<span className="text-yellow-500">?</span></h2>
               <p className="text-base sm:text-lg text-white/80 mb-4 sm:mb-6">
                 Bu sitede bilim, felsefe, tarih, teknoloji, kültür ve diğer pek çok farklı kategoride üç farklı formatta içerik paylaşıyoruz. Evrene kıyasla kısacık ömrümüzde elimizden geldiğince merakımızı gidermek amacıyla ilgimizi çeken hemen her konuda kendimizce bir şeyler yazıp çiziyoruz. Bu esnada da düşüncelerimizi kendimize saklamayıp ilgilenen herkesle de paylaşmaya çalışıyoruz.
               </p>
@@ -264,27 +264,66 @@ const Home = () => {
 
       {/* Podcast Section */}
       <div className="relative w-full bg-black text-white py-24 overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black to-blue-900/30"></div>
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute right-0 top-0 w-full h-full overflow-hidden">
-            <svg viewBox="0 0 400 400" className="absolute right-0 top-0 w-full h-full opacity-20">
-              <defs>
-                <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#smallGrid)" />
-            </svg>
+        {/* Dynamic Background Waves */}
+        <div className="absolute inset-0 opacity-100">
+          <svg
+            viewBox="0 0 1440 320"
+            className="absolute w-full"
+            style={{ top: '10%' }}
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="rgba(255,255,255,0.1)"
+              fillOpacity="0.5"
+              d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,181.3C672,149,768,107,864,90.7C960,75,1056,85,1152,101.3C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ></path>
+          </svg>
+          <svg
+            viewBox="0 0 1440 320"
+            className="absolute w-full"
+            style={{ top: '40%' }}
+            preserveAspectRatio="none"
+          >
+            <path
+              fill="rgba(234,179,8,0.08)"
+              fillOpacity="0.5"
+              d="M0,64L48,96C96,128,192,192,288,192C384,192,480,128,576,128C672,128,768,192,864,202.7C960,213,1056,171,1152,144C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ></path>
+          </svg>
+        </div>
+
+        {/* Animated sound wave effect */}
+        <div className="absolute inset-0 flex justify-center items-center opacity-100">
+          <div className="flex items-end space-x-1">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
+              <div
+                key={item}
+                className="w-2 bg-white rounded-t-full"
+                style={{
+                  height: `${Math.floor(Math.random() * 40) + 10}px`,
+                  animation: `soundWave ${Math.random() * 1 + 0.5}s ease-in-out infinite alternate`
+                }}
+              ></div>
+            ))}
           </div>
         </div>
 
+        <style jsx>{`
+    @keyframes soundWave {
+      0% { height: 10px; }
+      100% { height: 50px; }
+    }
+  `}</style>
+
         <div className="container mx-auto px-4 relative z-10">
-          <div className="rounded-2xl overflow-hidden bg-black/70 backdrop-blur-md p-10 md:p-16">
+          <div className="backdrop-blur-sm bg-black/30 rounded-3xl overflow-hidden p-10 md:p-16 border border-white/5">
             <div className="flex flex-col md:flex-row items-center gap-12">
+              {/* Left Content */}
               <div className="w-full md:w-1/2">
                 <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-                <h2 className="text-4xl md:text-6xl font-bold mb-6">Podcast<span className="text-yellow-500">.</span></h2>
+                <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                  DİNLE<span className="text-yellow-500">.</span>
+                </h2>
                 <p className="text-lg text-white/80 mb-8">
                   Podcastlerimizde uzmanlarla derinlemesine sohbetler, ilham verici hikayeler
                   ve Türkiye'nin gündemine farklı bakış açıları sunuyoruz. Yolda, sporda
@@ -292,65 +331,118 @@ const Home = () => {
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Kültür</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Teknoloji</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Bilim</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Kişisel Gelişim</span>
+                  <span className="px-4 py-2 rounded-full bg-purple-900/50 backdrop-blur-sm text-sm border border-purple-500/20 hover:bg-purple-800/50 transition-colors cursor-pointer">Kültür</span>
+                  <span className="px-4 py-2 rounded-full bg-blue-900/50 backdrop-blur-sm text-sm border border-blue-500/20 hover:bg-blue-800/50 transition-colors cursor-pointer">Teknoloji</span>
+                  <span className="px-4 py-2 rounded-full bg-green-900/50 backdrop-blur-sm text-sm border border-green-500/20 hover:bg-green-800/50 transition-colors cursor-pointer">Bilim</span>
+                  <span className="px-4 py-2 rounded-full bg-yellow-900/50 backdrop-blur-sm text-sm border border-yellow-500/20 hover:bg-yellow-800/50 transition-colors cursor-pointer">Kişisel Gelişim</span>
                 </div>
 
                 <div className="flex items-center gap-4">
                   <Link
                     href="/podcast"
-                    className="px-8 py-3 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300"
+                    className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:from-yellow-400 hover:to-yellow-500 transition-colors duration-300 shadow-lg shadow-yellow-500/20"
                   >
                     Podcastler
                   </Link>
 
-                  <button className="w-12 h-12 rounded-full border border-white/50 flex items-center justify-center hover:bg-white/10 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <button className="w-12 h-12 rounded-full bg-white/5 border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 group-hover:text-yellow-500 transition-colors">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
                     </svg>
                   </button>
                 </div>
               </div>
 
+              {/* Right Content - New Design */}
               <div className="w-full md:w-1/2 flex justify-center">
-                <div className="relative">
-                  {/* Decorative rings around the podcast icon */}
-                  <div className="absolute inset-0 rounded-full border-4 border-white/10 animate-pulse"></div>
-                  <div className="absolute inset-0 scale-125 rounded-full border-4 border-white/5"></div>
-                  <div className="absolute inset-0 scale-150 rounded-full border-4 border-white/5"></div>
+                <div className="relative perspective-1000">
+                  {/* Album artwork with 3D effect */}
+                  <div className="w-64 h-64 relative transition-transform hover:rotate-y-10 hover:scale-105 cursor-pointer shadow-2xl">
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-yellow-500 via-yellow-600 to-yellow-400 transform -rotate-6"></div>
+                    <div className="absolute inset-0 rounded-xl overflow-hidden transform rotate-3 border-2 border-white/20">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1740&auto=format&fit=crop"
+                          alt="Podcast Cover"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                      </div>
+                    </div>
 
-                  {/* Inner circle with podcast icon */}
-                  <div className="w-56 h-56 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-600 shadow-xl flex items-center justify-center z-10 relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-24 h-24 text-white">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                    </svg>
+                    {/* Podcast controls overlay */}
+                    <div className="absolute inset-0 rounded-xl bg-black/40 backdrop-blur-sm opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+                      <div className="text-lg font-bold">Yeni Bölüm</div>
+                      <div className="flex flex-col">
+                        <div className="text-sm opacity-80 mb-2">23:45</div>
+                        <div className="w-full h-1 bg-white/30 rounded-full overflow-hidden">
+                          <div className="h-full w-2/3 bg-yellow-500 rounded-full"></div>
+                        </div>
+                        <div className="flex justify-between mt-4">
+                          <button className="p-2 rounded-full hover:bg-white/10 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061c.75-.43 1.683.113 1.683.977v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061c.75-.43 1.683.113 1.683.977v8.122Z" />
+                            </svg>
+                          </button>
+                          <button className="p-3 rounded-full bg-white text-black hover:bg-yellow-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                            </svg>
+                          </button>
+                          <button className="p-2 rounded-full hover:bg-white/10 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811V8.69ZM12.75 8.689c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061a1.125 1.125 0 0 1-1.683-.977V8.69Z" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Decorative mic icon with animated rings */}
+                  <div className="absolute -bottom-8 -right-8 flex items-center justify-center">
+                    <div className="absolute w-16 h-16 rounded-full border border-yellow-500/30 animate-ping-slow"></div>
+                    <div className="absolute w-20 h-20 rounded-full border border-yellow-500/20 animate-ping-slow animation-delay-500"></div>
+                    <div className="absolute w-24 h-24 rounded-full border border-yellow-500/10 animate-ping-slow animation-delay-1000"></div>
+                    <div className="w-12 h-12 rounded-full bg-purple-900 flex items-center justify-center shadow-lg z-10">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Platform logos */}
+            {/* Platform logos - Updated with hover effects */}
             <div className="mt-16 flex flex-wrap justify-center gap-8">
-              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-8 h-8 fill-current text-white">
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-8 h-8 fill-current text-white group-hover:text-yellow-500 transition-colors">
                   <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24.984375 12.986328 A 1.0001 1.0001 0 0 0 24 14 L 24 26.5 A 1.0001 1.0001 0 0 0 24.5 27.5 L 32.5 31.5 A 1.0001 1.0001 0 0 0 33.521484 31.060547 A 1.0001 1.0001 0 0 0 33 30 L 33 17.5 A 1.0001 1.0001 0 0 0 32.5 16.5 L 25.5 12.986328 A 1.0001 1.0001 0 0 0 24.984375 12.986328 z"></path>
                 </svg>
-                <span className="text-sm">Apple Podcasts</span>
+                <span className="text-sm group-hover:text-yellow-500 transition-colors">Apple Podcasts</span>
               </div>
 
-              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white group-hover:text-green-500 transition-colors">
                   <path d="M17.9,10.9C14.7,9 9.35,8.8 6.3,9.75c-0.5,0.15-1-0.15-1.15-0.6c-0.15-0.5,0.15-1,0.6-1.15 c3.55-1.05,9.4-0.85,13.1,1.35c0.45,0.25,0.6,0.85,0.35,1.3C19.95,11 19.35,11.15,17.9,10.9z M16.8,13.9 c-0.25,0.35-0.7,0.5-1.05,0.25c-2.7-1.65-6.8-2.15-9.95-1.15c-0.4,0.1-0.85-0.1-0.95-0.5c-0.1-0.4,0.1-0.85,0.5-0.95 c3.65-1.1,8.15-0.6,11.25,1.35C16.9,13.1,17.05,13.55,16.8,13.9z M15.9,16.9c-0.2,0.3-0.55,0.4-0.85,0.2 c-2.35-1.45-5.3-1.75-8.8-0.95c-0.35,0.05-0.65-0.15-0.75-0.45c-0.1-0.35,0.15-0.65,0.45-0.75c3.8-0.85,7.1-0.5,9.7,1.1 C16,16.25,16.1,16.6,15.9,16.9z M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z"></path>
                 </svg>
-                <span className="text-sm">Spotify</span>
+                <span className="text-sm group-hover:text-green-500 transition-colors">Spotify</span>
               </div>
-              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white group-hover:text-blue-500 transition-colors">
                   <path d="M12 22a10 10 0 0 1-10-10 10 10 0 0 1 10-10 10 10 0 0 1 10 10 10 10 0 0 1-10 10m0-2a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m-2.25-10.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0M13 16l5-5-1.41-1.42L13 13.17l-2.59-2.59L9 12m0-4.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0"></path>
                 </svg>
-                <span className="text-sm">Anchor</span>
+                <span className="text-sm group-hover:text-blue-500 transition-colors">Anchor</span>
+              </div>
+
+              {/* Added Google Podcasts */}
+              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" className="fill-current text-white group-hover:text-red-500 transition-colors">
+                  <path d="M12 9c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3m0-2c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-7 5c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm16 0c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-8-8c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0 16c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zM5.99 3.04c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.38 1.03-.39 1.41 0zm12.02 18.92c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.39 1.02-.39 1.41 0zM6 18.98c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.39 1.02-.39 1.41 0zm12-14.94c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.39 1.02-.39 1.41 0z" />
+                </svg>
+                <span className="text-sm group-hover:text-red-500 transition-colors">Google Podcasts</span>
               </div>
             </div>
           </div>
@@ -393,7 +485,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
