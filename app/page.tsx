@@ -27,7 +27,7 @@ const Home = () => {
         <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
           <div className="relative w-full h-[120%] -top-[10%]">
             <Image
-              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1502209524164-acea936639a2?q=80&w=2070"
               alt="Hero background"
               fill
               priority
