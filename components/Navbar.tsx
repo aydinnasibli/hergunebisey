@@ -158,7 +158,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isMobile = false, closeMenu = () =>
         }`;
 
     const links = [
-        { name: 'Blog', path: '/blog' },
+        { name: 'Yazı', path: '/blog' },
         { name: 'Podcast', path: '/podcast' },
         { name: 'Alıntı', path: '/quote' },
         { name: 'Hakkımızda', path: '/about' },
