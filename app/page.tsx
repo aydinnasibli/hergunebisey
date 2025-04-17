@@ -449,38 +449,112 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Quote Section - Increased height */}
-      <div className="relative bg-black text-white py-12 overflow-hidden"> {/* Increased py-20 to py-40 */}
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute text-3xl md:text-8xl font-bold text-white whitespace-nowrap" style={{ top: '50%', left: '5%' }}>
-            DÜŞÜN İLHAM AL
+      {/* Quote Section - Redesigned */}
+      <div className="relative bg-gradient-to-b from-black to-gray-900 text-white py-24 overflow-hidden">
+        {/* Dynamic background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute w-full h-full">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#smallGrid)" />
+            </svg>
           </div>
         </div>
 
+        {/* Animated particles */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-yellow-500"
+              style={{
+                width: `${Math.random() * 8 + 2}px`,
+                height: `${Math.random() * 8 + 2}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random() * 0.3 + 0.1,
+                animation: `float ${Math.random() * 10 + 15}s linear infinite`,
+                animationDelay: `${Math.random() * 5}s`
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Decorative elements */}
+        <div className="absolute -left-20 top-1/4 w-40 h-40 rounded-full bg-yellow-500/10 blur-3xl"></div>
+        <div className="absolute -right-20 bottom-1/4 w-60 h-60 rounded-full bg-yellow-500/10 blur-3xl"></div>
+
+        <style jsx>{`
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-100px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+  `}</style>
+
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto py-16"> {/* Added padding */}
-            <div className="w-12 sm:w-16 h-1 bg-yellow-500 mx-auto mb-12 sm:mb-20"></div> {/* Increased sizes */}
-            <div className="relative">
-              {/* Larger quote marks */}
-              <div className="absolute -top-12 sm:-top-24 -left-4 sm:-left-12 text-8xl sm:text-12xl text-yellow-500/20 font-serif">"</div>
-              <div className="absolute -bottom-24 sm:-bottom-40 -right-4 sm:-right-12 text-8xl sm:text-12xl text-yellow-500/20 font-serif">"</div>
-
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-10 sm:mb-16 text-center leading-tight px-4">
-                Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
+          <div className="max-w-5xl mx-auto">
+            <div className="flex flex-col items-center mb-12">
+              <div className="w-12 h-1 bg-yellow-500 mb-4"></div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-center">
+                GÜNÜN <span className="text-yellow-500">SÖZÜ</span>
               </h2>
+            </div>
 
-              <div className="flex items-center justify-center mb-12 sm:mb-16"> {/* Increased margins */}
-                <div>
-                  <h3 className="text-xl sm:text-2xl italic font-normal">Aristo</h3> {/* Increased text size */}
+            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
+              <div className="relative">
+                {/* Quote marks */}
+                <svg className="absolute -top-8 -left-4 sm:-left-8 w-16 h-16 text-yellow-500/20" fill="currentColor" viewBox="0 0 32 32">
+                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339zM26.806 22.005c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
+                </svg>
+
+                <svg className="absolute -bottom-8 -right-4 sm:-right-8 w-16 h-16 text-yellow-500/20 rotate-180" fill="currentColor" viewBox="0 0 32 32">
+                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339zM26.806 22.005c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
+                </svg>
+
+                <div className="text-center">
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-light italic leading-relaxed mb-10">
+                    Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
+                  </p>
+
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-center justify-center space-x-4 mb-6">
+                      <div className="w-12 h-12 rounded-full bg-yellow-500/20 backdrop-blur-sm flex items-center justify-center">
+                        <span className="text-xl font-bold text-yellow-500">A</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <h3 className="text-xl sm:text-2xl font-normal">Aristo</h3>
+                        <p className="text-sm text-white/60">Filozof, MÖ 384-322</p>
+                      </div>
+                    </div>
+
+                    <div className="w-16 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-6"></div>
+
+                    <div className="group">
+                      <Link href="/quotes" className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 backdrop-blur-sm border border-yellow-500/30 uppercase tracking-widest text-sm hover:bg-yellow-500/30 transition-colors duration-300 flex items-center space-x-2 group-hover:scale-105 transform transition-transform">
+                        <span>Tüm Alıntılar</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-center mt-10 sm:mt-16"> {/* Increased margins */}
-              <Link href="/quotes" className="px-8 py-3 sm:px-10 sm:py-4 border-2 border-white rounded-full uppercase tracking-widest text-sm sm:text-base hover:bg-white hover:text-black transition-colors duration-300">
-                Tüm Alıntılar
-              </Link>
+            {/* Daily quote change indicator */}
+            <div className="mt-8 flex items-center justify-center">
+              <div className="flex items-center space-x-2 text-white/60 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <span>Her gün farklı bir söz</span>
+              </div>
             </div>
           </div>
         </div>
