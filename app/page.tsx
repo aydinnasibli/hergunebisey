@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import SoundWaveAnimation from '../components/animationHandler/SoundWaveAnimation'
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -15,8 +15,11 @@ const Home = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Only add event listener on the client-side
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
   }, []);
 
   return (
@@ -65,10 +68,10 @@ const Home = () => {
       {/* About Us Section */}
       <div className="relative bg-black text-white py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '10%', left: '-5%' }}>
+          <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-[10%] -left-[5%]">
             HER GÜN YENİ
           </div>
-          <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '50%', left: '20%' }}>
+          <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-[50%] left-[20%]">
             KEŞFET ÖĞREN
           </div>
         </div>
@@ -294,26 +297,10 @@ const Home = () => {
 
         {/* Animated sound wave effect */}
         <div className="absolute inset-0 flex justify-center items-center opacity-100">
-          <div className="flex items-end space-x-1">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-              <div
-                key={item}
-                className="w-4 bg-white rounded-t-full"
-                style={{
-                  height: `${Math.floor(Math.random() * 40) + 10}px`,
-                  animation: `soundWave ${Math.random() * 1 + 0.5}s ease-in-out infinite alternate`
-                }}
-              ></div>
-            ))}
-          </div>
+          {typeof window !== 'undefined' && <SoundWaveAnimation />}
         </div>
 
-        <style jsx>{`
-    @keyframes soundWave {
-      0% { height: 10px; }
-      100% { height: 50px; }
-    }
-  `}</style>
+
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="backdrop-blur-sm bg-black/30 rounded-3xl overflow-hidden p-10 md:p-16 border border-white/5">
