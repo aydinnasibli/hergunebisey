@@ -121,9 +121,7 @@ const PodcastPage = () => {
                         </h1>
 
                         <p className="text-base sm:text-xl max-w-2xl mx-auto mb-12 text-white/90">
-                            Uzmanlarla derinlemesine sohbetler, ilham verici hikayeler ve Türkiye'nin gündemine
-                            farklı bakış açıları sunan podcast yayınlarımız yolda, sporda veya evde -
-                            her anınıza eşlik etmek için burada.
+                            Farklı konseptler ile sohbet kıvamındaki podcast yayınlarımız yolda, sporda ya da evde- her anınıza eşlik etmek için burada.
                         </p>
                         <div className="flex flex-wrap justify-center gap-6 mt-10">
                             {platforms.map((platform, index) => (
@@ -163,10 +161,9 @@ const PodcastPage = () => {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="mb-16 text-center">
                         <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
-                        <h2 className="text-4xl md:text-6xl font-bold mb-8">PROGRAMLARIMIZ</h2>
+                        <h2 className="text-4xl md:text-6xl font-bold mb-8">KATEGORİLER</h2>
                         <p className="text-lg max-w-2xl mx-auto text-white/80">
-                            Her biri kendi alanında uzman konuklarla hazırladığımız podcast programlarımız,
-                            geniş bir yelpazede ilgi çekici konuları ele alıyor.
+                            Birbirinden farklı kategorilerde ile hazırladığımız podcast yayınlarımız geniş bir yelpazede ilgi çekici konuları ele alıyor.
                         </p>
 
                         {/* Category filters */}

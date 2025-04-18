@@ -247,7 +247,7 @@ export default function QuotePage() {
         return (
             <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <Image
-                    src="/quote.jpeg"
+                    src="/nils.jpg"
                     alt="Background"
                     fill
                     quality={75}
@@ -490,7 +490,7 @@ export default function QuotePage() {
                     <p
                         className="text-xl md:text-lg text-gray-300 max-w-2xl mx-auto mb-6"
                     >
-                        Günlük ilham veren alıntılarla, düşüncelerinizi ve gününüzü aydınlatın.
+                        İnsanlığa fikren ve manen büyük katkılarda bulunmuş kişilerden alıntılar ile hayatınıza yeni bir bakış açısı katın.
                     </p>
 
                 </div>
