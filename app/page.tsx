@@ -258,6 +258,13 @@ const Home = () => {
 
       {/* Podcast Section */}
       <div className="relative w-full bg-black text-white py-32 overflow-hidden">
+
+        {/* Updated background pattern - Footer translateX */}
+        <div className="absolute top-0 left-0 w-full h-8 overflow-hidden">
+          <div className="absolute w-full h-16 bg-yellow-500 transform rotate-1 -translate-y-12"></div>
+        </div>
+
+
         {/* Dynamic Background Waves */}
         <div className="absolute inset-0 opacity-100">
 
@@ -396,73 +403,76 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Quote Section - Redesigned */}
-      <div className="relative bg-gradient-to-b from-black to-gray-900 text-white py-24 overflow-hidden">
-        {/* Dynamic background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute w-full h-full">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#smallGrid)" />
-            </svg>
-          </div>
+      {/* Quote Section - Modern Redesign */}
+      <div className="relative bg-black text-white py-24 overflow-hidden">
+        {/* Abstract background elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-yellow-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl"></div>
         </div>
 
-
-
-        {/* Decorative elements */}
-        <div className="absolute -left-20 top-1/4 w-40 h-40 rounded-full bg-yellow-500/10 blur-3xl"></div>
-        <div className="absolute -right-20 bottom-1/4 w-60 h-60 rounded-full bg-yellow-500/10 blur-3xl"></div>
-
-
+        {/* Quote marks as decorative elements */}
+        <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-yellow-500/10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="currentColor" className="rotate-180">
+            <path d="M6.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L9.758 4.03c0 0-.218.052-.597.144C8.97 4.222 8.737 4.278 8.472 4.345c-.271.05-.56.187-.882.312C7.272 4.799 6.904 4.895 6.562 5.123c-.344.218-.741.4-1.091.692C5.132 6.116 4.723 6.377 4.421 6.76c-.33.358-.656.734-.909 1.162C3.219 8.33 3.02 8.778 2.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C2.535 17.474 4.338 19 6.5 19c2.485 0 4.5-2.015 4.5-4.5S8.985 10 6.5 10zM17.5 10c-.223 0-.437.034-.65.065.069-.232.14-.468.254-.68.114-.308.292-.575.469-.844.148-.291.409-.488.601-.737.201-.242.475-.403.692-.604.213-.21.492-.315.714-.463.232-.133.434-.28.65-.35.208-.086.39-.16.539-.222.302-.125.474-.197.474-.197L20.758 4.03c0 0-.218.052-.597.144-.191.048-.424.104-.689.171-.271.05-.56.187-.882.312-.317.143-.686.238-1.028.467-.344.218-.741.4-1.091.692-.339.301-.748.562-1.05.944-.33.358-.656.734-.909 1.162C14.219 8.33 14.02 8.778 13.81 9.221c-.19.443-.343.896-.468 1.336-.237.882-.343 1.72-.384 2.437-.034.718-.014 1.315.028 1.747.015.204.043.402.063.539.017.109.025.168.025.168l.026-.006C13.535 17.474 15.338 19 17.5 19c2.485 0 4.5-2.015 4.5-4.5S19.985 10 17.5 10z" />
+          </svg>
+        </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col items-center mb-12">
-              <div className="w-12 h-1 bg-yellow-500 mb-4"></div>
-              <h2 className="text-3xl sm:text-5xl font-bold text-center">
-                ALINTI <span className="text-yellow-500">.</span>
+          <div className="max-w-4xl mx-auto">
+            {/* Section title */}
+            <div className="flex flex-col items-center mb-16">
+              <div className="w-12 h-1 bg-yellow-500 mb-6"></div>
+              <h2 className="text-4xl md:text-6xl font-bold text-center">
+                ALINTI<span className="text-yellow-500">.</span>
               </h2>
             </div>
 
-            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
-              <div className="relative">
+            {/* Quote card */}
+            <div className="relative">
+              {/* Card container with glass effect */}
+              <div className="relative backdrop-blur-md bg-white/5 rounded-xl border border-white/10 shadow-2xl transform transition-all duration-300 hover:translate-y-[-5px] p-8 md:p-12 overflow-hidden group">
+                {/* Animated accent line */}
+                <div className="absolute inset-x-0 h-1 top-0 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
 
+                {/* Subtle diagonal lines pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="20" stroke="white" strokeWidth="1" />
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#diagonalLines)" />
+                  </svg>
+                </div>
 
+                {/* Quote content with animation */}
                 <div className="text-center">
-                  <p className="text-xl sm:text-2xl md:text-3xl font-light italic leading-relaxed mb-10">
+                  <p className="text-xl md:text-3xl font-light  leading-relaxed mb-10 md:mb-12 transition-all duration-500 transform group-hover:scale-[1.02]">
                     Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
                   </p>
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center space-x-4 mb-6">
-
-                      <div className="flex flex-col">
-                        <h3 className="text-xl sm:text-2xl font-normal">Aristoteles</h3>
-                        <p className="text-sm text-white/60">Filozof, MÖ 384-322</p>
-                      </div>
+                  <div className="flex flex-col items-center space-y-4">
+                    {/* Author info */}
+                    <div className="flex flex-col items-center">
+                      <h3 className="text-lg md:text-xl font-normal">Aristoteles</h3>
+                      <p className="text-xs text-white/60">Filozof, MÖ 384-322</p>
                     </div>
 
-                    <div className="w-16 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-6"></div>
+                    {/* Decorative separator */}
+                    <div className="w-16 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-4"></div>
 
-                    <div className="group">
-                      <Link href="/quote" className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 backdrop-blur-sm border border-yellow-500/30 uppercase tracking-widest text-sm hover:bg-yellow-500/30 transition-colors duration-300 flex items-center space-x-2 group-hover:scale-105 transform ">
-                        <span>Tüm Alıntılar</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                        </svg>
-                      </Link>
-                    </div>
+                    {/* CTA button with hover effect */}
+                    <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300">
+                      Tüm Alıntılar
+                    </Link>
                   </div>
                 </div>
               </div>
+
+              {/* Subtle accent glow */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
-
-
           </div>
         </div>
       </div>

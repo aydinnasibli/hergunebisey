@@ -125,10 +125,10 @@ const Footer = () => {
             </div>
 
             {/* Diagonal line divider (static) */}
+
             <div className="absolute top-0 left-0 w-full h-8 overflow-hidden">
                 <div className="absolute w-full h-16 bg-yellow-500 transform -rotate-1 -translate-y-12"></div>
             </div>
-
             <div className="container mx-auto px-4 pt-20 pb-8">
                 <div className="flex flex-col md:flex-row justify-between mb-16 gap-12">
                     {/* Logo and info */}
