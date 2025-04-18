@@ -83,8 +83,8 @@ const Navbar = () => {
             {/* Fixed header that changes style on scroll */}
             <header
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-                        ? 'bg-black/80 backdrop-blur-md py-4 shadow-md'
-                        : 'bg-gradient-to-b from-black/70 to-transparent py-6'
+                    ? 'bg-black/80 backdrop-blur-md py-4 shadow-md'
+                    : 'bg-gradient-to-b from-black/70 to-transparent py-6'
                     }`}
             >
                 <div className="container mx-auto px-4 flex justify-between items-center">
@@ -209,7 +209,8 @@ interface NavLinksProps {
     closeMenu?: () => void;
 }
 
-const NavLinks: React.FC<NavLinksProps> = ({ isMobile = false, closeMenu = () => { } }) => {
+const NavLinks = ({ isMobile = false, closeMenu = () => { } }: NavLinksProps) => {
+
     const linkClasses = `text-white uppercase tracking-wider font-medium hover:text-yellow-500 transition-colors ${isMobile ? 'text-3xl' : 'text-sm'
         }`;
 
