@@ -82,7 +82,7 @@ const Home = () => {
               <p className="text-base sm:text-lg text-white/80 mb-4 sm:mb-6">
                 Bu sitede bilim, felsefe, tarih, teknoloji, kültür ve diğer pek çok farklı kategoride üç farklı formatta içerik paylaşıyoruz. Evrene kıyasla kısacık ömrümüzde elimizden geldiğince merakımızı gidermek amacıyla ilgimizi çeken hemen her konuda kendimizce bir şeyler yazıp çiziyoruz. Bu esnada da düşüncelerimizi kendimize saklamayıp ilgilenen herkesle de paylaşmaya çalışıyoruz.
               </p>
-              <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
+              <p className="text-base sm:text-lg text-white/80 mb-8 sm:mb-10">
                 Sitenin adının hergünebi'şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
               </p>
               <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300">
@@ -155,29 +155,25 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Accent lines */}
-        <div className="absolute right-0 top-0 h-full w-1 bg-gradient-to-b from-yellow-500/0 via-yellow-500/30 to-yellow-500/0"></div>
-        <div className="absolute left-0 bottom-0 h-1 w-1/3 bg-gradient-to-r from-yellow-500/0 to-yellow-500/30"></div>
-
         <div className="container mx-auto px-4 relative z-10">
           <div className=" mx-auto">
             <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">YAZI<span className="text-yellow-500">.</span></h2>
+            <h2 className="text-4xl md:text-6xl font-bold ">YAZI<span className="text-yellow-500">.</span></h2>
 
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div className="w-full lg:w-1/2">
-                <p className="text-base sm:text-lg text-white/80 mb-8">
+                <p className="text-base sm:text-lg text-white/80 mb-10">
                   Günlük hayattan düşüncelere, bilimsel konulardan felsefi sorgulamalara kadar uzanan geniş bir
                   yelpazede kaleme aldığımız yazılarımızı blogumuzda bulabilirsiniz. Her yazıda farklı bir bakış
                   açısı, belki de hiç düşünmediğiniz bir perspektif sizleri bekliyor.
                 </p>
 
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Düşünce</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Bilim</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Teknoloji</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Felsefe</span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm">Tarih</span>
+                <div className="flex flex-wrap gap-3 mb-10">
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Düşünce</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Bilim</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Teknoloji</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Felsefe</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Tarih</span>
                 </div>
 
                 <Link
@@ -298,11 +294,12 @@ const Home = () => {
                   veya evde - her anınıza eşlik edecek içerikler sizi bekliyor.
                 </p>
 
-                <div className="flex flex-wrap gap-3 mb-8">
-                  <span className="px-4 py-2 rounded-full bg-purple-900/50 backdrop-blur-sm text-sm border border-purple-500/20 hover:bg-purple-800/50 transition-colors cursor-pointer">Kültür</span>
-                  <span className="px-4 py-2 rounded-full bg-blue-900/50 backdrop-blur-sm text-sm border border-blue-500/20 hover:bg-blue-800/50 transition-colors cursor-pointer">Teknoloji</span>
-                  <span className="px-4 py-2 rounded-full bg-green-900/50 backdrop-blur-sm text-sm border border-green-500/20 hover:bg-green-800/50 transition-colors cursor-pointer">Bilim</span>
-                  <span className="px-4 py-2 rounded-full bg-yellow-900/50 backdrop-blur-sm text-sm border border-yellow-500/20 hover:bg-yellow-800/50 transition-colors cursor-pointer">Kişisel Gelişim</span>
+                <div className="flex flex-wrap gap-3 mb-10">
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Düşünce</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Bilim</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Teknoloji</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Felsefe</span>
+                  <span className="px-4 py-2 rounded-full hover:text-black hover:bg-white hover:cursor-default bg-white/10 transform duration-300 text-sm">Tarih</span>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -310,7 +307,7 @@ const Home = () => {
                     href="/podcast"
                     className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300"
                   >
-                    Podcastler
+                    Podcast
                   </Link>
 
                 </div>
@@ -433,7 +430,7 @@ const Home = () => {
               </h2>
             </div>
 
-            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
+            <div className=" bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
               <div className="relative">
 
 
