@@ -29,6 +29,20 @@ body {
     }
 }
 
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-100px) rotate(180deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(360deg);
+    }
+}
+
 /* Define different heights and animations for each bar */
 .sound-wave-bar {
     animation-duration: 1s;

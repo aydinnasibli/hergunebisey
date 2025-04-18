@@ -3,28 +3,21 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import dynamic from 'next/dynamic'
+import { throttle } from 'lodash';
 
-const SoundWaveAnimation = dynamic(
-  () => import('../components/animationHandler/SoundWaveAnimation'),
-  { ssr: false }
-)
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       if (parallaxRef.current) {
         const scrollPosition = window.scrollY;
         parallaxRef.current.style.transform = `translateY(${scrollPosition * 0.4}px)`;
       }
-    };
+    }, 16); // ~60fps
 
-    // Only add event listener on the client-side
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-    }
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
@@ -35,7 +28,7 @@ const Home = () => {
         <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
           <div className="relative w-full h-[120%] -top-[10%]">
             <Image
-              src="https://images.unsplash.com/photo-1502209524164-acea936639a2?q=80&w=2070"
+              src="https://images.unsplash.com/photo-1529310399831-ed472b81d589?q=80&w=2756&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Hero background"
               fill
               priority
@@ -55,7 +48,7 @@ const Home = () => {
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-8 tracking-wide">
               HERGÜNEBİ'ŞEY<span className="text-yellow-500">.</span>
             </h1>
-            <p className="text-base sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
+            <p className="text-base sm:text-xl max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
               Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.
             </p>
           </div>
@@ -92,15 +85,15 @@ const Home = () => {
               <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
                 Sitenin adının hergünebi'şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
               </p>
-              <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full uppercase tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
-                Hikayemiz
+              <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full  tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
+                HİKAYEMİZ
               </Link>
             </div>
             <div className="w-full lg:w-1/2 grid grid-cols-2 gap-2 sm:gap-4 mt-8 lg:mt-0">
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
                 <div className="relative w-full h-full">
                   <Image
-                    src="https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?q=80&w=2080&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="Blog yazıları"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -111,7 +104,7 @@ const Home = () => {
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
                 <div className="relative w-full h-full">
                   <Image
-                    src="https://images.unsplash.com/photo-1589903308904-1010c2294adc?q=80&w=2070&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1631557677599-ee5fe0b3440b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="Podcast kayıtları"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -122,7 +115,7 @@ const Home = () => {
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
                 <div className="relative w-full h-full">
                   <Image
-                    src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1519802772250-a52a9af0eacb?q=80&w=3136&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="İlham verici alıntılar"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -133,7 +126,7 @@ const Home = () => {
               <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
                 <div className="relative w-full h-full">
                   <Image
-                    src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2073&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1472173148041-00294f0814a2?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                     alt="Kültürel içerikler"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -169,11 +162,11 @@ const Home = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">YAZILAR<span className="text-yellow-500">.</span></h2>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">YAZI<span className="text-yellow-500">.</span></h2>
 
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div className="w-full lg:w-1/2">
-                <p className="text-lg text-white/80 mb-8">
+                <p className="text-base sm:text-lg text-white/80 mb-8">
                   Günlük hayattan düşüncelere, bilimsel konulardan felsefi sorgulamalara kadar uzanan geniş bir
                   yelpazede kaleme aldığımız yazılarımızı blogumuzda bulabilirsiniz. Her yazıda farklı bir bakış
                   açısı, belki de hiç düşünmediğiniz bir perspektif sizleri bekliyor.
@@ -300,15 +293,11 @@ const Home = () => {
           </svg>
         </div>
 
-        {/* Animated sound wave effect */}
-        <div className="absolute inset-0 flex justify-center items-center opacity-100">
-          <SoundWaveAnimation />
-        </div>
 
 
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="backdrop-blur-sm bg-black/30 rounded-3xl overflow-hidden p-10 md:p-16 border border-white/5">
+          <div className="backdrop-blur-sm bg-black/30 rounded-3xl overflow-hidden p-10 md:p-16 border border-white/10">
             <div className="flex flex-col md:flex-row items-center gap-12">
               {/* Left Content */}
               <div className="w-full md:w-1/2">
@@ -316,7 +305,7 @@ const Home = () => {
                 <h2 className="text-4xl md:text-6xl font-bold mb-6">
                   PODCAST<span className="text-yellow-500">.</span>
                 </h2>
-                <p className="text-lg text-white/80 mb-8">
+                <p className="text-base sm:text-lg text-white/80 mb-8">
                   Podcastlerimizde uzmanlarla derinlemesine sohbetler, ilham verici hikayeler
                   ve Türkiye'nin gündemine farklı bakış açıları sunuyoruz. Yolda, sporda
                   veya evde - her anınıza eşlik edecek içerikler sizi bekliyor.
@@ -337,11 +326,6 @@ const Home = () => {
                     Podcastler
                   </Link>
 
-                  <button className="w-12 h-12 rounded-full bg-white/5 border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors group">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 group-hover:text-yellow-500 transition-colors">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                    </svg>
-                  </button>
                 </div>
               </div>
 
@@ -422,22 +406,10 @@ const Home = () => {
                 </svg>
                 <span className="text-sm group-hover:text-green-500 transition-colors">Spotify</span>
               </div>
-              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white group-hover:text-blue-500 transition-colors">
-                  <path d="M12 22a10 10 0 0 1-10-10 10 10 0 0 1 10-10 10 10 0 0 1 10 10 10 10 0 0 1-10 10m0-2a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m-2.25-10.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0M13 16l5-5-1.41-1.42L13 13.17l-2.59-2.59L9 12m0-4.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0"></path>
-                </svg>
-                <span className="text-sm group-hover:text-blue-500 transition-colors">Anchor</span>
-              </div>
 
-              {/* Added Google Podcasts */}
-              <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" className="fill-current text-white group-hover:text-red-500 transition-colors">
-                  <path d="M12 9c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3m0-2c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-7 5c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm16 0c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-8-8c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0 16c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zM5.99 3.04c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.38 1.03-.39 1.41 0zm12.02 18.92c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.39 1.02-.39 1.41 0zM6 18.98c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.39 1.02-.39 1.41 0zm12-14.94c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0a.9959.9959 0 010-1.41c.39-.39 1.02-.39 1.41 0z" />
-                </svg>
-                <span className="text-sm group-hover:text-red-500 transition-colors">Google Podcasts</span>
-              </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -457,36 +429,13 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Animated particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-yellow-500"
-              style={{
-                width: `${Math.random() * 8 + 2}px`,
-                height: `${Math.random() * 8 + 2}px`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                opacity: Math.random() * 0.3 + 0.1,
-                animation: `float ${Math.random() * 10 + 15}s linear infinite`,
-                animationDelay: `${Math.random() * 5}s`
-              }}
-            />
-          ))}
-        </div>
+
 
         {/* Decorative elements */}
         <div className="absolute -left-20 top-1/4 w-40 h-40 rounded-full bg-yellow-500/10 blur-3xl"></div>
         <div className="absolute -right-20 bottom-1/4 w-60 h-60 rounded-full bg-yellow-500/10 blur-3xl"></div>
 
-        <style jsx>{`
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-100px) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
-    }
-  `}</style>
+
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-5xl mx-auto">
@@ -499,13 +448,12 @@ const Home = () => {
 
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
               <div className="relative">
-                {/* Quote marks */}
                 <svg className="absolute -top-8 -left-4 sm:-left-8 w-16 h-16 text-yellow-500/20" fill="currentColor" viewBox="0 0 32 32">
-                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339zM26.806 22.005c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
+                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
                 </svg>
 
                 <svg className="absolute -bottom-8 -right-4 sm:-right-8 w-16 h-16 text-yellow-500/20 rotate-180" fill="currentColor" viewBox="0 0 32 32">
-                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339zM26.806 22.005c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
+                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
                 </svg>
 
                 <div className="text-center">
@@ -517,7 +465,7 @@ const Home = () => {
                     <div className="flex items-center justify-center space-x-4 mb-6">
 
                       <div className="flex flex-col">
-                        <h3 className="text-xl sm:text-2xl font-normal">Aristo</h3>
+                        <h3 className="text-xl sm:text-2xl font-normal">Aristoteles</h3>
                         <p className="text-sm text-white/60">Filozof, MÖ 384-322</p>
                       </div>
                     </div>

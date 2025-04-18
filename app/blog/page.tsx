@@ -233,11 +233,9 @@ export default function BlogPage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
                         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wide">
-                            BLOG<span className="text-yellow-500">.</span>
+                            YAZI<span className="text-yellow-500">.</span>
                         </h1>
-                        <h2 className="text-2xl md:text-3xl mb-8">
-                            Ekibimizden en son içgörüler ve güncellemeler
-                        </h2>
+
                         <p className="text-lg max-w-2xl mx-auto mb-12 text-white/90">
                             Bilim, teknoloji, kültür ve kişisel gelişim alanlarındaki en son gelişmeleri,
                             derinlemesine analizleri ve uzman görüşlerini içeren blog yazılarımızla bilgi
