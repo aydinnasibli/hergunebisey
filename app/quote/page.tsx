@@ -482,7 +482,7 @@ export default function QuotePage() {
                         key="hero-title"
                         className="text-5xl md:text-7xl font-bold text-white mb-3"
                     >
-                        Alıntı<span className="text-yellow-500">.</span>
+                        ALINTI<span className="text-yellow-500">.</span>
                     </h1>
 
 
