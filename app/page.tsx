@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { throttle } from 'lodash';
-
+import { Button } from '@/components/ui/button';
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ const Home = () => {
               HERGÜNEBİ'ŞEY<span className="text-yellow-500">.</span>
             </h1>
             <p className="text-base sm:text-xl max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
-              Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.
+              Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş <br /> dehalardan da alıntıların bulunduğu platform.
             </p>
           </div>
 
@@ -67,10 +67,10 @@ const Home = () => {
       <div className="relative bg-black text-white py-24 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-[10%] -left-[5%]">
-            HER GÜN YENİ
+            BİLİM TEKNOLOJİ
           </div>
-          <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-[50%] left-[20%]">
-            KEŞFET ÖĞREN
+          <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-[80%] left-[18%]">
+            KÜLTÜR TARİH
           </div>
         </div>
 
@@ -85,8 +85,8 @@ const Home = () => {
               <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8">
                 Sitenin adının hergünebi'şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
               </p>
-              <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-full  tracking-widest text-xs sm:text-sm hover:bg-white hover:text-black transition-colors duration-300">
-                HİKAYEMİZ
+              <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300">
+                Hikayemiz
               </Link>
             </div>
             <div className="w-full lg:w-1/2 grid grid-cols-2 gap-2 sm:gap-4 mt-8 lg:mt-0">
@@ -160,7 +160,7 @@ const Home = () => {
         <div className="absolute left-0 bottom-0 h-1 w-1/3 bg-gradient-to-r from-yellow-500/0 to-yellow-500/30"></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
+          <div className=" mx-auto">
             <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
             <h2 className="text-4xl md:text-6xl font-bold mb-6">YAZI<span className="text-yellow-500">.</span></h2>
 
@@ -182,12 +182,10 @@ const Home = () => {
 
                 <Link
                   href="/blog"
-                  className="px-8 py-3 bg-yellow-500 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:bg-yellow-400 transition-colors duration-300 inline-flex items-center"
+                  className='px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300'
                 >
                   Tüm Yazılar
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
+
                 </Link>
               </div>
 
@@ -264,29 +262,18 @@ const Home = () => {
       </div>
 
       {/* Podcast Section */}
-      <div className="relative w-full bg-black text-white py-24 overflow-hidden">
+      <div className="relative w-full bg-black text-white py-32 overflow-hidden">
         {/* Dynamic Background Waves */}
         <div className="absolute inset-0 opacity-100">
+
           <svg
             viewBox="0 0 1440 320"
             className="absolute w-full"
-            style={{ top: '10%' }}
+            style={{ top: '60%' }}
             preserveAspectRatio="none"
           >
             <path
               fill="rgba(255,255,255,0.1)"
-              fillOpacity="0.5"
-              d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,181.3C672,149,768,107,864,90.7C960,75,1056,85,1152,101.3C1248,117,1344,139,1392,149.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-            ></path>
-          </svg>
-          <svg
-            viewBox="0 0 1440 320"
-            className="absolute w-full"
-            style={{ top: '40%' }}
-            preserveAspectRatio="none"
-          >
-            <path
-              fill="rgba(234,179,8,0.08)"
               fillOpacity="0.5"
               d="M0,64L48,96C96,128,192,192,288,192C384,192,480,128,576,128C672,128,768,192,864,202.7C960,213,1056,171,1152,144C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             ></path>
@@ -296,8 +283,8 @@ const Home = () => {
 
 
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="backdrop-blur-sm bg-black/30 rounded-3xl overflow-hidden p-10 md:p-16 border border-white/10">
+        <div className="container  mx-auto px-4 relative z-10">
+          <div className="  mx-auto">
             <div className="flex flex-col md:flex-row items-center gap-12">
               {/* Left Content */}
               <div className="w-full md:w-1/2">
@@ -321,7 +308,7 @@ const Home = () => {
                 <div className="flex items-center gap-4">
                   <Link
                     href="/podcast"
-                    className="px-8 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black rounded-full uppercase tracking-widest text-sm font-bold hover:from-yellow-400 hover:to-yellow-500 transition-colors duration-300 shadow-lg shadow-yellow-500/20"
+                    className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300"
                   >
                     Podcastler
                   </Link>
@@ -333,7 +320,7 @@ const Home = () => {
               <div className="w-full md:w-1/2 flex justify-center">
                 <div className="relative perspective-1000">
                   {/* Album artwork with 3D effect */}
-                  <div className="w-64 h-64 relative transition-transform hover:rotate-y-10 hover:scale-105 cursor-pointer shadow-2xl">
+                  <div className="w-80 h-80 relative transition-transform hover:rotate-y-10 hover:scale-105 cursor-pointer shadow-2xl">
                     <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-yellow-500 via-yellow-600 to-yellow-400 transform -rotate-6"></div>
                     <div className="absolute inset-0 rounded-xl overflow-hidden transform rotate-3 border-2 border-white/20">
                       <div className="relative w-full h-full">
@@ -378,10 +365,10 @@ const Home = () => {
 
                   {/* Decorative mic icon with animated rings */}
                   <div className="absolute -bottom-8 -right-8 flex items-center justify-center">
-                    <div className="absolute w-16 h-16 rounded-full border border-yellow-500/30 animate-ping-slow"></div>
-                    <div className="absolute w-20 h-20 rounded-full border border-yellow-500/20 animate-ping-slow animation-delay-500"></div>
-                    <div className="absolute w-24 h-24 rounded-full border border-yellow-500/10 animate-ping-slow animation-delay-1000"></div>
-                    <div className="w-12 h-12 rounded-full bg-purple-900 flex items-center justify-center shadow-lg z-10">
+                    <div className="absolute w-16 h-16 rounded-full border border-gray-500/40 animate-ping-slow"></div>
+                    <div className="absolute w-20 h-20 rounded-full border border-gray-500/30 animate-ping-slow animation-delay-500"></div>
+                    <div className="absolute w-24 h-24 rounded-full border border-gray-500/20 animate-ping-slow animation-delay-1000"></div>
+                    <div className="w-12 h-12 rounded-full bg-black border border-gray-400 flex items-center justify-center shadow-lg z-10">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
                       </svg>
@@ -394,10 +381,10 @@ const Home = () => {
             {/* Platform logos - Updated with hover effects */}
             <div className="mt-16 flex flex-wrap justify-center gap-8">
               <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-8 h-8 fill-current text-white group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-8 h-8 fill-current text-white group-hover:text-[#b150e2] transition-colors">
                   <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24.984375 12.986328 A 1.0001 1.0001 0 0 0 24 14 L 24 26.5 A 1.0001 1.0001 0 0 0 24.5 27.5 L 32.5 31.5 A 1.0001 1.0001 0 0 0 33.521484 31.060547 A 1.0001 1.0001 0 0 0 33 30 L 33 17.5 A 1.0001 1.0001 0 0 0 32.5 16.5 L 25.5 12.986328 A 1.0001 1.0001 0 0 0 24.984375 12.986328 z"></path>
                 </svg>
-                <span className="text-sm group-hover:text-yellow-500 transition-colors">Apple Podcasts</span>
+                <span className="text-sm group-hover:text-[#b150e2] transition-colors">Apple Podcasts</span>
               </div>
 
               <div className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-all hover:scale-110 cursor-pointer group">
@@ -467,7 +454,7 @@ const Home = () => {
                     <div className="w-16 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-6"></div>
 
                     <div className="group">
-                      <Link href="/quote" className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 backdrop-blur-sm border border-yellow-500/30 uppercase tracking-widest text-sm hover:bg-yellow-500/30 transition-colors duration-300 flex items-center space-x-2 group-hover:scale-105 transform transition-transform">
+                      <Link href="/quote" className="px-8 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 backdrop-blur-sm border border-yellow-500/30 uppercase tracking-widest text-sm hover:bg-yellow-500/30 transition-colors duration-300 flex items-center space-x-2 group-hover:scale-105 transform ">
                         <span>Tüm Alıntılar</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 group-hover:translate-x-1 transition-transform">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
