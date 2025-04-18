@@ -26,13 +26,13 @@ const Home = () => {
       <div className="relative h-screen overflow-hidden">
         {/* Parallax Background - Using position relative with Next.js Image */}
         <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
-          <div className="relative w-full h-[120%] -top-[10%]">
+          <div className="relative w-full h-[120%]  -top-[8%]">
             <Image
               src="https://images.unsplash.com/photo-1529310399831-ed472b81d589?q=80&w=2756&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Hero background"
               fill
               priority
-              className="object-cover object-center"
+              className="object-cover  object-center"
               sizes="100vw"
             />
           </div>
