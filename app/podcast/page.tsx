@@ -35,24 +35,7 @@ const PodcastPage = () => {
                 </svg>
             )
         },
-        {
-            name: "Google Podcasts",
-            url: "https://podcasts.google.com/feed/your-podcast",
-            icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
-                    <path d="M12 0C8.068 0 4.733 2.156 3.106 5.334h6.12a.773.773 0 0 1 .775.776c0 .427-.348.774-.775.774H2.17c-.247.67-.422 1.366-.503 2.101h3.559a.774.774 0 0 1 0 1.55H1.55c.017.713.102 1.407.252 2.082h4.924a.774.774 0 0 1 0 1.55H2.172c.254.7.583 1.36.976 1.97h7.703a.773.773 0 0 1 .776.776.773.773 0 0 1-.776.775H3.504C5.091 21.066 8.278 23.25 12 23.25s6.91-2.184 8.496-5.344h-7.703a.773.773 0 0 1-.776-.776c0-.427.348-.775.776-.775h7.703c.393-.61.722-1.27.976-1.97h-4.924a.774.774 0 0 1 0-1.55h4.925c.15-.675.234-1.37.252-2.082h-5.177a.774.774 0 0 1 0-1.55h5.177a10.245 10.245 0 0 0-.503-2.101h-7.054a.773.773 0 0 1-.776-.774c0-.428.348-.776.776-.776h6.12C19.267 2.156 15.932 0 12 0zm0 8.5c.62 0 1.118.5 1.118 1.124v4.752c0 .624-.499 1.124-1.118 1.124-.62 0-1.118-.5-1.118-1.124V9.624c0-.624.499-1.124 1.118-1.124zm3.5.05c.604 0 1.083.548 1.083 1.192v4.516c0 .644-.479 1.192-1.083 1.192-.604 0-1.083-.548-1.083-1.192V9.742c0-.644.479-1.192 1.083-1.192zm-7 0c.604 0 1.083.548 1.083 1.192v4.516c0 .644-.479 1.192-1.083 1.192-.604 0-1.083-.548-1.083-1.192V9.742c0-.644.479-1.192 1.083-1.192zm10.5.05c.589 0 1.059.595 1.059 1.317v4.066c0 .722-.47 1.317-1.059 1.317-.589 0-1.059-.595-1.059-1.317V9.917c0-.722.47-1.317 1.059-1.317zm-14 0c.589 0 1.059.595 1.059 1.317v4.066c0 .722-.47 1.317-1.059 1.317-.589 0-1.059-.595-1.059-1.317V9.917c0-.722.47-1.317 1.059-1.317z"></path>
-                </svg>
-            )
-        },
-        {
-            name: "Anchor",
-            url: "https://anchor.fm/your-podcast",
-            icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-8 h-8 fill-current text-white">
-                    <path d="M12 22a10 10 0 0 1-10-10 10 10 0 0 1 10-10 10 10 0 0 1 10 10 10 10 0 0 1-10 10m0-2a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m-2.25-10.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0M13 16l5-5-1.41-1.42L13 13.17l-2.59-2.59L9 12m0-4.25a1.25 1.25 0 1 1 2.5 0 1.25 1.25 0 0 1-2.5 0"></path>
-                </svg>
-            )
-        }
+
     ];
 
     // Featured shows (showcase-only, not episodes)
@@ -137,7 +120,7 @@ const PodcastPage = () => {
                             PODCAST<span className="text-yellow-500">.</span>
                         </h1>
 
-                        <p className="text-lg max-w-2xl mx-auto mb-12 text-white/90">
+                        <p className="text-base sm:text-xl max-w-2xl mx-auto mb-12 text-white/90">
                             Uzmanlarla derinlemesine sohbetler, ilham verici hikayeler ve Türkiye'nin gündemine
                             farklı bakış açıları sunan podcast yayınlarımız yolda, sporda veya evde -
                             her anınıza eşlik etmek için burada.
@@ -168,87 +151,7 @@ const PodcastPage = () => {
                 </div>
             </div>
 
-            {/* About Podcast Section */}
-            <div className="relative bg-black text-white py-24 overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '10%', left: '-5%' }}>
-                        PODCAST
-                    </div>
-                    <div className="absolute text-9xl font-bold text-white whitespace-nowrap" style={{ top: '50%', left: '20%' }}>
-                        DİNLE KEŞFET
-                    </div>
-                </div>
 
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="flex flex-col lg:flex-row items-center gap-12">
-                        <div className="w-full lg:w-1/2">
-                            <div className="w-10 h-1 bg-yellow-500 mb-6"></div>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6">PODCASTLERİMİZ</h2>
-                            <p className="text-lg text-white/80 mb-6">
-                                Hergünebi'şey podcastleri, günlük hayatınıza ilham, bilgi ve değer katmak için
-                                titizlikle hazırlanan sesli içeriklerdir. Teknolojiden bilime, kültürden kişisel
-                                gelişime kadar farklı alanlarda uzman konuklarımızla gerçekleştirdiğimiz
-                                sohbetleri sizlerle buluşturuyoruz.
-                            </p>
-                            <p className="text-lg text-white/80 mb-8">
-                                İster yolculukta, ister sporda, isterseniz günün yorgunluğunu atarken dinleyebileceğiniz
-                                podcastlerimiz, sizlere farklı bakış açıları kazandırmayı ve bilgi dağarcığınızı
-                                zenginleştirmeyi amaçlıyor.
-                            </p>
-
-                            {/* Audio Player Demo */}
-                            <div className="w-full bg-white/5 backdrop-blur-sm p-4 rounded-lg mb-8">
-                                <div className="flex items-center gap-4">
-                                    <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                        </svg>
-                                    </button>
-
-                                    <div className="flex-1">
-                                        <p className="text-sm text-yellow-500 mb-1">ŞİMDİ DİNLE</p>
-                                        <h3 className="text-lg font-medium mb-1">Son Bölüm: Teknolojinin Geleceği</h3>
-                                        <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
-                                            <div className="w-1/3 h-full bg-yellow-500"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="w-full lg:w-1/2">
-                            <div className="relative">
-                                {/* Decorative rings */}
-                                <div className="absolute inset-0 rounded-full border-4 border-yellow-500/10 animate-pulse"></div>
-                                <div className="absolute inset-0 scale-125 rounded-full border-4 border-yellow-500/5"></div>
-
-                                {/* Main image */}
-                                <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1589903308904-1010c2294adc?q=80&w=2070"
-                                        alt="Podcast stüdyosu"
-                                        className="w-full h-auto"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6">
-                                        <div>
-                                            <div className="w-8 h-1 bg-yellow-500 mb-2"></div>
-                                            <h3 className="text-2xl font-bold mb-2">Profesyonel Stüdyo</h3>
-                                            <p className="text-white/80">En yüksek ses kalitesi için profesyonel stüdyo ortamında kayıt</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Microphone icon */}
-                                <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center shadow-lg z-20">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 text-black">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             {/* Featured Shows Section */}
             <div

@@ -441,23 +441,17 @@ const Home = () => {
           <div className="max-w-5xl mx-auto">
             <div className="flex flex-col items-center mb-12">
               <div className="w-12 h-1 bg-yellow-500 mb-4"></div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-center">
+              <h2 className="text-3xl sm:text-5xl font-bold text-center">
                 ALINTI <span className="text-yellow-500">.</span>
               </h2>
             </div>
 
             <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
               <div className="relative">
-                <svg className="absolute -top-8 -left-4 sm:-left-8 w-16 h-16 text-yellow-500/20" fill="currentColor" viewBox="0 0 32 32">
-                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
-                </svg>
 
-                <svg className="absolute -bottom-8 -right-4 sm:-right-8 w-16 h-16 text-yellow-500/20 rotate-180" fill="currentColor" viewBox="0 0 32 32">
-                  <path d="M9.594 22.142c-2.13 1.909-3.785 3.771-4.964 5.586l-3.365-2.62c2.087-2.355 3.683-4.495 4.787-6.42 1.104-1.923 1.656-3.784 1.656-5.586 0-1.097-0.287-1.946-0.859-2.547s-1.371-0.901-2.396-0.901c-1.097 0-2.002 0.376-2.714 1.128s-1.069 1.802-1.069 3.152c0 1.205 0.382 2.214 1.146 3.028s1.723 1.222 2.877 1.222v4.146c-2.384 0-4.31-0.799-5.777-2.396s-2.202-3.719-2.202-6.367c0-2.665 0.778-4.69 2.333-6.077s3.656-2.079 6.302-2.079c2.665 0 4.69 0.73 6.077 2.19s2.079 3.575 2.079 6.344c0 2.167-0.629 4.326-1.887 6.478s-3.031 4.191-5.319 6.102l-0.366 0.339z"></path>
-                </svg>
 
                 <div className="text-center">
-                  <p className="text-2xl sm:text-3xl md:text-4xl font-light italic leading-relaxed mb-10">
+                  <p className="text-xl sm:text-2xl md:text-3xl font-light italic leading-relaxed mb-10">
                     Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
                   </p>
 

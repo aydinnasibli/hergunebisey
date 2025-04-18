@@ -236,10 +236,8 @@ export default function BlogPage() {
                             YAZI<span className="text-yellow-500">.</span>
                         </h1>
 
-                        <p className="text-lg max-w-2xl mx-auto mb-12 text-white/90">
-                            Bilim, teknoloji, kültür ve kişisel gelişim alanlarındaki en son gelişmeleri,
-                            derinlemesine analizleri ve uzman görüşlerini içeren blog yazılarımızla bilgi
-                            dağarcığınızı genişletin.
+                        <p className="text-base sm:text-xl max-w-2xl mx-auto mb-12 text-white/90">
+                            Bilim, tarih ve kültür ağırlıklı konularda yazdığımız zaman zaman ise teknoloji ve felsefe gibi alanlara da değindiğimiz yazılarımız ile okurken hem öğrenin hem de keyifli zaman geçirin.
                         </p>
 
                         {/* Scroll indicator */}
@@ -278,7 +276,7 @@ export default function BlogPage() {
                                     <input
                                         type="text"
                                         className="block w-full pl-12 pr-4 py-3 bg-white/10 rounded-xl border border-gray-700 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300 focus:outline-none"
-                                        placeholder="Makalelerde ara..."
+                                        placeholder="Yazılarda ara..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                     />
