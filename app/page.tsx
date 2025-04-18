@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { throttle } from 'lodash';
-import { Button } from '@/components/ui/button';
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -430,7 +429,7 @@ const Home = () => {
               </h2>
             </div>
 
-            <div className=" bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
+            <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-10 sm:p-16 border border-white/10 shadow-xl shadow-black/20 transform hover:scale-[1.01] transition-transform duration-300">
               <div className="relative">
 
 
