@@ -297,7 +297,7 @@ const Home = () => {
 
         {/* Animated sound wave effect */}
         <div className="absolute inset-0 flex justify-center items-center opacity-100">
-          {typeof window !== 'undefined' && <SoundWaveAnimation />}
+          <SoundWaveAnimation />
         </div>
 
 
