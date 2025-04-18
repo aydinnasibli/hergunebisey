@@ -25,12 +25,13 @@ const Navbar = () => {
     // Control body scroll when mobile menu is open
     useEffect(() => {
         if (mobileMenuOpen) {
+            // Save current scroll position
+            const scrollY = window.scrollY;
             // Prevent scrolling on the body when menu is open
             document.body.style.overflow = 'hidden';
-            // Store current scroll position
             document.body.style.position = 'fixed';
             document.body.style.width = '100%';
-            document.body.style.top = `-${window.scrollY}px`;
+            document.body.style.top = `-${scrollY}px`;
         } else {
             // Re-enable scrolling when menu is closed
             const scrollY = document.body.style.top;
@@ -125,22 +126,28 @@ const Navbar = () => {
                         </div>
                     </nav>
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Menu Button - Only show hamburger when menu is closed */}
                     <button
                         onClick={toggleMobileMenu}
                         className="md:hidden text-white p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-md"
-                        aria-label="Toggle mobile menu"
+                        aria-label={mobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
                         aria-expanded={mobileMenuOpen}
                     >
-                        {mobileMenuOpen ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" aria-hidden="true">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                            aria-hidden="true"
+                        >
+                            {mobileMenuOpen ? (
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" aria-hidden="true">
+                            ) : (
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
-                        )}
+                            )}
+                        </svg>
                     </button>
                 </div>
             </header>
@@ -157,15 +164,7 @@ const Navbar = () => {
                 <div className="h-full flex flex-col justify-center items-center p-6">
                     <h2 id="mobile-menu-heading" className="sr-only">Mobile navigation menu</h2>
 
-                    <button
-                        onClick={closeMenu}
-                        className="absolute top-6 right-6 text-white p-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 rounded-md"
-                        aria-label="Close mobile menu"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                    {/* Removed redundant close button here */}
 
                     <nav className="flex flex-col items-center space-y-8">
                         <NavLinks isMobile={true} closeMenu={closeMenu} />
