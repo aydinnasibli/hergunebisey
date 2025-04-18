@@ -179,7 +179,7 @@ const Home = () => {
                   href="/blog"
                   className='px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300'
                 >
-                  Tüm Yazılar
+                  Yazılar
 
                 </Link>
               </div>
@@ -467,7 +467,7 @@ const Home = () => {
                       href="/quote"
                       className="inline-block px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl tracking-wider text-xs sm:text-sm hover:bg-gray-200 hover:text-black transition-colors duration-300 cursor-pointer relative z-30"
                     >
-                      Tüm Alıntılar
+                      Alıntılar
                     </Link>
 
 
