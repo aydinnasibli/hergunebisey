@@ -1,21 +1,61 @@
 "use client"
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { clientSide, urlFor } from '@/lib/sanity';
+import { useQuery } from '@tanstack/react-query';
+
+// Fetch podcasts from Sanity
+const fetchPodcasts = async () => {
+    const now = new Date().toISOString();
+    return clientSide.fetch(`
+    *[_type == "podcast" && publishedAt <= $now] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      description,
+      coverImage,
+      duration,
+      publishedAt,
+      "categories": categories[]->{ id, name },
+      "hosts": hosts[]->{ name, image, position }
+    }
+  `, { now });
+};
+
+// Fetch podcast categories from Sanity
+const fetchPodcastCategories = async () => {
+    return clientSide.fetch(`
+    *[_type == "podcastCategory"] {
+      _id,
+      id,
+      name,
+      description
+    }
+  `);
+};
 
 const PodcastPage = () => {
     const [activeCategory, setActiveCategory] = useState<string>("all");
     const parallaxRef = useRef<HTMLDivElement>(null);
 
-    // Categories for filter
+    // Fetch podcasts and categories using React Query
+    const { data: podcasts = [], isLoading: isLoadingPodcasts } = useQuery({
+        queryKey: ['podcasts'],
+        queryFn: fetchPodcasts
+    });
+
+    const { data: categoriesData = [], isLoading: isLoadingCategories } = useQuery({
+        queryKey: ['podcastCategories'],
+        queryFn: fetchPodcastCategories
+    });
+
+    // Process categories data to include "All" option
     const categories = [
         { id: "all", name: "Tümü" },
-        { id: "culture", name: "Kültür" },
-        { id: "tech", name: "Teknoloji" },
-        { id: "science", name: "Bilim" },
-        { id: "personal", name: "Kişisel Gelişim" }
+        ...(categoriesData || [])
     ];
 
-    // Platform links
+    // Platform links - these should be updated with your actual links
     const platforms = [
         {
             name: "Apple Podcasts",
@@ -35,43 +75,6 @@ const PodcastPage = () => {
                 </svg>
             )
         },
-
-    ];
-
-    // Featured shows (showcase-only, not episodes)
-    const featuredShows = [
-        {
-            id: 1,
-            title: "Bilim ve Sanat",
-            description: "Bilim dünyasının en yeni keşiflerini ve sanat dünyasındaki gelişmeleri ele alıyoruz.",
-            image: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=2070",
-            categories: ["science", "culture"],
-            duration: "45-60 dk"
-        },
-        {
-            id: 2,
-            title: "Teknoloji Bugün",
-            description: "Güncel teknoloji trendlerini ve dijital dünyadan en son haberleri değerlendiriyoruz.",
-            image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070",
-            categories: ["tech"],
-            duration: "30-45 dk"
-        },
-        {
-            id: 3,
-            title: "Kişisel Dönüşüm",
-            description: "Uzmanlarla kişisel gelişim, mindfulness ve daha dengeli bir yaşam üzerine sohbetler.",
-            image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=2080",
-            categories: ["personal"],
-            duration: "40-50 dk"
-        },
-        {
-            id: 4,
-            title: "Kültür Koridoru",
-            description: "Edebiyattan sinemaya, müzikten tiyatroya kültür dünyasına geniş bir bakış.",
-            image: "https://images.unsplash.com/photo-1533621373733-daa8a4477a98?q=80&w=2074",
-            categories: ["culture"],
-            duration: "50-65 dk"
-        }
     ];
 
     // Parallax effect
@@ -87,10 +90,40 @@ const PodcastPage = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Filter shows by category
-    const filteredShows = activeCategory === 'all'
-        ? featuredShows
-        : featuredShows.filter(show => show.categories.includes(activeCategory));
+    // Filter podcasts by category
+    const filteredPodcasts = activeCategory === 'all'
+        ? podcasts
+        : podcasts.filter((podcast: any) =>
+            podcast.categories.some((cat: any) => cat.id === activeCategory)
+        );
+
+    // Loading state - display skeleton UI while data is loading
+    if (isLoadingPodcasts || isLoadingCategories) {
+        return (
+            <div className="relative w-full min-h-screen bg-black text-white p-8">
+                <div className="max-w-7xl mx-auto">
+                    <div className="w-16 h-1 bg-yellow-500 mb-8"></div>
+                    <div className="h-10 w-64 bg-white/10 animate-pulse mb-12"></div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {[1, 2, 3, 4].map((item) => (
+                            <div key={item} className="bg-white/5 h-80 rounded-xl animate-pulse"></div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Format date to Turkish
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('tr-TR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        }).format(date);
+    };
 
     return (
         <div className="relative w-full">
@@ -149,8 +182,6 @@ const PodcastPage = () => {
                 </div>
             </div>
 
-
-
             {/* Featured Shows Section */}
             <div
                 className="relative text-white py-24 overflow-hidden"
@@ -163,7 +194,7 @@ const PodcastPage = () => {
                         <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
                         <h2 className="text-4xl md:text-6xl font-bold mb-8">KATEGORİLER</h2>
                         <p className="text-lg max-w-2xl mx-auto text-white/80">
-                            Birbirinden farklı kategorilerde ile hazırladığımız podcast yayınlarımız geniş bir yelpazede ilgi çekici konuları ele alıyor.
+                            Birbirinden farklı kategorilerde hazırladığımız podcast yayınlarımız geniş bir yelpazede ilgi çekici konuları ele alıyor.
                         </p>
 
                         {/* Category filters */}
@@ -173,8 +204,8 @@ const PodcastPage = () => {
                                     key={category.id}
                                     onClick={() => setActiveCategory(category.id)}
                                     className={`px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
-                                        ? 'bg-yellow-500 text-black'
-                                        : 'bg-white/10 hover:bg-white/20'
+                                            ? 'bg-yellow-500 text-black'
+                                            : 'bg-white/10 hover:bg-white/20'
                                         }`}
                                 >
                                     {category.name}
@@ -184,59 +215,62 @@ const PodcastPage = () => {
                     </div>
 
                     {/* Shows grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                        {filteredShows.map(show => (
-                            <div
-                                key={show.id}
-                                className="relative rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-                            >
-                                <div className="absolute inset-0">
-                                    <img
-                                        src={show.image}
-                                        alt={show.title}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-                                </div>
+                    {filteredPodcasts.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                            {filteredPodcasts.map((podcast: any) => (
+                                <div
+                                    key={podcast._id}
+                                    className="relative rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                                >
+                                    <div className="absolute inset-0">
+                                        <img
+                                            src={podcast.coverImage ? urlFor(podcast.coverImage).url() : 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070'}
+                                            alt={podcast.title}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+                                    </div>
 
-                                <div className="relative p-8 flex flex-col h-full min-h-80">
-                                    <div className="flex-1">
-                                        <div className="flex gap-2 mb-3">
-                                            {show.categories.map(cat => {
-                                                const categoryObj = categories.find(c => c.id === cat);
-                                                return (
-                                                    <span key={cat} className="px-3 py-1 bg-white/10 rounded-full text-xs">
-                                                        {categoryObj?.name || cat}
+                                    <div className="relative p-8 flex flex-col h-full min-h-80">
+                                        <div className="flex-1">
+                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                {podcast.categories.map((cat: any) => (
+                                                    <span key={cat.id} className="px-3 py-1 bg-white/10 rounded-full text-xs">
+                                                        {cat.name}
                                                     </span>
-                                                );
-                                            })}
-                                            <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">
-                                                {show.duration}
-                                            </span>
+                                                ))}
+                                                <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">
+                                                    {podcast.duration}
+                                                </span>
+                                            </div>
+
+                                            <h3 className="text-2xl font-bold mb-2">{podcast.title}</h3>
+                                            <p className="text-white/70 mb-6">{podcast.description}</p>
                                         </div>
 
-                                        <h3 className="text-2xl font-bold mb-2">{show.title}</h3>
-                                        <p className="text-white/70 mb-6">{show.description}</p>
-                                    </div>
+                                        <div className="flex items-center gap-4">
+                                            <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                                                </svg>
+                                            </button>
 
-                                    <div className="flex items-center gap-4">
-                                        <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                            </svg>
-                                        </button>
-
-                                        <Link
-                                            href={`/podcast/${show.id}`}
-                                            className="px-6 py-3 bg-transparent border border-yellow-500 text-yellow-500 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-yellow-500 hover:text-black transition-colors duration-300"
-                                        >
-                                            Daha Fazla Bilgi
-                                        </Link>
+                                            <Link
+                                                href={`/podcast/${podcast.slug.current}`}
+                                                className="px-6 py-3 bg-transparent border border-yellow-500 text-yellow-500 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-yellow-500 hover:text-black transition-colors duration-300"
+                                            >
+                                                Daha Fazla Bilgi
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="bg-white/5 backdrop-blur-sm rounded-xl p-12 text-center">
+                            <p className="text-xl text-white/70">Bu kategoride henüz podcast bulunamadı.</p>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -288,4 +322,5 @@ const PodcastPage = () => {
         </div>
     );
 }
+
 export default PodcastPage;
