@@ -1,6 +1,7 @@
 // app/podcast/[slug]/page.tsx
 "use client"
 import { useState, useEffect } from 'react';
+import { use } from 'react'; // Import React.use
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPodcastBySlug, urlFor } from '@/lib/sanity';
@@ -8,6 +9,10 @@ import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
 
 export default function PodcastDetailPage({ params }: { params: { slug: string } }) {
+    // Unwrap the params Promise with React.use()
+    const unwrappedParams = use(params);
+    const slug = unwrappedParams.slug;
+
     const [podcast, setPodcast] = useState<Podcast | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -16,7 +21,7 @@ export default function PodcastDetailPage({ params }: { params: { slug: string }
         const fetchPodcast = async () => {
             try {
                 setIsLoading(true);
-                const fetchedPodcast = await getPodcastBySlug(params.slug);
+                const fetchedPodcast = await getPodcastBySlug(slug);
                 setPodcast(fetchedPodcast);
             } catch (error) {
                 console.error('Error fetching podcast:', error);
@@ -26,7 +31,7 @@ export default function PodcastDetailPage({ params }: { params: { slug: string }
         };
 
         fetchPodcast();
-    }, [params.slug]);
+    }, [slug]);
 
     // Format date to Turkish
     const formatDate = (dateString: string) => {
@@ -135,21 +140,6 @@ export default function PodcastDetailPage({ params }: { params: { slug: string }
                         <p className="text-xl text-white/80 mb-8">{description}</p>
 
                         <div className="flex flex-wrap items-center gap-6 mb-12">
-                            <button
-                                onClick={() => setIsPlaying(!isPlaying)}
-                                className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors"
-                            >
-                                {isPlaying ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
-                                    </svg>
-                                ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-black">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                    </svg>
-                                )}
-                            </button>
-
                             <div>
                                 <div className="text-sm text-white/60 mb-1">
                                     Yayınlanma Tarihi: {formatDate(publishedAt)}
@@ -226,7 +216,7 @@ export default function PodcastDetailPage({ params }: { params: { slug: string }
 
             {/* Main Content Section */}
             <div className="bg-black">
-                <div className="container mx-auto px-4 py-16">
+                <div className="container mx-auto px-4 py-12">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                         {/* Left Column: Hosts & Guests */}
                         <div className="lg:col-span-1">
@@ -307,8 +297,6 @@ export default function PodcastDetailPage({ params }: { params: { slug: string }
                     </div>
                 </div>
             </div>
-
-            {/* Related Podcasts Section - could be implemented in the future */}
 
             {/* Back to Podcasts Button */}
             <div className="container mx-auto px-4 py-12 text-center">

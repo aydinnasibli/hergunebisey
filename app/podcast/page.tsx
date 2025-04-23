@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { clientSide, urlFor, getPodcasts, getPodcastCategories } from '@/lib/sanity';
+import { urlFor, getPodcasts, getPodcastCategories } from '@/lib/sanity';
 
 interface Podcast {
     _id: string;
@@ -107,23 +107,7 @@ const PodcastPage = () => {
         },
     ];
 
-    // Loading state - display skeleton UI while data is loading
-    if (isLoading) {
-        return (
-            <div className="relative w-full min-h-screen bg-black text-white p-8">
-                <div className="max-w-7xl mx-auto">
-                    <div className="w-16 h-1 bg-yellow-500 mb-8"></div>
-                    <div className="h-10 w-64 bg-white/10 animate-pulse mb-12"></div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {[1, 2, 3, 4].map((item) => (
-                            <div key={item} className="bg-white/5 h-80 rounded-xl animate-pulse"></div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     // Format date to Turkish
     const formatDate = (dateString: string) => {
@@ -173,7 +157,7 @@ const PodcastPage = () => {
                                     href={platform.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-3 px-6 py-3 bg-black/40 backdrop-blur-md hover:bg-black/60 transition-all duration-300 rounded-full"
+                                    className="flex items-center gap-3 px-6 py-3 bg-black/40 backdrop-blur-md hover:bg-white/10 transition-all duration-300 rounded-full"
                                 >
                                     {platform.icon}
                                     <span>{platform.name}</span>
@@ -194,10 +178,8 @@ const PodcastPage = () => {
 
             {/* Featured Shows Section */}
             <div
-                className="relative text-white py-24 overflow-hidden"
-                style={{
-                    background: "linear-gradient(to bottom, #000000, #0f172a)"
-                }}
+                className="relative text-white py-24 overflow-hidden bg-black"
+
             >
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="mb-16 text-center">
@@ -213,9 +195,9 @@ const PodcastPage = () => {
                                 <button
                                     key={category.id}
                                     onClick={() => setActiveCategory(category.id)}
-                                    className={`px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
-                                        ? 'bg-yellow-500 text-black'
-                                        : 'bg-white/10 hover:bg-white/20'
+                                    className={`px-6 py-2 sm:px-8 sm:py-3 border cursor-pointer border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300 ${activeCategory === category.id
+                                        ? 'bg-white text-black'
+                                        : 'bg-white/10  hover:bg-white'
                                         }`}
                                 >
                                     {category.name}
@@ -224,78 +206,99 @@ const PodcastPage = () => {
                         </div>
                     </div>
 
-                    {/* Shows grid */}
-                    {filteredPodcasts.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    {/* Enhanced Podcast Grid */}
+                    {filteredPodcasts.length > 0 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredPodcasts.map((podcast) => (
                                 <div
                                     key={podcast._id}
-                                    className="relative rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                                    className="relative rounded-xl overflow-hidden border border-white/30 group hover:shadow-xl hover:shadow-white/20  transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full"
                                 >
-                                    <div className="absolute inset-0">
+                                    {/* Cover Image with Overlay */}
+                                    <div className="relative aspect-video w-full overflow-hidden">
                                         {podcast.coverImage ? (
                                             <Image
                                                 src={urlFor(podcast.coverImage).url()}
                                                 alt={podcast.title}
                                                 fill
-                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                className="object-cover transition-transform duration-500"
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                priority={true}
                                             />
                                         ) : (
                                             <Image
-                                                src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070"
+                                                src="/images/podcast-placeholder.jpg" // Consider using a local placeholder image
                                                 alt={podcast.title}
                                                 fill
-                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                className="object-cover transition-transform duration-500 "
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                             />
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
+
+                                        {/* Duration Badge - Positioned on the image */}
+                                        {podcast.duration && (
+                                            <span className="absolute top-4 right-4 px-3 py-1 bg-yellow-500 text-black rounded-full text-xs font-medium">
+                                                {podcast.duration}
+                                            </span>
+                                        )}
                                     </div>
 
-                                    <div className="relative p-8 flex flex-col h-full min-h-80">
-                                        <div className="flex-1">
-                                            <div className="flex flex-wrap gap-2 mb-3">
-                                                {podcast.categories && podcast.categories.map((cat) => (
-                                                    <span key={cat.id} className="px-3 py-1 bg-white/10 rounded-full text-xs">
-                                                        {cat.name}
-                                                    </span>
-                                                ))}
-                                                {podcast.duration && (
-                                                    <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">
-                                                        {podcast.duration}
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <h3 className="text-2xl font-bold mb-2">{podcast.title}</h3>
-                                            {podcast.description && (
-                                                <p className="text-white/70 mb-6">{podcast.description}</p>
-                                            )}
+                                    {/* Content Area */}
+                                    <div className="relative p-6 flex flex-col flex-grow ">
+                                        {/* Categories */}
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            {podcast.categories && podcast.categories.map((cat) => (
+                                                <span
+                                                    key={cat.id}
+                                                    className=" select-none px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300 hover:bg-gray-700 transition-colors"
+                                                >
+                                                    {cat.name}
+                                                </span>
+                                            ))}
                                         </div>
 
-                                        <div className="flex items-center gap-4">
-                                            <Link
-                                                href={`/podcast/${podcast.slug.current}`}
-                                                className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                                                </svg>
-                                            </Link>
+                                        {/* Title with hover effect */}
+                                        <Link href={`/podcast/${podcast.slug.current}`} className="text-xl font-bold mb-2 hover:text-white/60  duration-300 transition-colors">
+                                            {podcast.title}
+                                        </Link>
 
-                                            <Link
-                                                href={`/podcast/${podcast.slug.current}`}
-                                                className="px-6 py-3 bg-transparent border border-yellow-500 text-yellow-500 rounded-full uppercase tracking-widest text-xs font-medium hover:bg-yellow-500 hover:text-black transition-colors duration-300"
-                                            >
-                                                Daha Fazla Bilgi
-                                            </Link>
+                                        {/* Description with line clamp for consistent height */}
+                                        {podcast.description && (
+                                            <p className="text-gray-400 mb-4 line-clamp-3">
+                                                {podcast.description}
+                                            </p>
+                                        )}
+
+                                        {/* Date and Actions - at the bottom */}
+                                        <div className="mt-auto">
+                                            <p className="text-gray-300/90 text-sm mb-4">
+                                                {formatDate(podcast.publishedAt)}
+                                            </p>
+
+                                            <div className="flex items-center gap-3">
+                                                {/* Details link */}
+                                                <Link
+                                                    href={`/podcast/${podcast.slug.current}`}
+                                                    className="flex-grow px-4 py-2 bg-transparent border border-white text-white rounded-lg text-sm font-medium text-center hover:bg-white hover:text-black transition-colors duration-300"
+                                                >
+                                                    Daha Fazla
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <div className="bg-white/5 backdrop-blur-sm rounded-xl p-12 text-center">
-                            <p className="text-xl text-white/70">Bu kategoride henüz podcast bulunamadı.</p>
+                    )}
+
+                    {/* Empty state */}
+                    {filteredPodcasts.length === 0 && (
+                        <div className="flex flex-col items-center justify-center py-16 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                            <h3 className="text-xl font-medium mb-2">No podcasts found</h3>
+                            <p className="text-gray-500">Try adjusting your filters or search terms.</p>
                         </div>
                     )}
                 </div>
