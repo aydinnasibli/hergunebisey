@@ -162,9 +162,7 @@ const Home = () => {
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div className="w-full lg:w-1/2">
                 <p className="text-base sm:text-lg text-white/80 mb-10">
-                  Günlük hayattan düşüncelere, bilimsel konulardan felsefi sorgulamalara kadar uzanan geniş bir
-                  yelpazede kaleme aldığımız yazılarımızı blogumuzda bulabilirsiniz. Her yazıda farklı bir bakış
-                  açısı, belki de hiç düşünmediğiniz bir perspektif sizleri bekliyor.
+                  Bilimsel teorilerden Antik Roma İmparatorluğu’na geniş bir yelpazede ele alınan konuları ile tüm yazılarımız kahve eşliğinde okumanız için sizleri bekliyor.
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-10">
@@ -295,9 +293,7 @@ const Home = () => {
                   PODCAST<span className="text-yellow-500">.</span>
                 </h2>
                 <p className="text-base sm:text-lg text-white/80 mb-8">
-                  Podcastlerimizde uzmanlarla derinlemesine sohbetler, ilham verici hikayeler
-                  ve Türkiye'nin gündemine farklı bakış açıları sunuyoruz. Yolda, sporda
-                  veya evde - her anınıza eşlik edecek içerikler sizi bekliyor.
+                  Çeşitli konularda fikirlerimizi paylaştığımız podcast yayınlarımızda sohbetimize ortak  olmak için hemen dinlemeye başlayın.
                 </p>
 
                 <div className="flex flex-wrap gap-3 mb-10">

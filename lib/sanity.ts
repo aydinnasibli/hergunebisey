@@ -26,10 +26,12 @@ export const urlFor = (source: SanityImageSource) => {
   return builder.image(source)
 }
 
-// Helper functions for fetching data - server-side
+
+// Update the getBlogPosts function to filter out future posts
 export const getBlogPosts = async () => {
+  const now = new Date().toISOString();
   return client.fetch(`
-    *[_type == "blog"] | order(publishedAt desc) {
+    *[_type == "blog" && publishedAt <= $now] | order(publishedAt desc) {
       _id,
       title,
       slug,
@@ -39,8 +41,73 @@ export const getBlogPosts = async () => {
       "categories": categories[]->title,
       "author": author->{name, image, bio}
     }
-  `)
+  `, { now })
 }
+
+// Update the client-side function too
+export const fetchBlogPosts = async () => {
+  const now = new Date().toISOString();
+  return clientSide.fetch(`
+    *[_type == "blog" && publishedAt <= $now] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      excerpt,
+      mainImage,
+      publishedAt,
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
+    }
+  `, { now })
+}
+
+// Also update searchBlogPosts and getBlogPostsByCategory
+export const searchBlogPosts = async (query: string) => {
+  const now = new Date().toISOString();
+  return clientSide.fetch(
+    `
+    *[_type == "blog" && publishedAt <= $now && (title match $query || excerpt match $query)] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      excerpt,
+      mainImage,
+      publishedAt,
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
+    }
+    `,
+    { query: `*${query}*`, now } as Record<string, string>
+  );
+};
+
+export const getBlogPostsByCategory = async (category: string) => {
+  const now = new Date().toISOString();
+  return clientSide.fetch(`
+    *[_type == "blog" && publishedAt <= $now && $category in categories[]->title] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      excerpt,
+      mainImage,
+      publishedAt,
+      "categories": categories[]->title,
+      "author": author->{name, image, bio}
+    }
+  `, { category, now })
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const getBlogPostBySlug = async (slug: string) => {
   return client.fetch(`
@@ -68,21 +135,6 @@ export const getCategories = async () => {
 }
 
 
-// Client-side helpers for fetching data
-export const fetchBlogPosts = async () => {
-  return clientSide.fetch(`
-    *[_type == "blog"] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      excerpt,
-      mainImage,
-      publishedAt,
-      "categories": categories[]->title,
-      "author": author->{name, image, bio}
-    }
-  `)
-}
 
 export const fetchCategories = async () => {
   return clientSide.fetch(`
@@ -92,37 +144,4 @@ export const fetchCategories = async () => {
       description
     }
   `)
-}
-
-export const searchBlogPosts = async (query: string) => {
-  return clientSide.fetch(
-    `
-    *[_type == "blog" && (title match $query || excerpt match $query)] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      excerpt,
-      mainImage,
-      publishedAt,
-      "categories": categories[]->title,
-      "author": author->{name, image, bio}
-    }
-    `,
-    { query: `*${query}*` } as Record<string, string>
-  );
-};
-
-export const getBlogPostsByCategory = async (category: string) => {
-  return clientSide.fetch(`
-    *[_type == "blog" && $category in categories[]->title] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      excerpt,
-      mainImage,
-      publishedAt,
-      "categories": categories[]->title,
-      "author": author->{name, image, bio}
-    }
-  `, { category })
 }

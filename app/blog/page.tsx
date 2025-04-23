@@ -1,10 +1,11 @@
+// app/blog/page.tsx
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getBlogPosts, getCategories, urlFor } from '@/lib/sanity'
-import { formatDistance } from 'date-fns'
+import { format } from 'date-fns' // Changed from formatDistance
 import { tr } from 'date-fns/locale'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import { Search, X, ChevronRight, Clock, ChevronLeft } from 'lucide-react'
@@ -136,7 +137,6 @@ export default function BlogPage() {
             goToPage(currentPage + 1)
         }
     }
-
     // Generate page numbers for pagination
     const renderPaginationNumbers = () => {
         const pageNumbers = []
@@ -268,66 +268,66 @@ export default function BlogPage() {
                         {/* Search and Filter Section */}
                         <div className="mb-12 bg-white/5 backdrop-blur-sm p-8 rounded-xl">
                             <div className="flex flex-col md:flex-row gap-8 items-center justify-between mb-6">
-                                {/* Elegant Search Bar */}
-                                <div className="relative w-full md:w-96 group">
-                                    <div className="absolute inset-y-0 left-0 flex items-center pl-4">
-                                        <Search className="h-5 w-5 text-yellow-500" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        className="block w-full pl-12 pr-4 py-3 bg-white/10 rounded-xl border border-gray-700 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300 focus:outline-none"
-                                        placeholder="Yazılarda ara..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                    {searchQuery && (
+                                {/* Categories Section */}
+
+                                <div className="mt-1 ">
+                                    <h3 className="text-yellow-500 font-medium mb-4">Kategoriler</h3>
+                                    <div className="flex flex-wrap gap-3">
                                         <button
-                                            onClick={() => setSearchQuery('')}
-                                            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-500"
-                                        >
-                                            <X className="h-4 w-4" />
-                                        </button>
-                                    )}
-                                </div>
-
-
-                            </div>
-
-                            {/* Categories Section - Redesigned */}
-                            <div className="mt-6">
-                                <h3 className="text-yellow-500 font-medium mb-4">Kategoriler</h3>
-                                <div className="flex flex-wrap gap-3">
-                                    <button
-                                        onClick={() => setSelectedCategory(null)}
-                                        className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === null
-                                            ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
-                                            : 'bg-white/10 hover:bg-white/20 text-gray-300'
-                                            }`}
-                                    >
-                                        Tümü
-                                    </button>
-                                    {categories.map((category) => (
-                                        <button
-                                            key={category._id}
-                                            onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
-                                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === category.title
+                                            onClick={() => setSelectedCategory(null)}
+                                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === null
                                                 ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
                                                 : 'bg-white/10 hover:bg-white/20 text-gray-300'
                                                 }`}
                                         >
-                                            {category.title}
+                                            Tümü
                                         </button>
-                                    ))}
-                                    {(searchQuery || selectedCategory) && (
-                                        <button
-                                            onClick={clearFilters}
-                                            className="flex items-center gap-1 px-6 py-2 rounded-full text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50 cursor-pointer"
-                                        >
-                                            <X className="h-4 w-4" />
-                                            Filtreleri Temizle
-                                        </button>
-                                    )}
+                                        {categories.map((category) => (
+                                            <button
+                                                key={category._id}
+                                                onClick={() => setSelectedCategory(selectedCategory === category.title ? null : category.title)}
+                                                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${selectedCategory === category.title
+                                                    ? 'bg-yellow-500 text-gray-900 shadow-lg shadow-yellow-500/20'
+                                                    : 'bg-white/10 hover:bg-white/20 text-gray-300'
+                                                    }`}
+                                            >
+                                                {category.title}
+                                            </button>
+                                        ))}
+                                        {(searchQuery || selectedCategory) && (
+                                            <button
+                                                onClick={clearFilters}
+                                                className="flex items-center gap-1 px-6 py-2 rounded-full text-sm font-medium bg-red-900/50 text-red-200 hover:bg-red-800 transition-all duration-300 border border-red-800/50 cursor-pointer"
+                                            >
+                                                <X className="h-4 w-4" />
+                                                Filtreleri Temizle
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
+
+                            </div>
+
+                            {/* Search Bar Section */}
+                            <div className="relative w-full md:w-96 group">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-4">
+                                    <Search className="h-5 w-5 text-yellow-500" />
+                                </div>
+                                <input
+                                    type="text"
+                                    className="block w-full pl-12 pr-4 py-3 bg-white/10 rounded-xl border border-gray-700 focus:border-yellow-500 text-gray-200 placeholder-gray-500 transition-all duration-300 focus:outline-none"
+                                    placeholder="Yazılarda ara..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => setSearchQuery('')}
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-500"
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -446,8 +446,8 @@ export default function BlogPage() {
                                                     <div className="flex justify-between items-center text-sm mt-auto pt-4 border-t border-gray-700">
                                                         <time dateTime={post.publishedAt} className="text-gray-400 flex items-center">
                                                             <Clock className="h-4 w-4 mr-2 text-yellow-500" />
-                                                            {formatDistance(new Date(post.publishedAt), new Date(), {
-                                                                addSuffix: true,
+                                                            {/* Changed from formatDistance to format */}
+                                                            {format(new Date(post.publishedAt), 'd MMMM yyyy', {
                                                                 locale: tr
                                                             })}
                                                         </time>
