@@ -101,14 +101,6 @@ export const getBlogPostsByCategory = async (category: string) => {
 
 
 
-
-
-
-
-
-
-
-
 export const getBlogPostBySlug = async (slug: string) => {
   return client.fetch(`
     *[_type == "blog" && slug.current == $slug][0] {
@@ -141,6 +133,84 @@ export const fetchCategories = async () => {
     *[_type == "category"] {
       _id,
       title,
+      description
+    }
+  `)
+}
+
+
+
+
+
+
+// lib/sanity.ts
+// Add these functions to your existing sanity.ts file
+
+// Get all published podcasts
+export const getPodcasts = async () => {
+  const now = new Date().toISOString();
+  return client.fetch(`
+    *[_type == "podcast" && publishedAt <= $now] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      description,
+      coverImage,
+      duration,
+      publishedAt,
+      "categories": categories[]->{ id, name },
+      "hosts": hosts[]->{ name, image, position }
+    }
+  `, { now })
+}
+
+// Get podcast by slug (for individual podcast page)
+export const getPodcastBySlug = async (slug: string) => {
+  return client.fetch(`
+    *[_type == "podcast" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      description,
+      coverImage,
+      duration,
+      publishedAt,
+      audioFile,
+      transcript,
+      highlights,
+      platforms,
+      "categories": categories[]->{ id, name },
+      "hosts": hosts[]->{ name, image, bio, position },
+      guests
+    }
+  `, { slug })
+}
+
+// Get podcasts by category
+export const getPodcastsByCategory = async (categoryId: string) => {
+  const now = new Date().toISOString();
+  return client.fetch(`
+    *[_type == "podcast" && publishedAt <= $now && $categoryId in categories[]->id] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      description,
+      coverImage,
+      duration,
+      publishedAt,
+      "categories": categories[]->{ id, name },
+      "hosts": hosts[]->{ name, image, position }
+    }
+  `, { categoryId, now })
+}
+
+// Get all podcast categories
+export const getPodcastCategories = async () => {
+  return client.fetch(`
+    *[_type == "podcastCategory"] {
+      _id,
+      id,
+      name,
       description
     }
   `)

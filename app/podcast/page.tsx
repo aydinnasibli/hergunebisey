@@ -260,7 +260,7 @@ const PodcastPage = () => {
                         <div className="max-w-4xl mx-auto text-center">
                             <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
                             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                                Favorite <span className="text-yellow-500">platformunuzda</span> bizi takip edin
+                                Favori <span className="text-yellow-500">platformunuzda</span> bizi takip edin
                             </h2>
                             <p className="text-lg text-white/80 mb-12">
                                 Yeni bölümlerden haberdar olmak ve podcastlerimizi dilediğiniz zaman dinlemek için

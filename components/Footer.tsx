@@ -138,7 +138,7 @@ const Footer = () => {
                             <span className="text-yellow-500 inline-block">.</span>
                         </Link>
                         <p className="text-white/70 mb-8 max-w-md">
-                            Her gün yeni bir keşif, ilham ve bilgi. Hayatınıza her gün yeni bir değer katmak için buradayız.
+                            Hayatınıza değer ve anlam katacak içerikler paylaşıyoruz.
                         </p>
                         <div className="flex space-x-4">
                             {/* Social icons */}
