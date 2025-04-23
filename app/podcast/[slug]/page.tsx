@@ -5,16 +5,12 @@ import { getPodcastBySlug, urlFor } from '@/lib/sanity';
 import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
 
-export default async function PodcastDetailPage({
-    params,
-}: {
-    params: { slug: string }
-}) {
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     // Server components can use async/await directly
     let podcast: Podcast | null = null;
 
     try {
-        podcast = await getPodcastBySlug(params.slug);
+        podcast = await getPodcastBySlug((await params).slug);
     } catch (error) {
         console.error('Error fetching podcast:', error);
     }
