@@ -45,10 +45,13 @@ const PodcastPage = () => {
                 const fetchedPodcasts = await getPodcasts();
                 const fetchedCategories = await getPodcastCategories();
 
-                setPodcasts(fetchedPodcasts);
-                setCategoriesData(fetchedCategories);
+                setPodcasts(fetchedPodcasts || []); // Ensure we have an array even if API returns null
+                setCategoriesData(fetchedCategories || []);
             } catch (error) {
                 console.error('Error fetching podcast data:', error);
+                // Set empty arrays to prevent errors when mapping
+                setPodcasts([]);
+                setCategoriesData([]);
             } finally {
                 setIsLoading(false);
             }
@@ -270,11 +273,14 @@ const PodcastPage = () => {
                                         </div>
 
                                         <div className="flex items-center gap-4">
-                                            <button className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors">
+                                            <Link
+                                                href={`/podcast/${podcast.slug.current}`}
+                                                className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center hover:bg-yellow-400 transition-colors"
+                                            >
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-black">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
                                                 </svg>
-                                            </button>
+                                            </Link>
 
                                             <Link
                                                 href={`/podcast/${podcast.slug.current}`}
