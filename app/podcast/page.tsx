@@ -1,59 +1,86 @@
 "use client"
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { clientSide, urlFor } from '@/lib/sanity';
-import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import { clientSide, urlFor, getPodcasts, getPodcastCategories } from '@/lib/sanity';
 
-// Fetch podcasts from Sanity
-const fetchPodcasts = async () => {
-    const now = new Date().toISOString();
-    return clientSide.fetch(`
-    *[_type == "podcast" && publishedAt <= $now] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      description,
-      coverImage,
-      duration,
-      publishedAt,
-      "categories": categories[]->{ id, name },
-      "hosts": hosts[]->{ name, image, position }
-    }
-  `, { now });
-};
+interface Podcast {
+    _id: string;
+    title: string;
+    slug: { current: string };
+    description?: string;
+    coverImage?: any;
+    duration?: string;
+    publishedAt: string;
+    categories?: Array<{ id: string, name: string }>;
+    hosts?: Array<{ name: string, image?: any, position?: string }>;
+}
 
-// Fetch podcast categories from Sanity
-const fetchPodcastCategories = async () => {
-    return clientSide.fetch(`
-    *[_type == "podcastCategory"] {
-      _id,
-      id,
-      name,
-      description
-    }
-  `);
-};
+interface Category {
+    _id: string;
+    id: string;
+    name: string;
+    description?: string;
+}
 
 const PodcastPage = () => {
+    const [podcasts, setPodcasts] = useState<Podcast[]>([]);
+    const [categoriesData, setCategoriesData] = useState<Category[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("all");
+    const [isLoading, setIsLoading] = useState(true);
+    const [filteredPodcasts, setFilteredPodcasts] = useState<Podcast[]>([]);
     const parallaxRef = useRef<HTMLDivElement>(null);
-
-    // Fetch podcasts and categories using React Query
-    const { data: podcasts = [], isLoading: isLoadingPodcasts } = useQuery({
-        queryKey: ['podcasts'],
-        queryFn: fetchPodcasts
-    });
-
-    const { data: categoriesData = [], isLoading: isLoadingCategories } = useQuery({
-        queryKey: ['podcastCategories'],
-        queryFn: fetchPodcastCategories
-    });
 
     // Process categories data to include "All" option
     const categories = [
-        { id: "all", name: "Tümü" },
+        { id: "all", name: "Tümü", _id: "all" },
         ...(categoriesData || [])
     ];
+
+    // Fetch data on component mount
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const fetchedPodcasts = await getPodcasts();
+                const fetchedCategories = await getPodcastCategories();
+
+                setPodcasts(fetchedPodcasts);
+                setCategoriesData(fetchedCategories);
+            } catch (error) {
+                console.error('Error fetching podcast data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // Filter podcasts when activeCategory or podcasts change
+    useEffect(() => {
+        if (activeCategory === 'all') {
+            setFilteredPodcasts(podcasts);
+        } else {
+            const filtered = podcasts.filter(podcast =>
+                podcast.categories && podcast.categories.some(cat => cat.id === activeCategory)
+            );
+            setFilteredPodcasts(filtered);
+        }
+    }, [activeCategory, podcasts]);
+
+    // Parallax effect
+    useEffect(() => {
+        const handleScroll = () => {
+            if (parallaxRef.current) {
+                const scrollPosition = window.scrollY;
+                parallaxRef.current.style.transform = `translateY(${scrollPosition * 0.4}px)`;
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     // Platform links - these should be updated with your actual links
     const platforms = [
@@ -77,28 +104,8 @@ const PodcastPage = () => {
         },
     ];
 
-    // Parallax effect
-    useEffect(() => {
-        const handleScroll = () => {
-            if (parallaxRef.current) {
-                const scrollPosition = window.scrollY;
-                parallaxRef.current.style.transform = `translateY(${scrollPosition * 0.4}px)`;
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    // Filter podcasts by category
-    const filteredPodcasts = activeCategory === 'all'
-        ? podcasts
-        : podcasts.filter((podcast: any) =>
-            podcast.categories.some((cat: any) => cat.id === activeCategory)
-        );
-
     // Loading state - display skeleton UI while data is loading
-    if (isLoadingPodcasts || isLoadingCategories) {
+    if (isLoading) {
         return (
             <div className="relative w-full min-h-screen bg-black text-white p-8">
                 <div className="max-w-7xl mx-auto">
@@ -204,8 +211,8 @@ const PodcastPage = () => {
                                     key={category.id}
                                     onClick={() => setActiveCategory(category.id)}
                                     className={`px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
-                                            ? 'bg-yellow-500 text-black'
-                                            : 'bg-white/10 hover:bg-white/20'
+                                        ? 'bg-yellow-500 text-black'
+                                        : 'bg-white/10 hover:bg-white/20'
                                         }`}
                                 >
                                     {category.name}
@@ -217,35 +224,49 @@ const PodcastPage = () => {
                     {/* Shows grid */}
                     {filteredPodcasts.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                            {filteredPodcasts.map((podcast: any) => (
+                            {filteredPodcasts.map((podcast) => (
                                 <div
                                     key={podcast._id}
                                     className="relative rounded-xl overflow-hidden group hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                                 >
                                     <div className="absolute inset-0">
-                                        <img
-                                            src={podcast.coverImage ? urlFor(podcast.coverImage).url() : 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070'}
-                                            alt={podcast.title}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                        />
+                                        {podcast.coverImage ? (
+                                            <Image
+                                                src={urlFor(podcast.coverImage).url()}
+                                                alt={podcast.title}
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <Image
+                                                src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070"
+                                                alt={podcast.title}
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                        )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
                                     </div>
 
                                     <div className="relative p-8 flex flex-col h-full min-h-80">
                                         <div className="flex-1">
                                             <div className="flex flex-wrap gap-2 mb-3">
-                                                {podcast.categories.map((cat: any) => (
+                                                {podcast.categories && podcast.categories.map((cat) => (
                                                     <span key={cat.id} className="px-3 py-1 bg-white/10 rounded-full text-xs">
                                                         {cat.name}
                                                     </span>
                                                 ))}
-                                                <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">
-                                                    {podcast.duration}
-                                                </span>
+                                                {podcast.duration && (
+                                                    <span className="px-3 py-1 bg-yellow-500/20 text-yellow-500 rounded-full text-xs">
+                                                        {podcast.duration}
+                                                    </span>
+                                                )}
                                             </div>
 
                                             <h3 className="text-2xl font-bold mb-2">{podcast.title}</h3>
-                                            <p className="text-white/70 mb-6">{podcast.description}</p>
+                                            {podcast.description && (
+                                                <p className="text-white/70 mb-6">{podcast.description}</p>
+                                            )}
                                         </div>
 
                                         <div className="flex items-center gap-4">

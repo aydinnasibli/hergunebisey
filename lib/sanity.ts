@@ -2,6 +2,7 @@
 import { createClient } from 'next-sanity'
 import imageUrlBuilder from '@sanity/image-url'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { Podcast, PodcastCategory } from '@/types/sanity';
 
 // Server-side client
 export const client = createClient({
@@ -142,14 +143,9 @@ export const fetchCategories = async () => {
 
 
 
-
-// lib/sanity.ts
-// Add these functions to your existing sanity.ts file
-
-// Get all published podcasts
-export const getPodcasts = async () => {
+export async function getPodcasts() {
   const now = new Date().toISOString();
-  return client.fetch(`
+  return clientSide.fetch(`
     *[_type == "podcast" && publishedAt <= $now] | order(publishedAt desc) {
       _id,
       title,
@@ -161,11 +157,11 @@ export const getPodcasts = async () => {
       "categories": categories[]->{ id, name },
       "hosts": hosts[]->{ name, image, position }
     }
-  `, { now })
+  `, { now });
 }
 
 // Get podcast by slug (for individual podcast page)
-export const getPodcastBySlug = async (slug: string) => {
+export const getPodcastBySlug = async (slug: string): Promise<Podcast | null> => {
   return client.fetch(`
     *[_type == "podcast" && slug.current == $slug][0] {
       _id,
@@ -186,6 +182,18 @@ export const getPodcastBySlug = async (slug: string) => {
   `, { slug })
 }
 
+// Get all podcast categories
+export const getPodcastCategories = async (): Promise<PodcastCategory[]> => {
+  return client.fetch(`
+    *[_type == "podcastCategory"] {
+      _id,
+      id,
+      name,
+      description
+    }
+  `)
+}
+
 // Get podcasts by category
 export const getPodcastsByCategory = async (categoryId: string) => {
   const now = new Date().toISOString();
@@ -204,14 +212,3 @@ export const getPodcastsByCategory = async (categoryId: string) => {
   `, { categoryId, now })
 }
 
-// Get all podcast categories
-export const getPodcastCategories = async () => {
-  return client.fetch(`
-    *[_type == "podcastCategory"] {
-      _id,
-      id,
-      name,
-      description
-    }
-  `)
-}
