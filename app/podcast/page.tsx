@@ -3,17 +3,17 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { urlFor, getPodcasts, getPodcastCategories } from '@/lib/sanity';
-
+import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 interface Podcast {
     _id: string;
     title: string;
     slug: { current: string };
     description?: string;
-    coverImage?: any;
+    coverImage?: SanityImageSource;
     duration?: string;
     publishedAt: string;
     categories?: Array<{ id: string, name: string }>;
-    hosts?: Array<{ name: string, image?: any, position?: string }>;
+    hosts?: Array<{ name: string, image?: SanityImageSource, position?: string }>;
 }
 
 interface Category {
@@ -27,7 +27,6 @@ const PodcastPage = () => {
     const [podcasts, setPodcasts] = useState<Podcast[]>([]);
     const [categoriesData, setCategoriesData] = useState<Category[]>([]);
     const [activeCategory, setActiveCategory] = useState<string>("all");
-    const [isLoading, setIsLoading] = useState(true);
     const [filteredPodcasts, setFilteredPodcasts] = useState<Podcast[]>([]);
     const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +40,6 @@ const PodcastPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setIsLoading(true);
                 const fetchedPodcasts = await getPodcasts();
                 const fetchedCategories = await getPodcastCategories();
 
@@ -52,8 +50,6 @@ const PodcastPage = () => {
                 // Set empty arrays to prevent errors when mapping
                 setPodcasts([]);
                 setCategoriesData([]);
-            } finally {
-                setIsLoading(false);
             }
         };
 
