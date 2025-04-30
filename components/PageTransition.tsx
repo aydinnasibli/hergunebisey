@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 
@@ -100,7 +100,6 @@ const PageTransition: React.FC<PageTransitionProps> = ({
     layoutId
 }) => {
     const pathname = usePathname()
-    const router = useRouter()
     const [isVisible, setIsVisible] = useState(true)
 
     // Keep track of previously visited pages to prevent re-animation
