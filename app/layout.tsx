@@ -53,20 +53,23 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="tr">
+      <html lang="tr" className="scrollbar-hide">
 
-        <body className={`${poppins.variable} `}>
-          <PageTransition type="fadeSlideUp"
-            transition="smooth"
+        <body className={`${poppins.variable} overflow-y-auto`}>
+          <Navbar />
+
+          <PageTransition
+            type="fadeSlideUp"
+            transition="gentle"
             className="min-h-[calc(100vh-64px)]">
-            <Navbar />
 
             <div className="">
               {children}
               <HorizontalScrollBar />
             </div>
-            <Footer />
           </PageTransition>
+          <Footer />
+
         </body>
       </html>
     </ClerkProvider>
