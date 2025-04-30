@@ -5,64 +5,10 @@ import Image from 'next/image';
 import { throttle } from 'lodash';
 
 const AboutUs = () => {
-    const timelineRef = useRef<HTMLDivElement>(null);
-    const heroRef = useRef<HTMLDivElement>(null);
-
-    // Animation for timeline items
-    const handleTimelineScroll = throttle(() => {
-        if (timelineRef.current) {
-            const elements = timelineRef.current.querySelectorAll('.timeline-item');
-
-            elements.forEach((item) => {
-                const rect = item.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight * 0.8;
-
-                if (isVisible) {
-                    item.classList.add('opacity-100', 'translate-y-0');
-                    item.classList.remove('opacity-0', 'translate-y-8');
-                }
-            });
-        }
-    }, 200);
-
-    // Hero section reveal animation on page load
-    useEffect(() => {
-        if (heroRef.current) {
-            heroRef.current.classList.remove('opacity-0');
-            heroRef.current.classList.add('opacity-100');
-        }
-
-        // Add animation classes to hero content elements
-        const leftContent = document.querySelector('.hero-content-left');
-        const rightContent = document.querySelector('.hero-content-right');
-
-        if (leftContent) {
-            setTimeout(() => {
-                leftContent.classList.remove('opacity-0', 'translate-y-10');
-                leftContent.classList.add('opacity-100', 'translate-y-0');
-            }, 300);
-        }
-
-        if (rightContent) {
-            setTimeout(() => {
-                rightContent.classList.remove('opacity-0', 'translate-y-10');
-                rightContent.classList.add('opacity-100', 'translate-y-0');
-            }, 600);
-        }
-    }, []);
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleTimelineScroll);
-        // Trigger once on load
-        setTimeout(handleTimelineScroll, 500);
-
-        return () => window.removeEventListener('scroll', handleTimelineScroll);
-    }, [handleTimelineScroll]);
-
     return (
         <div className="relative w-full bg-black text-white">
             {/* Hero Section (with modern reveal design) */}
-            <div ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden opacity-0 transition-opacity duration-1000">
+            <div className="relative h-screen flex items-center justify-center overflow-hidden ">
                 {/* Background Image with Gradient Overlay */}
                 <div className="absolute inset-0 w-full h-full">
                     <div className="relative w-full h-full">
@@ -82,7 +28,7 @@ const AboutUs = () => {
                 <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-8">
                     <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                         {/* Left side - Text Content */}
-                        <div className="hero-content-left text-left space-y-6 opacity-0 translate-y-10 transition-all duration-700">
+                        <div className="hero-content-left text-left space-y-6 ">
                             <div className="w-16 h-1 bg-yellow-500 mb-4"></div>
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
                                 HİKAYEMİZ<span className="text-yellow-500">.</span>
@@ -94,7 +40,7 @@ const AboutUs = () => {
                         </div>
 
                         {/* Right side - Floating Image with Design Elements */}
-                        <div className="hero-content-right relative h-80 md:h-auto opacity-0 translate-y-10 transition-all duration-700">
+                        <div className="hero-content-right relative h-80 md:h-auto">
                             <div className="relative h-full w-full">
                                 {/* Decorative elements */}
                                 <div className="absolute -top-6 -left-6 w-24 h-24 border border-yellow-500/30 rounded-xl"></div>
@@ -230,13 +176,7 @@ const AboutUs = () => {
                 </div>
             </div>
 
-            {/* Timeline Items Container (reference is still needed) */}
-            <div ref={timelineRef} className="timeline-container">
-                {/* Timeline items would go here */}
-                <div className="timeline-item opacity-0 translate-y-8 transition-all duration-500">
-                    {/* Your timeline content */}
-                </div>
-            </div>
+
         </div>
     );
 }

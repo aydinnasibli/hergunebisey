@@ -33,8 +33,6 @@ interface Category {
 
 export default function BlogPage() {
     const parallaxRef = useRef<HTMLDivElement>(null);
-    const heroRef = useRef<HTMLDivElement>(null); // New ref for hero section
-
     const [posts, setPosts] = useState<BlogPost[]>([])
     const [categories, setCategories] = useState<Category[]>([])
     const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
@@ -47,31 +45,7 @@ export default function BlogPage() {
     const postsPerPage = 9
     const [totalPages, setTotalPages] = useState(1)
     const [paginatedPosts, setPaginatedPosts] = useState<BlogPost[]>([])
-    // Add this useEffect for hero animation
-    useEffect(() => {
-        if (heroRef.current) {
-            heroRef.current.classList.remove('opacity-0');
-            heroRef.current.classList.add('opacity-100');
-        }
 
-        // Add animation classes to hero content elements
-        const leftContent = document.querySelector('.hero-content-left');
-        const rightContent = document.querySelector('.hero-content-right');
-
-        if (leftContent) {
-            setTimeout(() => {
-                leftContent.classList.remove('opacity-0', 'translate-y-10');
-                leftContent.classList.add('opacity-100', 'translate-y-0');
-            }, 300);
-        }
-
-        if (rightContent) {
-            setTimeout(() => {
-                rightContent.classList.remove('opacity-0', 'translate-y-10');
-                rightContent.classList.add('opacity-100', 'translate-y-0');
-            }, 600);
-        }
-    }, []);
     useEffect(() => {
         const handleScroll = () => {
             if (parallaxRef.current) {
@@ -238,43 +212,40 @@ export default function BlogPage() {
     return (
         <>
             <div className="relative h-screen overflow-hidden">
-                <div ref={heroRef} className="relative h-screen overflow-hidden opacity-0 transition-opacity duration-1000">
-                    {/* Parallax Background - Using position relative with Next.js Image */}
-                    <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
-                        <div className="relative w-full h-[120%] -top-[8%]">
-                            <Image
-                                src="https://images.pexels.com/photos/8085942/pexels-photo-8085942.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                                alt="Hero background"
-                                fill
-                                priority
-                                className="object-cover object-center"
-                                sizes="100vw"
-                            />
-                        </div>
-                    </div>
+                {/* Parallax Background */}
+                <div
+                    ref={parallaxRef}
+                    className="absolute inset-0 w-full h-full"
+                    style={{
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        height: '120%',
+                        top: '-10%'
+                    }}
+                />
 
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/50 z-10"></div>
+                {/* Dark Overlay */}
+                <div className="absolute inset-0 bg-black/60 z-10"></div>
 
-                    {/* Content */}
-                    <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
-                        <div className="max-w-4xl mx-auto">
-                            <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
-                            <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wide">
-                                YAZI<span className="text-yellow-500">.</span>
-                            </h1>
+                {/* Content */}
+                <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
+                    <div className="max-w-4xl mx-auto">
+                        <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
+                        <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wide">
+                            YAZI<span className="text-yellow-500">.</span>
+                        </h1>
 
-                            <p className="text-base sm:text-xl max-w-2xl mx-auto mb-12 text-white/90">
-                                Bilim, tarih ve kültür ağırlıklı konularda yazdığımız zaman zaman ise teknoloji ve felsefe gibi alanlara da değindiğimiz yazılarımız ile okurken hem öğrenin hem de keyifli zaman geçirin.
-                            </p>
+                        <p className="text-base sm:text-xl max-w-2xl mx-auto mb-12 text-white/90">
+                            Bilim, tarih ve kültür ağırlıklı konularda yazdığımız zaman zaman ise teknoloji ve felsefe gibi alanlara da değindiğimiz yazılarımız ile okurken hem öğrenin hem de keyifli zaman geçirin.
+                        </p>
 
-                            {/* Scroll indicator */}
-                            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-                                <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-                                </svg>
-                            </div>
+                        {/* Scroll indicator */}
+                        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+                            <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                            </svg>
                         </div>
                     </div>
                 </div>

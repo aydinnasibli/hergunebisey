@@ -6,34 +6,6 @@ import Link from 'next/link';
 import { throttle } from 'lodash';
 const Home = () => {
   const parallaxRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null); // New ref for hero section
-
-  // Add this useEffect for hero animation
-  useEffect(() => {
-    if (heroRef.current) {
-      // Make hero visible
-      heroRef.current.classList.remove('opacity-0');
-      heroRef.current.classList.add('opacity-100');
-    }
-
-    // Add animation classes to hero content elements
-    const heroContent = document.querySelector('.hero-content');
-    const heroCaption = document.querySelector('.hero-caption');
-
-    if (heroContent) {
-      setTimeout(() => {
-        heroContent.classList.remove('opacity-0', 'translate-y-10');
-        heroContent.classList.add('opacity-100', 'translate-y-0');
-      }, 300);
-    }
-
-    if (heroCaption) {
-      setTimeout(() => {
-        heroCaption.classList.remove('opacity-0', 'translate-y-10');
-        heroCaption.classList.add('opacity-100', 'translate-y-0');
-      }, 600);
-    }
-  }, []);
 
   useEffect(() => {
     const handleScroll = throttle(() => {
@@ -49,17 +21,17 @@ const Home = () => {
 
   return (
     <div className="relative w-full bg-black text-white">
-      {/* Hero Section (with Parallax and Animation) */}
-      <div ref={heroRef} className="relative h-screen overflow-hidden opacity-0 transition-opacity duration-1000">
+      {/* Hero Section (with Parallax) */}
+      <div className="relative h-screen overflow-hidden">
         {/* Parallax Background - Using position relative with Next.js Image */}
         <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
-          <div className="relative w-full h-[120%] -top-[8%]">
+          <div className="relative w-full h-[120%]  -top-[8%]">
             <Image
               src="https://images.unsplash.com/photo-1529310399831-ed472b81d589?q=80&w=2756&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Hero background"
               fill
               priority
-              className="object-cover object-center"
+              className="object-cover  object-center"
               sizes="100vw"
             />
           </div>
@@ -72,18 +44,16 @@ const Home = () => {
         <div className="relative z-20 h-full text-white flex flex-col justify-center items-center px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="w-16 h-1 bg-yellow-500 mx-auto mb-4 sm:mb-8"></div>
-            <div className="hero-content opacity-0 translate-y-10 transition-all duration-700">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-8 tracking-wide">
-                HERGÜNEBİ'ŞEY<span className="text-yellow-500">.</span>
-              </h1>
-              <p className="text-base sm:text-xl max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
-                Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş <br /> dehalardan da alıntıların bulunduğu platform.
-              </p>
-            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-8 tracking-wide">
+              HERGÜNEBİ'ŞEY<span className="text-yellow-500">.</span>
+            </h1>
+            <p className="text-base sm:text-xl max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
+              Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş <br /> dehalardan da alıntıların bulunduğu platform.
+            </p>
           </div>
 
           {/* Scroll indicator */}
-          <div className="hero-caption absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce opacity-0 translate-y-10 transition-all duration-700">
+          <div className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
             <p className="text-xs sm:text-sm uppercase tracking-widest mb-1 sm:mb-2">Aşağı Kaydır</p>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-6 sm:h-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
