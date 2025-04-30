@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { throttle } from 'lodash';
 
 const AboutUs = () => {
     return (
