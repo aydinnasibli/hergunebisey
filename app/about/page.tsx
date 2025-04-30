@@ -119,15 +119,21 @@ const AboutUs = () => {
 
                                 <div className="space-y-6 text-white/80">
                                     <p className="text-lg">
-                                        <span className="text-yellow-500 font-medium">HERGÜNEBİ'ŞEY</span> bir merak yolculuğunun ürünüdür. 2021 yılında, sürekli öğrenme ve bilgi paylaşımı tutkusuyla doğdu. Adımız, hayat felsefemizi yansıtıyor: Her gün yeni bir şey öğrenmek ve bunu paylaşmak.
+                                        <span className="text-yellow-500 font-medium">HERGÜNEBİ'ŞEY</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
                                     </p>
 
                                     <p>
-                                        Bu platform, bilginin sadece akademik çevrelere ait olmadığı, herkesin anlayabileceği şekilde sunulduğunda ne kadar değerli olabileceği inancıyla kuruldu. Dünyayı anlamaya çalışırken öğrendiklerimizi, merak eden herkesle paylaşmak için buradayız.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
                                     </p>
 
                                     <p>
-                                        İnsanoğlunun en temel özelliklerinden biri meraktır. Bu merakı beslemek, yeni sorular sormak ve cevaplar aramak için var olan platformumuz, bilimden felsefeye, tarihten teknolojiye uzanan geniş bir yelpazede içerikler sunuyor.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
                                     </p>
 
                                     <div className="p-5 bg-white/5 rounded-xl my-10 backdrop-blur-sm border border-white/10">
@@ -138,11 +144,14 @@ const AboutUs = () => {
                                     </div>
 
                                     <p>
-                                        Zamanla büyüyen ve gelişen içerik arşivimiz, sadece anlık bilgi ihtiyacını karşılamakla kalmıyor, aynı zamanda kalıcı bir dijital kütüphane olma yolunda ilerliyor. Her yazı, her podcast ve her alıntı, bilgi hazinemizdeki yeni bir cevher.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
                                     </p>
 
                                     <p>
-                                        Bizimle birlikte öğrenmeye ve keşfetmeye devam etmek istiyorsanız, düzenli olarak sitemizi ziyaret edin veya sosyal medya hesaplarımızı takip edin. Çünkü öğrenmenin sonu yok ve her yeni gün, yeni bir keşif fırsatı sunuyor.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
                                     </p>
                                 </div>
 
