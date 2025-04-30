@@ -56,7 +56,9 @@ export default function RootLayout({
       <html lang="tr">
 
         <body className={`${poppins.variable} `}>
-          <PageTransition>
+          <PageTransition type="fadeSlideUp"
+            transition="smooth"
+            className="min-h-[calc(100vh-64px)]">
             <Navbar />
 
             <div className="">
