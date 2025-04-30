@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import PageTransition from "@/components/PageTransition";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
@@ -55,13 +56,15 @@ export default function RootLayout({
       <html lang="tr">
 
         <body className={`${poppins.variable} `}>
-          <Navbar />
+          <PageTransition>
+            <Navbar />
 
-          <div className="">
-            {children}
-            <HorizontalScrollBar />
-          </div>
-          <Footer />
+            <div className="">
+              {children}
+              <HorizontalScrollBar />
+            </div>
+            <Footer />
+          </PageTransition>
         </body>
       </html>
     </ClerkProvider>
