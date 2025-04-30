@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion'
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 
 // Animation variants with more refined, subtle effects
 const PAGE_VARIANTS = {
@@ -69,7 +69,7 @@ export interface PageTransitionProps {
     transitionKey?: string; // Optional override for animation key
     mode?: "wait" | "sync" | "popLayout"; // Animation mode
     type?: TransitionType; // Animation type from variants
-    transition?: TransitionPreset | Record<string, unknown>; // Fixed: replaced 'any' with 'unknown'
+    transition?: TransitionPreset | Record<string, unknown>; // Transition preset or custom config
     onAnimationComplete?: () => void; // Callback when animation completes
     resetScroll?: boolean; // Whether to reset scroll on page change
     layoutId?: string; // Optional layoutId for shared element transitions
@@ -102,12 +102,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({
     const pathname = usePathname()
     const [isVisible, setIsVisible] = useState(true)
 
-    // Keep track of previously visited pages to prevent re-animation
-    const visitedPaths = useRef<Set<string>>(new Set())
-    const [mountKey, setMountKey] = useState<string>(pathname)
-
     // Create the animation key
-    const animationKey = transitionKey || mountKey
+    const animationKey = transitionKey || pathname
 
     // Get the appropriate transition settings
     const transitionSettings = typeof transition === 'string'
@@ -117,20 +113,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({
     // Get the appropriate variants
     const selectedVariants = PAGE_VARIANTS[type]
 
-    // Update the mount key when the pathname changes
+    // Handle scroll restoration on page change if enabled
     useEffect(() => {
-        // Check if this path has been visited before
-        const isNewPath = !visitedPaths.current.has(pathname)
-
-        // Add the current path to visited paths
-        visitedPaths.current.add(pathname)
-
-        // Only update the mount key for new paths to prevent re-animation
-        if (isNewPath) {
-            setMountKey(pathname)
-        }
-
-        // Handle scroll restoration
         if (resetScroll) {
             window.scrollTo({ top: 0, behavior: 'auto' })
         }
@@ -143,8 +127,10 @@ const PageTransition: React.FC<PageTransitionProps> = ({
         }
     }, [onAnimationComplete, isVisible])
 
+
+
     return (
-        <MotionConfig reducedMotion="user">
+        <MotionConfig>
             <AnimatePresence mode={mode} onExitComplete={() => setIsVisible(true)}>
                 <motion.div
                     key={animationKey}
@@ -166,3 +152,4 @@ const PageTransition: React.FC<PageTransitionProps> = ({
 }
 
 export default PageTransition
+
