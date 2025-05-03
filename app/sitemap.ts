@@ -12,10 +12,10 @@ interface SanityContent {
 // Next.js expects specific types for sitemap entries
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Fetch all content types with their slugs and last updated dates
-    const [posts, podcasts] = await Promise.all<SanityContent[]>([
+    const [blogs, podcasts] = await Promise.all<SanityContent[]>([
         // Blog posts
         client.fetch<SanityContent[]>(
-            groq`*[_type == "post"] {
+            groq`*[_type == "blog"] {
         "slug": slug.current,
         _updatedAt
       }`
@@ -60,9 +60,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
 
     // Map Sanity content to URLs using your Next.js route structure
-    const blogUrls: MetadataRoute.Sitemap = posts.map((post) => ({
-        url: `${domain}/blog/${post.slug}`,
-        lastModified: new Date(post._updatedAt),
+    const blogUrls: MetadataRoute.Sitemap = blogs.map((blog) => ({
+        url: `${domain}/blog/${blog.slug}`,
+        lastModified: new Date(blog._updatedAt),
     }));
 
     // Podcast episodes
