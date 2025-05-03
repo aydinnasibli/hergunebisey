@@ -327,8 +327,8 @@ const PodcastPage = () => {
                     <div className="rounded-2xl overflow-hidden bg-gradient-to-r from-yellow-500/20 to-black/70 backdrop-blur-md p-12 md:p-16">
                         <div className="max-w-4xl mx-auto text-center">
                             <div className="w-16 h-1 bg-yellow-500 mx-auto mb-8"></div>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-2">
-                                Bizi <span className="text-yellow-500">favori</span> platforumunuzda <br /> takip edin <span className="text-yellow-500">.</span>
+                            <h2 className="text-3xl md:text-5xl font-bold mb-2">
+                                Bizi favori platformunuzda takip edin
                             </h2>
 
                             <p className="text-lg text-white/80 mb-12">
