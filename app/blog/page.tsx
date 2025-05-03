@@ -257,7 +257,7 @@ export default function BlogPage() {
                         BLOG
                     </div>
                     <div className="absolute text-9xl font-bold text-white whitespace-nowrap top-7/12 left-32" >
-                        OKU KEŞFET
+                        OKU, KEŞFET
                     </div>
                     <div className="absolute text-9xl font-bold text-white whitespace-nowrap bottom-10 right-10" >
                         BLOG
