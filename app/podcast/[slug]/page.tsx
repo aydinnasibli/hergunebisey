@@ -118,13 +118,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                         {platforms && Object.values(platforms).some(url => url) && (
                             <div className="mb-12">
                                 <h3 className="text-lg font-medium mb-4">Dinle:</h3>
-                                <div className="flex flex-wrap gap-4">
+                                <div className="flex  flex-wrap gap-4">
                                     {platforms.spotify && (
                                         <a
                                             href={platforms.spotify}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md hover:bg-black/60 transition-all duration-300 rounded-full border border-white/20"
+                                            className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300 rounded-full border border-white/20"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 fill-current text-white">
                                                 <path d="M17.9,10.9C14.7,9 9.35,8.8 6.3,9.75c-0.5,0.15-1-0.15-1.15-0.6c-0.15-0.5,0.15-1,0.6-1.15 c3.55-1.05,9.4-0.85,13.1,1.35c0.45,0.25,0.6,0.85,0.35,1.3C19.95,11 19.35,11.15,17.9,10.9z M16.8,13.9 c-0.25,0.35-0.7,0.5-1.05,0.25c-2.7-1.65-6.8-2.15-9.95-1.15c-0.4,0.1-0.85-0.1-0.95-0.5c-0.1-0.4,0.1-0.85,0.5-0.95 c3.65-1.1,8.15-0.6,11.25,1.35C16.9,13.1,17.05,13.55,16.8,13.9z M15.9,16.9c-0.2,0.3-0.55,0.4-0.85,0.2 c-2.35-1.45-5.3-1.75-8.8-0.95c-0.35,0.05-0.65-0.15-0.75-0.45c-0.1-0.35,0.15-0.65,0.45-0.75c3.8-0.85,7.1-0.5,9.7,1.1 C16,16.25,16.1,16.6,15.9,16.9z M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z"></path>
@@ -137,12 +137,24 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                                             href={platforms.applePodcasts}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md hover:bg-black/60 transition-all duration-300 rounded-full border border-white/20"
+                                            className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300 rounded-full border border-white/20"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" className="w-6 h-6 fill-current text-white">
                                                 <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24.984375 12.986328 A 1.0001 1.0001 0 0 0 24 14 L 24 26.5 A 1.0001 1.0001 0 0 0 24.5 27.5 L 32.5 31.5 A 1.0001 1.0001 0 0 0 33.521484 31.060547 A 1.0001 1.0001 0 0 0 33 30 L 33 17.5 A 1.0001 1.0001 0 0 0 32.5 16.5 L 25.5 12.986328 A 1.0001 1.0001 0 0 0 24.984375 12.986328 z"></path>
                                             </svg>
                                             <span>Apple Podcasts</span>
+                                        </a>
+                                    )}
+                                    {platforms.youtube && (
+                                        <a
+                                            href={platforms.youtube}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300 rounded-full border border-white/20"
+                                        >
+                                            <svg className="w-6 h-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M39.256,6.5H9.744C4.371,6.5,0,10.885,0,16.274v16.451c0,5.39,4.371,9.774,9.744,9.774h29.512 c5.373,0,9.744-4.385,9.744-9.774V16.274C49,10.885,44.629,6.5,39.256,6.5z M47,32.726c0,4.287-3.474,7.774-7.744,7.774H9.744 C5.474,40.5,2,37.012,2,32.726V16.274C2,11.988,5.474,8.5,9.744,8.5h29.512c4.27,0,7.744,3.488,7.744,7.774V32.726z"></path> <path d="M33.36,24.138l-13.855-8.115c-0.308-0.18-0.691-0.183-1.002-0.005S18,16.527,18,16.886v16.229 c0,0.358,0.192,0.69,0.502,0.868c0.154,0.088,0.326,0.132,0.498,0.132c0.175,0,0.349-0.046,0.505-0.137l13.855-8.113 c0.306-0.179,0.495-0.508,0.495-0.863S33.667,24.317,33.36,24.138z M20,31.37V18.63l10.876,6.371L20,31.37z"></path> </g> </g> </g></svg>
+
+                                            <span>YouTube</span>
                                         </a>
                                     )}
                                     {/* Other platform links... */}
@@ -162,12 +174,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                             {/* Hosts */}
                             {hosts && hosts.length > 0 && (
                                 <div className="mb-12">
-                                    <h2 className="text-2xl font-bold mb-6">Sunucular</h2>
+                                    <h2 className="text-2xl text-yellow-500 font-bold mb-6">Sunucular</h2>
                                     <div className="space-y-8">
                                         {hosts.map((host, index) => (
                                             <div key={index} className="flex items-center gap-4">
                                                 {host.image && (
-                                                    <div className="w-16 h-16 rounded-full overflow-hidden">
+                                                    <div className="w-12 h-12 rounded-full overflow-hidden">
                                                         <Image
                                                             src={urlFor(host.image).width(200).height(200).url()}
                                                             alt={host.name}
@@ -192,12 +204,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                             {/* Guests */}
                             {guests && guests.length > 0 && (
                                 <div>
-                                    <h2 className="text-2xl font-bold mb-6">Konuklar</h2>
+                                    <h2 className="text-2xl text-yellow-500/80 font-bold mb-6">Konuklar</h2>
                                     <div className="space-y-8">
                                         {guests.map((guest, index) => (
                                             <div key={index} className="flex items-center gap-4">
                                                 {guest.image && (
-                                                    <div className="w-16 h-16 rounded-full overflow-hidden">
+                                                    <div className="w-12 h-12 rounded-full overflow-hidden">
                                                         <Image
                                                             src={urlFor(guest.image).width(200).height(200).url()}
                                                             alt={guest.name}
@@ -222,9 +234,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
                         {/* Right Column: Transcript */}
                         <div className="lg:col-span-2">
-                            <h2 className="text-2xl font-bold mb-6">Transkript</h2>
+                            <h2 className="text-2xl text-yellow-500 font-bold mb-6">Transkript</h2>
                             {transcript ? (
-                                <div className="prose prose-invert max-w-none">
+                                <div className="prose text-white/80 prose-invert max-w-none">
                                     <PortableText value={transcript} />
                                 </div>
                             ) : (

@@ -29,7 +29,7 @@ const AboutUs = () => {
                         <div className="hero-content-left text-left space-y-6 ">
                             <div className="w-16 h-1 bg-yellow-500 mb-4"></div>
                             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-                                HİKAYEMİZ<span className="text-yellow-500">.</span>
+                                HAKKIMIZDA<span className="text-yellow-500">.</span>
                             </h1>
                             <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl">
                                 Biz bilginin ve merakın peşinden koşan ve öğrendiklerimizi tutku ile paylaşmayı seven bir ekibiz. Her bilgi parçasının değerli olduğuna inanıyoruz.
@@ -119,19 +119,19 @@ const AboutUs = () => {
 
                                 <div className="space-y-6 text-white/80">
                                     <p className="text-lg">
-                                        <span className="text-yellow-500 font-medium">HERGÜNEBİ'ŞEY</span> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                        <span className="text-yellow-500 font-medium">HERGÜNEBİ'ŞEY</span>Merak etmek, araştırmak ve paylaşmak. Bu üç kelime ile özetlenebilecek olan hikayemiz; temelinde merak ettiğimiz bir konuyu birden fazla kaynaktan inceleyerek araştırmaya, bu esnada da kendi yorumumuzu katarak içeriğe dönüştürmeye dayanıyor.
 
 
                                     </p>
 
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                        Doğru sorularla merakımızı ateşleyip daha fazlasını öğrenme hevesimizle de konunun üstüne gidiyoruz. Konu hakkında kaliteli bulduğumuz kaynakları tüketip işin detayını öğreniyor, ardından kendi geçmiş bilgi ve tecrübelerimiz ile harmanlayıp ortaya bir yazı ya da podcast yayını çıkarıyoruz. Tüm bu süreçte öğrendiklerimizin bizim hayatlarımıza anlam ve değer katacağına da yürekten inanıyoruz.
 
 
                                     </p>
 
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                        Merak neredeyse tüm canlılığın ama belki en çok da insanlığın özünde yer alan çok temel bir duygu. İnsan merakı sayesinde hiç keşfedilmemiş yerlere gitmek için yelken açıyor, imkansız olarak görülen tırmanışlar gerçekleştiriyor ve her seferinde insan doğasının sınırlarını zorluyor. Yeni şeyler öğrenmek, bu öğrendiklerimizi kendi hayatlarımıza katmak ve başkalarıyla paylaşmak da aynı merakın bir sonucu. Biz de bu hayatı yaşamaya değer kılmak için sizleri  merak edip öğrenmeye davet ediyoruz.
 
 
                                     </p>
@@ -143,20 +143,11 @@ const AboutUs = () => {
                                         </p>
                                     </div>
 
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-
-                                    </p>
-
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-                                    </p>
                                 </div>
 
-                                {/* Stats cards */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12">
+
+                                {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12">
                                     <div className="p-6 rounded-xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm border border-white/10 group hover:border-yellow-500/50 transition-all duration-300">
                                         <div className="text-4xl font-bold mb-2 group-hover:text-yellow-500 transition-colors">250+</div>
                                         <div className="text-sm text-white/70">Yayınlanan İçerik</div>
@@ -173,7 +164,7 @@ const AboutUs = () => {
                                         <div className="text-4xl font-bold mb-2 group-hover:text-yellow-500 transition-colors">3</div>
                                         <div className="text-sm text-white/70">Yıllık Deneyim</div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

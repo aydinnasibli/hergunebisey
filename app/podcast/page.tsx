@@ -238,12 +238,7 @@ const PodcastPage = () => {
                                             />
                                         )}
 
-                                        {/* Duration Badge - Positioned on the image */}
-                                        {podcast.duration && (
-                                            <span className="absolute top-4 right-4 px-3 py-1 bg-yellow-500 text-black rounded-full text-xs font-medium">
-                                                {podcast.duration}
-                                            </span>
-                                        )}
+
                                     </div>
 
                                     {/* Content Area */}
@@ -253,12 +248,18 @@ const PodcastPage = () => {
                                             {podcast.categories && podcast.categories.map((cat) => (
                                                 <span
                                                     key={cat.id}
-                                                    className=" select-none px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300 hover:bg-gray-700 transition-colors"
+                                                    className=" select-none px-3 py-1 bg-gray-800 rounded-full text-xs text-gray-300 "
                                                 >
                                                     {cat.name}
                                                 </span>
                                             ))}
                                         </div>
+                                        {/* Duration Badge - Positioned on the image */}
+                                        {podcast.duration && (
+                                            <span className="select-none absolute top-4 right-4 px-3 py-1 bg-yellow-500/85 text-black rounded-full text-xs font-medium">
+                                                {podcast.duration}
+                                            </span>
+                                        )}
 
                                         {/* Title with hover effect */}
                                         <Link href={`/podcast/${podcast.slug.current}`} className="text-xl font-bold mb-2 hover:text-white/60  duration-300 transition-colors">
@@ -274,7 +275,7 @@ const PodcastPage = () => {
 
                                         {/* Date and Actions - at the bottom */}
                                         <div className="mt-auto">
-                                            <p className="text-gray-300/90 text-sm mb-4">
+                                            <p className="text-gray-300/90 text-sm mb-4 select-none">
                                                 {formatDate(podcast.publishedAt)}
                                             </p>
 
