@@ -37,6 +37,7 @@
     "next": "15.2.3",
     "next-images": "^1.8.5",
     "next-mdx-remote": "^5.0.0",
+    "next-plausible": "^3.12.4",
     "next-sanity": "^9.9.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

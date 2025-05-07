@@ -6,6 +6,7 @@ import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GoogleAnalytics } from '@next/third-parties/google'
+import PlausibleProvider from 'next-plausible'
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"], // Ensure Latin characters are loaded
@@ -51,15 +52,17 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="tr" className="scrollbar-hide">
         <body className={`${poppins.variable} overflow-y-auto`}>
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""} />
-          <Navbar />
+          <PlausibleProvider domain="hergunebisey.net">
+            <Navbar />
 
 
-          <div className="">
-            {children}
-            <HorizontalScrollBar />
-          </div>
-          <Footer />
+            <div className="">
+              {children}
+              <HorizontalScrollBar />
+            </div>
+            <Footer />
+
+          </PlausibleProvider>
         </body>
       </html>
     </ClerkProvider >
