@@ -5,7 +5,8 @@ import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import CookieConsent from "@/components/CookieConsent";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"], // Ensure Latin characters are loaded
@@ -56,7 +57,15 @@ export default function RootLayout({
 
         <body className={`${poppins.variable} overflow-y-auto`}>
           <Navbar />
-
+          {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+            <>
+              <CookieConsent />
+              <GoogleAnalytics
+                GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+                loadScript={cookieConsent === 'true'}
+              />
+            </>
+          )}
 
           <div className="">
             {children}
