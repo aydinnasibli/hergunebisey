@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
     // Your domain - replace with your actual domain
-    const domain = 'https://hergunebisey.net';
+    const domain = 'https://www.hergunebisey.net';
 
     return {
         rules: {
