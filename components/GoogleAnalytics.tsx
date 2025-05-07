@@ -12,8 +12,8 @@ interface GoogleAnalyticsProps {
 declare global {
     interface Window {
         gtag: (
-            command: 'config' | 'event' | 'js' | 'set',
-            targetId: string,
+            command: 'config' | 'event' | 'js' | 'set' | 'consent',
+            targetId: string | Date,
             config?: Record<string, unknown>
         ) => void;
         dataLayer: unknown[];
@@ -24,58 +24,77 @@ export default function GoogleAnalytics({ GA_MEASUREMENT_ID }: GoogleAnalyticsPr
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { consent } = useCookieConsent();
-    const [isInitialized, setIsInitialized] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Only track when consent is explicitly given
     const shouldTrack = consent === true;
 
-    // Handle page view tracking
+    // Initialize GA once
     useEffect(() => {
-        // Skip if no consent, no measurement ID, not initialized, or if we're in SSR
-        if (!shouldTrack || !GA_MEASUREMENT_ID || !isInitialized || typeof window === 'undefined') return;
+        if (!shouldTrack || typeof window === 'undefined') return;
 
-        const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+        // Safely check and create dataLayer
+        window.dataLayer = window.dataLayer || [];
 
-        // Make sure gtag is defined before using it
-        if (window.gtag) {
-            window.gtag('config', GA_MEASUREMENT_ID, {
-                page_path: url,
-                send_page_view: true
-            });
+        // Define gtag function if it doesn't exist
+        if (!window.gtag) {
+            window.gtag = function () {
+                window.dataLayer.push(arguments);
+            };
         }
-    }, [pathname, searchParams, GA_MEASUREMENT_ID, shouldTrack, isInitialized]);
 
-    // Don't render the scripts if user hasn't consented
+        // Initialize gtag
+        window.gtag('js', new Date());
+        window.gtag('config', GA_MEASUREMENT_ID, {
+            anonymize_ip: true,
+            page_location: window.location.href,
+            page_path: pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : ''),
+            transport_type: 'beacon'
+        });
+
+    }, [shouldTrack, GA_MEASUREMENT_ID]);
+
+    // Track page views on route change
+    useEffect(() => {
+        if (!shouldTrack || !isLoaded || typeof window === 'undefined') return;
+
+        const handleRouteChange = () => {
+            const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+
+            // Send page view with full details to ensure accuracy
+            window.gtag('config', GA_MEASUREMENT_ID, {
+                page_location: window.location.origin + url,
+                page_path: url,
+                page_title: document.title
+            });
+
+            // Also log a custom event for backup tracking
+            window.gtag('event', 'page_view', {
+                page_location: window.location.origin + url,
+                page_path: url,
+                page_title: document.title,
+                send_to: GA_MEASUREMENT_ID
+            });
+        };
+
+        // Send initial page view
+        handleRouteChange();
+
+    }, [pathname, searchParams, GA_MEASUREMENT_ID, shouldTrack, isLoaded]);
+
+    // Don't render anything if no consent
     if (!shouldTrack) return null;
 
     return (
         <>
-            {/* Load the gtag script */}
             <Script
                 strategy="afterInteractive"
                 src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-                onLoad={() => {
-                    setIsInitialized(true);
-                }}
+                onLoad={() => setIsLoaded(true)}
+                onError={(e) => console.error('Google Analytics failed to load:', e)}
             />
 
-            {/* Initialize gtag */}
-            <Script
-                id="google-analytics"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: `
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', '${GA_MEASUREMENT_ID}', {
-                            page_path: window.location.pathname,
-                            anonymize_ip: true, // GDPR compliance - anonymize IP addresses
-                            transport_type: 'beacon' // More reliable data transmission
-                        });
-                    `,
-                }}
-            />
+            {/* No need for a second initialization script as we do it in the useEffect */}
         </>
     );
 }

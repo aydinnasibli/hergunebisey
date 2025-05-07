@@ -13,6 +13,7 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"], // Ensure Latin characters are loaded
   variable: "--font-poppins", // Set a CSS variable
+  display: "swap", // Prevent layout shift from font loading
 });
 
 export const metadata: Metadata = {
@@ -55,22 +56,22 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="tr" className="scrollbar-hide">
-        <body className={`${poppins.variable} overflow-y-auto`}>
+        <body className={`${poppins.variable} font-sans overflow-x-hidden`}>
           <CookieConsentProvider>
             <Navbar />
+            <div className="min-h-screen">
+              {children}
+              <HorizontalScrollBar />
+            </div>
+            <Footer />
 
+            {/* Render cookie consent after main content */}
             {gaId && (
               <>
                 <CookieConsent />
                 <GoogleAnalytics GA_MEASUREMENT_ID={gaId} />
               </>
             )}
-
-            <div>
-              {children}
-              <HorizontalScrollBar />
-            </div>
-            <Footer />
           </CookieConsentProvider>
         </body>
       </html>
