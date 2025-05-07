@@ -13,10 +13,10 @@ declare global {
     interface Window {
         gtag: (
             command: 'config' | 'event' | 'js' | 'set',
-            targetId: any,
-            config?: Record<string, any>
+            targetId: string,
+            config?: Record<string, unknown>
         ) => void;
-        dataLayer: any[];
+        dataLayer: unknown[];
     }
 }
 
