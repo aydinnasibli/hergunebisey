@@ -13,7 +13,7 @@ declare global {
     interface Window {
         gtag: (
             command: 'config' | 'event' | 'js' | 'set',
-            targetId: string,
+            targetId: any,
             config?: Record<string, any>
         ) => void;
         dataLayer: any[];
@@ -29,15 +29,17 @@ export default function GoogleAnalytics({ GA_MEASUREMENT_ID }: GoogleAnalyticsPr
     const shouldTrack = consent === true;
 
     useEffect(() => {
-        // Skip if no consent or gtag not loaded
-        if (!shouldTrack || !window.gtag) return;
+        // Skip if no consent or if we're in SSR
+        if (!shouldTrack || typeof window === 'undefined') return;
 
         const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
 
-        // Send pageview with updated URL
-        window.gtag('config', GA_MEASUREMENT_ID, {
-            page_path: url,
-        });
+        // Make sure gtag is defined before using it
+        if (window.gtag) {
+            window.gtag('config', GA_MEASUREMENT_ID, {
+                page_path: url,
+            });
+        }
     }, [pathname, searchParams, GA_MEASUREMENT_ID, shouldTrack]);
 
     // Don't render the scripts if user hasn't consented
@@ -59,7 +61,6 @@ export default function GoogleAnalytics({ GA_MEASUREMENT_ID }: GoogleAnalyticsPr
                         gtag('js', new Date());
                         gtag('config', '${GA_MEASUREMENT_ID}', {
                             page_path: window.location.pathname,
-                            send_page_view: false,
                             anonymize_ip: true // GDPR compliance - anonymize IP addresses
                         });
                     `,

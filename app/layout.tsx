@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Hergünebi'şey",
     images: [
       {
-        url: '/wp.jpg', // Fixed path, removed @ prefix
+        url: '/wp.jpg',
         width: 1200,
         height: 630,
         alt: 'Site preview image',
@@ -50,6 +50,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+
   return (
     <ClerkProvider>
       <html lang="tr" className="scrollbar-hide">
@@ -57,16 +59,14 @@ export default function RootLayout({
           <CookieConsentProvider>
             <Navbar />
 
-            {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+            {gaId && (
               <>
                 <CookieConsent />
-                <GoogleAnalytics
-                  GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
-                />
+                <GoogleAnalytics GA_MEASUREMENT_ID={gaId} />
               </>
             )}
 
-            <div className="">
+            <div>
               {children}
               <HorizontalScrollBar />
             </div>

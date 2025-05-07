@@ -30,22 +30,25 @@ export default function CookieConsentProvider({ children }: CookieConsentProvide
 
     useEffect(() => {
         // Check for existing consent in localStorage on mount
-        try {
-            const storedConsent = localStorage.getItem('cookie-consent');
-            if (storedConsent === 'true') {
-                setConsentState(true);
-            } else if (storedConsent === 'false') {
-                setConsentState(false);
+        // This runs only on client-side
+        if (typeof window !== 'undefined') {
+            try {
+                const storedConsent = localStorage.getItem('cookie-consent');
+                if (storedConsent === 'true') {
+                    setConsentState(true);
+                } else if (storedConsent === 'false') {
+                    setConsentState(false);
+                }
+            } catch (error) {
+                console.error('Error accessing localStorage:', error);
             }
-        } catch (error) {
-            console.error('Error accessing localStorage:', error);
+            setIsInitialized(true);
         }
-        setIsInitialized(true);
     }, []);
 
     // Update localStorage when consent changes
     useEffect(() => {
-        if (!isInitialized) return;
+        if (!isInitialized || typeof window === 'undefined') return;
 
         try {
             if (consent !== null) {

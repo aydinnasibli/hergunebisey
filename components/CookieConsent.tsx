@@ -9,7 +9,10 @@ export default function CookieConsent() {
 
     useEffect(() => {
         // Only show banner if consent is null (not yet decided)
-        setBannerVisible(consent === null);
+        // And ensure we're on the client side
+        if (typeof window !== 'undefined') {
+            setBannerVisible(consent === null);
+        }
     }, [consent]);
 
     const handleAccept = () => {
