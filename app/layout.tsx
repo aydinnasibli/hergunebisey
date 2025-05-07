@@ -5,15 +5,11 @@ import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
-import CookieConsentProvider from "@/components/CookieConsentProvider";
-import CookieConsent from "@/components/CookieConsent";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
-
+import { GoogleAnalytics } from '@next/third-parties/google'
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"], // Ensure Latin characters are loaded
   variable: "--font-poppins", // Set a CSS variable
-  display: "swap", // Prevent layout shift from font loading
 });
 
 export const metadata: Metadata = {
@@ -33,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "Hergünebi'şey",
     images: [
       {
-        url: '/wp.jpg',
+        url: '/wp.jpg', // Fixed path, removed @ prefix
         width: 1200,
         height: 630,
         alt: 'Site preview image',
@@ -51,30 +47,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
-
   return (
     <ClerkProvider>
       <html lang="tr" className="scrollbar-hide">
-        <body className={`${poppins.variable} font-sans overflow-x-hidden`}>
-          <CookieConsentProvider>
-            <Navbar />
-            <div className="min-h-screen">
-              {children}
-              <HorizontalScrollBar />
-            </div>
-            <Footer />
+        <body className={`${poppins.variable} overflow-y-auto`}>
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""} />
+          <Navbar />
 
-            {/* Render cookie consent after main content */}
-            {gaId && (
-              <>
-                <CookieConsent />
-                <GoogleAnalytics GA_MEASUREMENT_ID={gaId} />
-              </>
-            )}
-          </CookieConsentProvider>
+
+          <div className="">
+            {children}
+            <HorizontalScrollBar />
+          </div>
+          <Footer />
         </body>
       </html>
-    </ClerkProvider>
+    </ClerkProvider >
   );
 }
