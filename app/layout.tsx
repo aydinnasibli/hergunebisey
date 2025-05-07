@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
-import { GoogleAnalytics } from '@next/third-parties/google'
 import PlausibleProvider from 'next-plausible'
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
