@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
     // Your domain - replace with your actual domain
-    const domain = 'https://hergunebisey.net';
+    const domain = 'https://www.hergunebisey.net';
 
     // Define static pages
     const staticPages: MetadataRoute.Sitemap = [
