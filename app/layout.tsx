@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     default: "Hergünebi'şey",
   },
   description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.',
-  metadataBase: new URL('https://hergunebisey.net'),
+  metadataBase: new URL('https://www.hergunebisey.net'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    url: 'https://hergunebisey.net',
+    url: 'https://www.hergunebisey.net',
     siteName: "Hergünebi'şey",
     images: [
       {
