@@ -13,10 +13,11 @@ type Props = {
 }
 
 export async function generateMetadata(
-    { params }: Props,
+    { params }: { params: Promise<{ slug: string }> },
 ): Promise<Metadata> {
     // Fetch the podcast data
-    const podcast = await getPodcastBySlug(params.slug);
+    const resolvedParams = await params;
+    const podcast = await getPodcastBySlug(resolvedParams.slug);
 
     // If no podcast is found, return basic metadata
     if (!podcast) {
