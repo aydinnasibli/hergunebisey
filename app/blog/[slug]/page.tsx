@@ -18,7 +18,7 @@ interface BlogPost {
     excerpt?: string;
     mainImage?: SanityImageSource;
     publishedAt: string;
-    body: PortableTextBlock[];
+    body: PortableTextBlock[]; // Changed from body?: PortableTextBlock to body: PortableTextBlock[]
     categories?: string[];
     author?: {
         name: string;
@@ -29,21 +29,14 @@ interface BlogPost {
     };
 }
 
-// Define PageProps according to what Next.js expects in this project
-interface PageProps {
-    params: Promise<{ slug: string }>;
-    searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-// Props for metadata function (not using Promise for params)
-type MetadataProps = {
+type Props = {
     params: { slug: string }
     searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // Generate dynamic metadata for each blog post
 export async function generateMetadata(
-    { params }: MetadataProps,
+    { params }: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // Get post data
@@ -82,14 +75,16 @@ export async function generateMetadata(
     }
 }
 
-// Keep the params as Promise as expected by the project setup
-export default async function BlogPost({ params }: PageProps) {
+
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;
     const post = await getBlogPostBySlug(resolvedParams.slug)
 
     if (!post) {
         notFound()
     }
+
+
 
     // Define proper type for the components object
     const components: PortableTextComponents = {
@@ -236,6 +231,11 @@ export default async function BlogPost({ params }: PageProps) {
                     </div>
                 </div>
             </div>
+
+
+
+
+
         </div>
     )
 }
