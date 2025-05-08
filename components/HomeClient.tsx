@@ -85,7 +85,7 @@ const Home = () => {
                             <p className="text-base sm:text-lg text-white/80 mb-8 sm:mb-10">
                                 Sitenin adının hergünebi'şey olmasının ise bir kıymeti var elbette. Her ne kadar her gün paylaşım yapmasak da mutlaka bir şeyler öğrenmeye, okumaya ve araştırmaya devam ediyoruz. Böylece her geçen gün iki bin gramlık heybemizde bir şeyler biriktirip kendi hayatımıza değer ve anlam katıyoruz.
                             </p>
-                            <Link href="/about-us" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300">
+                            <Link href="/about" className="px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl  tracking-wider text-xs sm:text-sm hover:bg-gray-200 group-hover:scale-110 hover:text-black transition-colors duration-300">
                                 Hikayemiz
                             </Link>
                         </div>
