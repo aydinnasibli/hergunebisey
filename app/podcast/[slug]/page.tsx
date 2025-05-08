@@ -80,12 +80,14 @@ export async function generateMetadata(
     };
 }
 
-export default async function PodcastPage({ params }: { params: { slug: string } }) {
+export default async function PodcastPage({ params }: { params: Promise<{ slug: string }> }) {
     // Server components can use async/await directly
+    const resolvedParams = await params;
+
     let podcast: Podcast | null = null;
 
     try {
-        podcast = await getPodcastBySlug(params.slug);
+        podcast = await getPodcastBySlug(resolvedParams.slug);
     } catch (error) {
         console.error('Error fetching podcast:', error);
     }
