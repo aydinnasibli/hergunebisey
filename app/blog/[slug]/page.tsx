@@ -18,7 +18,7 @@ interface BlogPost {
     excerpt?: string;
     mainImage?: SanityImageSource;
     publishedAt: string;
-    body: PortableTextBlock[]; // Changed from body?: PortableTextBlock to body: PortableTextBlock[]
+    body: PortableTextBlock[];
     categories?: string[];
     author?: {
         name: string;
@@ -29,14 +29,21 @@ interface BlogPost {
     };
 }
 
-type Props = {
+// Define PageProps according to what Next.js expects in this project
+interface PageProps {
+    params: Promise<{ slug: string }>;
+    searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+// Props for metadata function (not using Promise for params)
+type MetadataProps = {
     params: { slug: string }
     searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // Generate dynamic metadata for each blog post
 export async function generateMetadata(
-    { params }: Props,
+    { params }: MetadataProps,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // Get post data
@@ -75,13 +82,10 @@ export async function generateMetadata(
     }
 }
 
-// Fix: Use the correct parameter type for Next.js App Router Page component
-export default async function BlogPost({
-    params
-}: {
-    params: { slug: string }
-}) {
-    const post = await getBlogPostBySlug(params.slug)
+// Keep the params as Promise as expected by the project setup
+export default async function BlogPost({ params }: PageProps) {
+    const resolvedParams = await params;
+    const post = await getBlogPostBySlug(resolvedParams.slug)
 
     if (!post) {
         notFound()
