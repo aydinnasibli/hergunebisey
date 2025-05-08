@@ -75,16 +75,17 @@ export async function generateMetadata(
     }
 }
 
-
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-    const resolvedParams = await params;
-    const post = await getBlogPostBySlug(resolvedParams.slug)
+// Fix: Use the correct parameter type for Next.js App Router Page component
+export default async function BlogPost({
+    params
+}: {
+    params: { slug: string }
+}) {
+    const post = await getBlogPostBySlug(params.slug)
 
     if (!post) {
         notFound()
     }
-
-
 
     // Define proper type for the components object
     const components: PortableTextComponents = {
@@ -231,11 +232,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
     )
 }
