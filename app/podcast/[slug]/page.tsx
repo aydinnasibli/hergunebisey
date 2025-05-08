@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getPodcastBySlug, urlFor } from '@/lib/sanity';
 import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata, } from 'next';
 
 // Define the types for the params
 type Props = {
@@ -14,7 +14,6 @@ type Props = {
 
 export async function generateMetadata(
     { params }: Props,
-    parent: ResolvingMetadata
 ): Promise<Metadata> {
     // Fetch the podcast data
     const podcast = await getPodcastBySlug(params.slug);
