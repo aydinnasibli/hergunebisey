@@ -6,11 +6,7 @@ import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
 import { Metadata } from 'next';
 
-// Define the types for the params
-type Props = {
-    params: { slug: string }
-    searchParams: { [key: string]: string | string[] | undefined }
-}
+
 
 export async function generateMetadata(
     { params }: { params: Promise<{ slug: string }> },
