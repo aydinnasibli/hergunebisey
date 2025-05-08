@@ -29,18 +29,17 @@ interface BlogPost {
     };
 }
 
-type Props = {
-    params: { slug: string }
-    searchParams: { [key: string]: string | string[] | undefined }
-}
+
 
 // Generate dynamic metadata for each blog post
 export async function generateMetadata(
-    { params }: Props,
+    { params }: { params: Promise<{ slug: string }> },
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // Get post data
-    const post = await getBlogPostBySlug(params.slug)
+    const resolvedParams = await params;
+
+    const post = await getBlogPostBySlug(resolvedParams.slug)
 
     // Return 404 if post not found
     if (!post) {
@@ -59,7 +58,7 @@ export async function generateMetadata(
         openGraph: {
             title: post.title,
             description: post.excerpt || `${post.title} sitemizde okuyun`,
-            url: `${baseUrl}/blog/${params.slug}`,
+            url: `${baseUrl}/blog/${resolvedParams.slug}`,
             siteName: 'Hergünebi\'şey',
             type: 'article',
             publishedTime: post.publishedAt,
@@ -70,7 +69,7 @@ export async function generateMetadata(
         },
         // Add structured data for better SEO
         alternates: {
-            canonical: `${baseUrl}/blog/${params.slug}`,
+            canonical: `${baseUrl}/blog/${resolvedParams.slug}`,
         }
     }
 }
