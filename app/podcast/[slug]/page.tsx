@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getPodcastBySlug, urlFor } from '@/lib/sanity';
 import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
-import { Metadata, } from 'next';
+import { Metadata } from 'next';
 
 // Define the types for the params
 type Props = {
@@ -30,11 +30,11 @@ export async function generateMetadata(
     const imageUrl = podcast.coverImage ? urlFor(podcast.coverImage).width(1200).height(630).url() : null;
 
     // Get the host and guest names for keywords
-    const hostNames = podcast.hosts ? podcast.hosts.map((host: any) => host.name).join(', ') : '';
-    const guestNames = podcast.guests ? podcast.guests.map((guest: any) => guest.name).join(', ') : '';
+    const hostNames = podcast.hosts ? podcast.hosts.map((host) => host.name).join(', ') : '';
+    const guestNames = podcast.guests ? podcast.guests.map((guest) => guest.name).join(', ') : '';
 
     // Get category names for keywords
-    const categoryNames = podcast.categories ? podcast.categories.map((cat: any) => cat.name).join(', ') : '';
+    const categoryNames = podcast.categories ? podcast.categories.map((cat) => cat.name).join(', ') : '';
 
     // Create a list of keywords
     const keywords = [
@@ -56,7 +56,7 @@ export async function generateMetadata(
             images: imageUrl ? [imageUrl] : [],
             type: 'article',
             publishedTime: podcast.publishedAt,
-            authors: podcast.hosts ? podcast.hosts.map((host: any) => host.name) : [],
+            authors: podcast.hosts ? podcast.hosts.map((host) => host.name) : [],
         },
 
         // Add structured data for podcast
@@ -68,7 +68,7 @@ export async function generateMetadata(
                 'description': podcast.description,
                 'datePublished': podcast.publishedAt,
                 'timeRequired': podcast.duration,
-                'author': podcast.hosts ? podcast.hosts.map((host: any) => ({
+                'author': podcast.hosts ? podcast.hosts.map((host) => ({
                     '@type': 'Person',
                     'name': host.name
                 })) : [],
@@ -80,12 +80,12 @@ export async function generateMetadata(
     };
 }
 
-export default async function PodcastPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PodcastPage({ params }: { params: { slug: string } }) {
     // Server components can use async/await directly
     let podcast: Podcast | null = null;
 
     try {
-        podcast = await getPodcastBySlug((await params).slug);
+        podcast = await getPodcastBySlug(params.slug);
     } catch (error) {
         console.error('Error fetching podcast:', error);
     }
@@ -193,7 +193,7 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
                         {platforms && Object.values(platforms).some(url => url) && (
                             <div className="mb-12">
                                 <h3 className="text-lg font-medium mb-4">Dinle:</h3>
-                                <div className="flex  flex-wrap gap-4">
+                                <div className="flex flex-wrap gap-4">
                                     {platforms.spotify && (
                                         <a
                                             href={platforms.spotify}
@@ -227,12 +227,15 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
                                             rel="noopener noreferrer"
                                             className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md hover:bg-white/5 hover:-translate-y-0.5 transition-all duration-300 rounded-full border border-white/20"
                                         >
-                                            <svg className="w-6 h-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <g> <path d="M39.256,6.5H9.744C4.371,6.5,0,10.885,0,16.274v16.451c0,5.39,4.371,9.774,9.744,9.774h29.512 c5.373,0,9.744-4.385,9.744-9.774V16.274C49,10.885,44.629,6.5,39.256,6.5z M47,32.726c0,4.287-3.474,7.774-7.744,7.774H9.744 C5.474,40.5,2,37.012,2,32.726V16.274C2,11.988,5.474,8.5,9.744,8.5h29.512c4.27,0,7.744,3.488,7.744,7.774V32.726z"></path> <path d="M33.36,24.138l-13.855-8.115c-0.308-0.18-0.691-0.183-1.002-0.005S18,16.527,18,16.886v16.229 c0,0.358,0.192,0.69,0.502,0.868c0.154,0.088,0.326,0.132,0.498,0.132c0.175,0,0.349-0.046,0.505-0.137l13.855-8.113 c0.306-0.179,0.495-0.508,0.495-0.863S33.667,24.317,33.36,24.138z M20,31.37V18.63l10.876,6.371L20,31.37z"></path> </g> </g> </g></svg>
-
+                                            <svg className="w-6 h-6 fill-current text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49">
+                                                <g>
+                                                    <path d="M39.256,6.5H9.744C4.371,6.5,0,10.885,0,16.274v16.451c0,5.39,4.371,9.774,9.744,9.774h29.512 c5.373,0,9.744-4.385,9.744-9.774V16.274C49,10.885,44.629,6.5,39.256,6.5z M47,32.726c0,4.287-3.474,7.774-7.744,7.774H9.744 C5.474,40.5,2,37.012,2,32.726V16.274C2,11.988,5.474,8.5,9.744,8.5h29.512c4.27,0,7.744,3.488,7.744,7.774V32.726z"></path>
+                                                    <path d="M33.36,24.138l-13.855-8.115c-0.308-0.18-0.691-0.183-1.002-0.005S18,16.527,18,16.886v16.229 c0,0.358,0.192,0.69,0.502,0.868c0.154,0.088,0.326,0.132,0.498,0.132c0.175,0,0.349-0.046,0.505-0.137l13.855-8.113 c0.306-0.179,0.495-0.508,0.495-0.863S33.667,24.317,33.36,24.138z M20,31.37V18.63l10.876,6.371L20,31.37z"></path>
+                                                </g>
+                                            </svg>
                                             <span>YouTube</span>
                                         </a>
                                     )}
-                                    {/* Other platform links... */}
                                 </div>
                             </div>
                         )}
