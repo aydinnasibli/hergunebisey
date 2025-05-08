@@ -13,34 +13,43 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hergunebisey.net'),
   title: {
     template: "%s | Hergünebi'şey",
-    default: "Hergünebi'şey",
+    default: "Hergünebi'şey"
   },
   description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.',
-  metadataBase: new URL('https://www.hergunebisey.net'),
-  alternates: {
-    canonical: '/',
-  },
+  keywords: ['blog', 'podcast', 'quote', 'alıntı', 'site'],
+  authors: [{ name: 'Hergünebişey', url: 'https://www.hergunebisey.net' }],
+  creator: 'Hergünebişey',
+  publisher: 'Hergünebişey',
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    url: 'https://www.hergunebisey.net',
+    url: '/',
     siteName: "Hergünebi'şey",
+    title: "Hergünebi'şey",
+    description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.',
     images: [
       {
-        url: '/wp.jpg', // Fixed path, removed @ prefix
+        url: '/images/og-image.jpg', // Replace with your actual OG image path
         width: 1200,
         height: 630,
-        alt: 'Site preview image',
+        alt: 'Your Site Name',
       },
     ],
   },
-  robots: {
-    index: true,
-    follow: true,
+
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+
   },
-};
+
+}
 
 export default function RootLayout({
   children,

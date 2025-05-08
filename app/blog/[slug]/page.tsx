@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import ShareButtons from './ShareButtons' // Import the client component
 import { PortableTextBlock } from 'sanity'
+import { Metadata, ResolvingMetadata } from 'next'
 export const revalidate = 60 // revalidate this page every 60 seconds
 
 // Define BlogPost type
@@ -27,6 +28,53 @@ interface BlogPost {
         linkedin?: string;
     };
 }
+
+type Props = {
+    params: { slug: string }
+    searchParams: { [key: string]: string | string[] | undefined }
+}
+
+// Generate dynamic metadata for each blog post
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    // Get post data
+    const post = await getBlogPostBySlug(params.slug)
+
+    // Return 404 if post not found
+    if (!post) {
+        return notFound()
+    }
+
+    // Base URL for absolute URLs
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hergunebisey.net'
+
+    // Get parent metadata
+    const previousImages = (await parent).openGraph?.images || []
+
+    return {
+        title: post.title,
+        description: post.excerpt || ` ${post.title} sitemizde okuyun`,
+        openGraph: {
+            title: post.title,
+            description: post.excerpt || `${post.title} sitemizde okuyun`,
+            url: `${baseUrl}/blog/${params.slug}`,
+            siteName: 'Hergünebi\'şey',
+            type: 'article',
+            publishedTime: post.publishedAt,
+            authors: post.author ? [post.author.name] : undefined,
+            images: post.mainImage
+                ? [urlFor(post.mainImage).width(1200).height(630).url()]
+                : previousImages,
+        },
+        // Add structured data for better SEO
+        alternates: {
+            canonical: `${baseUrl}/blog/${params.slug}`,
+        }
+    }
+}
+
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;

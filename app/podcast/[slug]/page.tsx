@@ -4,8 +4,84 @@ import Link from 'next/link';
 import { getPodcastBySlug, urlFor } from '@/lib/sanity';
 import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
+import { Metadata, ResolvingMetadata } from 'next';
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+// Define the types for the params
+type Props = {
+    params: { slug: string }
+    searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    // Fetch the podcast data
+    const podcast = await getPodcastBySlug(params.slug);
+
+    // If no podcast is found, return basic metadata
+    if (!podcast) {
+        return {
+            title: 'Podcast Bulunamadı',
+            description: 'Aradığınız podcast bulunamadı veya mevcut değil.',
+        };
+    }
+
+    // Get the cover image URL if it exists
+    const imageUrl = podcast.coverImage ? urlFor(podcast.coverImage).width(1200).height(630).url() : null;
+
+    // Get the host and guest names for keywords
+    const hostNames = podcast.hosts ? podcast.hosts.map((host: any) => host.name).join(', ') : '';
+    const guestNames = podcast.guests ? podcast.guests.map((guest: any) => guest.name).join(', ') : '';
+
+    // Get category names for keywords
+    const categoryNames = podcast.categories ? podcast.categories.map((cat: any) => cat.name).join(', ') : '';
+
+    // Create a list of keywords
+    const keywords = [
+        podcast.title,
+        'podcast',
+        hostNames,
+        guestNames,
+        categoryNames
+    ].filter(Boolean).join(', ');
+
+    // Return the metadata
+    return {
+        title: podcast.title,
+        description: podcast.description,
+        keywords: keywords,
+        openGraph: {
+            title: podcast.title,
+            description: podcast.description,
+            images: imageUrl ? [imageUrl] : [],
+            type: 'article',
+            publishedTime: podcast.publishedAt,
+            authors: podcast.hosts ? podcast.hosts.map((host: any) => host.name) : [],
+        },
+
+        // Add structured data for podcast
+        other: {
+            'script:ld+json': JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'PodcastEpisode',
+                'name': podcast.title,
+                'description': podcast.description,
+                'datePublished': podcast.publishedAt,
+                'timeRequired': podcast.duration,
+                'author': podcast.hosts ? podcast.hosts.map((host: any) => ({
+                    '@type': 'Person',
+                    'name': host.name
+                })) : [],
+                ...(podcast.coverImage && {
+                    'image': urlFor(podcast.coverImage).url()
+                })
+            })
+        }
+    };
+}
+
+export default async function PodcastPage({ params }: { params: Promise<{ slug: string }> }) {
     // Server components can use async/await directly
     let podcast: Podcast | null = null;
 
