@@ -76,9 +76,8 @@ export async function generateMetadata(
 }
 
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-    const resolvedParams = await params;
-    const post = await getBlogPostBySlug(resolvedParams.slug)
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+    const post = await getBlogPostBySlug(params.slug)
 
     if (!post) {
         notFound()
