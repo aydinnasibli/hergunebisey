@@ -75,16 +75,13 @@ export async function generateMetadata(
     }
 }
 
-
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-    const resolvedParams = await params;
-    const post = await getBlogPostBySlug(resolvedParams.slug)
+// Fixed the component parameter type to match with the Props type
+export default async function BlogPost({ params }: Props) {
+    const post = await getBlogPostBySlug(params.slug)
 
     if (!post) {
         notFound()
     }
-
-
 
     // Define proper type for the components object
     const components: PortableTextComponents = {
@@ -231,11 +228,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
     )
 }
