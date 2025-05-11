@@ -1,6 +1,5 @@
 "use client";
 
-import ContactForm from '@/components/ContactForm';
 import Image from 'next/image';
 
 const AboutUs = () => {
@@ -151,7 +150,6 @@ const AboutUs = () => {
 
 
                                 </div>
-                                <ContactForm />
 
 
                                 {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12">
