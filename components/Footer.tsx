@@ -139,7 +139,7 @@ const Footer = () => {
                                 <a
                                     key={index}
                                     href={social.href}
-                                    className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-colors hover:bg-yellow-500"
+                                    className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-colors hover:bg-yellow-500 duration-300"
                                     aria-label={`${social.name}'da bizi takip edin`}
                                     target="_blank"
                                     rel="noopener noreferrer"

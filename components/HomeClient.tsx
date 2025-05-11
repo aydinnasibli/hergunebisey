@@ -4,6 +4,15 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { throttle } from 'lodash';
+import { Quicksand } from 'next/font/google';
+const quicksand = Quicksand({
+    weight: ["400", "500", "600", "700"],
+    subsets: ["latin"], // Ensure Latin characters are loaded
+    variable: "--font-quicksand", // Set a CSS variable
+});
+
+
+
 
 const Home = () => {
     const parallaxRef = useRef<HTMLDivElement>(null);
@@ -54,7 +63,7 @@ const Home = () => {
                     </div>
 
                     {/* Scroll indicator */}
-                    <div className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+                    <div className="absolute bottom-6 sm:bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
                         <p className="text-xs sm:text-sm uppercase tracking-widest mb-1 sm:mb-2">Aşağı Kaydır</p>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-6 sm:h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
@@ -451,29 +460,45 @@ const Home = () => {
 
                                 {/* Quote content */}
                                 <div className="text-center relative z-10">
-                                    <p className="text-xl md:text-3xl font-light leading-relaxed mb-10 md:mb-12">
-                                        Bilginin değeri, onu paylaştıkça değil, onunla eylemde bulundukça artar.
-                                    </p>
+                                    <div className="relative mb-16 mt-12 md:mb-20 h-24 perspective-1000 group cursor-default">
+                                        {/* Decorative quote mark */}
+                                        <div className="absolute -top-8 -left-2 text-yellow-500/20 text-4xl font-serif">"</div>
+
+                                        {/* Latin quote with flip animation */}
+                                        <div className="relative select-none transition-all duration-700 ease-in-out transform group-hover:opacity-0 group-hover:-translate-y-4">
+                                            <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
+                                                Vivamus, moriendum est.
+                                            </p>
+                                        </div>
+
+                                        {/* Turkish translation with flip animation */}
+                                        <div className="absolute inset-0 select-none opacity-0 transform translate-y-4 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-y-0 delay-300">
+                                            <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
+                                                Yaşayalım, nasılsa öleceğiz.
+                                            </p>
+                                        </div>
+
+                                        {/* Decorative quote mark */}
+                                        <div className="absolute -bottom-8 -right-2 text-yellow-500/20 text-4xl font-serif rotate-180">"</div>
+                                    </div>
 
                                     <div className="flex flex-col items-center space-y-8">
                                         {/* Author info */}
                                         <div className="flex flex-col items-center">
-                                            <h3 className="text-lg md:text-xl font-normal">Aristoteles</h3>
-                                            <p className="text-xs text-white/60">Filozof, MÖ 384-322</p>
+                                            <h3 className="text-lg md:text-xl font-normal">Seneca</h3>
+                                            <p className="text-xs text-white/60">Filozof, MÖ 4 - MS 65</p>
                                         </div>
 
                                         {/* Decorative separator */}
                                         <div className="w-16 h-px bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent my-4"></div>
 
-                                        {/* Button Option 1: Using Next.js Link */}
+                                        {/* Button for quotes page */}
                                         <Link
                                             href="/quote"
                                             className="inline-block px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl tracking-wider text-xs sm:text-sm hover:bg-gray-200 hover:text-black transition-colors duration-300 cursor-pointer relative z-30"
                                         >
                                             Alıntılar
                                         </Link>
-
-
                                     </div>
                                 </div>
                             </div>

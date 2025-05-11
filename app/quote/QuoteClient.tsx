@@ -483,13 +483,13 @@ export default function QuotePage() {
 
 
                     <p
-                        className="text-xl md:text-lg text-gray-300 max-w-2xl mx-auto mb-6"
+                        className="text-xl md:text-lg text-[#F5F5DC] max-w-2xl mx-auto mb-6"
                     >
                         İnsanlığa fikren ve manen büyük katkılarda bulunmuş kişilerden alıntılar ile hayatınıza yeni bir bakış açısı katın.
                     </p>
 
                 </div>
-                <div className="absolute bottom-10  text-white left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+                <div className="absolute bottom-6 sm:bottom-5  text-white left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce duration-100">
                     <p className="text-sm uppercase tracking-widest mb-2">Aşağı Kaydır</p>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />

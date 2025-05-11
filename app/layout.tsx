@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="tr" className="scrollbar-hide">
-        <body className={`${poppins.variable} overflow-y-auto`}>
+        <body className={`${poppins.className} overflow-y-auto`}>
           <PlausibleProvider domain="hergunebisey.net">
             <Navbar />
 

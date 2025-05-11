@@ -1,5 +1,6 @@
 "use client";
 
+import ContactForm from '@/components/ContactForm';
 import Image from 'next/image';
 
 const AboutUs = () => {
@@ -32,7 +33,7 @@ const AboutUs = () => {
                                 HAKKIMIZDA<span className="text-yellow-500">.</span>
                             </h1>
                             <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl">
-                                Biz bilginin ve merakın peşinden koşan ve öğrendiklerimizi tutku ile paylaşmayı seven bir ekibiz. Her bilgi parçasının değerli olduğuna inanıyoruz.
+                                Bu sitede bilginin ve merakın peşinden koşarken öğrendiklerimizi paylaşıyoruz çünkü paylaşıp anlatmanın da en az öğrenmek kadar kıymetli olduğuna inanıyoruz.
                             </p>
 
                         </div>
@@ -67,7 +68,7 @@ const AboutUs = () => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
+                <div className="absolute bottom-6 sm:bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
                     <p className="text-xs sm:text-sm uppercase tracking-widest mb-1 sm:mb-2">Aşağı Kaydır</p>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 sm:w-6 sm:h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
@@ -115,36 +116,42 @@ const AboutUs = () => {
                             {/* Right Column */}
                             <div className="w-full lg:w-1/2">
                                 <div className="w-10 h-1 bg-yellow-500 mb-8"></div>
-                                <h2 className="text-3xl md:text-5xl font-bold mb-8">Neden <span className="text-yellow-500">HERGÜNEBİ'ŞEY?</span></h2>
+                                <h2 className="text-3xl md:text-5xl font-bold mb-8">HERGÜNEBİ'ŞEY <span className="text-yellow-500">?</span></h2>
 
                                 <div className="space-y-6 text-white/80">
                                     <p className="text-lg">
-                                        <span className="text-yellow-500 font-medium">HERGÜNEBİ'ŞEY</span>Merak etmek, araştırmak ve paylaşmak. Bu üç kelime ile özetlenebilecek olan hikayemiz; temelinde merak ettiğimiz bir konuyu birden fazla kaynaktan inceleyerek araştırmaya, bu esnada da kendi yorumumuzu katarak içeriğe dönüştürmeye dayanıyor.
+                                        Merak etmek, araştırmak ve paylaşmak. Bu üç kelime ile özetlenebilecek olan hikayemiz; temelinde merak ettiğimiz bir konuyu birden fazla kaynaktan inceleyerek araştırmaya, bu esnada da kendi yorumumuzu katarak içeriğe dönüştürmeye dayanıyor.
 
 
                                     </p>
 
                                     <p>
-                                        Doğru sorularla merakımızı ateşleyip daha fazlasını öğrenme hevesimizle de konunun üstüne gidiyoruz. Konu hakkında kaliteli bulduğumuz kaynakları tüketip işin detayını öğreniyor, ardından kendi geçmiş bilgi ve tecrübelerimiz ile harmanlayıp ortaya bir yazı ya da podcast yayını çıkarıyoruz. Tüm bu süreçte öğrendiklerimizin bizim hayatlarımıza anlam ve değer katacağına da yürekten inanıyoruz.
+                                        Doğru sorularla merakımızı ateşleyip daha fazlasını öğrenme hevesimizle de konunun üstüne gidiyoruz. Konu hakkında kaliteli bulduğumuz kaynakları tüketip işin detayını öğreniyor, ardından kendi geçmiş bilgi ve tecrübelerimiz ile harmanlayıp ortaya bir yazı ya da podcast yayını çıkarıyoruz. Bu araştırmalar esnasında karşılaştığımız az sözle çok şey anlatan cümleleri de alıntı olarak düzenli periyotlarla yayınlıyoruz. Tüm bu süreçte öğrendiklerimizin bizim hayatlarımıza anlam ve değer katacağına da yürekten inanıyoruz.
 
 
                                     </p>
 
                                     <p>
-                                        Merak neredeyse tüm canlılığın ama belki en çok da insanlığın özünde yer alan çok temel bir duygu. İnsan merakı sayesinde hiç keşfedilmemiş yerlere gitmek için yelken açıyor, imkansız olarak görülen tırmanışlar gerçekleştiriyor ve her seferinde insan doğasının sınırlarını zorluyor. Yeni şeyler öğrenmek, bu öğrendiklerimizi kendi hayatlarımıza katmak ve başkalarıyla paylaşmak da aynı merakın bir sonucu. Biz de bu hayatı yaşamaya değer kılmak için sizleri  merak edip öğrenmeye davet ediyoruz.
+                                        Bu sitede ürettiğimiz içerikleri takipçilerimize iletiyoruz. Bunun karşılığında ufak da olsa insanların hayatlarına dokunuyor ve bir topluluk kuruyoruz. Bu topluluğu, elimizden geldiğince çok kişiye ulaştırarak; ulaştığımız kişilere hap bilgi seviyesinde olmayan, çok daha anlamlı ve zengin içerikler sunarak büyütmeye çabalıyoruz. Bu esnada pek çok hata yapacağımızın da farkında olarak bu yaratmaya çalıştığımız topluluğun desteğini bekliyoruz. Düzeltmeler için gerekli her noktada lütfen bizimle iletişime geçmekten çekinmeyin.
 
+
+                                    </p>
+                                    <p>
+
+                                        Özetle bu sitede hayatı yaşamaya değer kılıyor, insanları da merak edip öğrenmeye davet ediyoruz.
 
                                     </p>
 
                                     <div className="p-5 bg-white/5 rounded-xl my-10 backdrop-blur-sm border border-white/10">
                                         <h3 className="text-xl font-medium mb-3 text-yellow-500">Neden "Her gün bir şey"?</h3>
                                         <p>
-                                            İnsan beyni yaklaşık 2 kilogram ağırlığındadır ve bu küçük biyolojik kütlenin içinde sınırsız potansiyel vardır. Her gün yeni bir şey öğrenmek, bu potansiyeli açığa çıkarmanın en iyi yoludur. Biz de her gün farklı bir konu hakkında öğrendiklerimizi, düşündüklerimizi ve merak ettiklerimizi paylaşarak bu yolculukta rehberlik etmek istiyoruz.
+                                            Hergünebi’şey aslen bir alıntı yayınlama sitesi olarak başladı. Ancak pek çok güzel fikrin de geliştirildiği gibi bi’ yürüyüş esnasında bu fikir biraz daha detaylandırıldı. Sonuç olarak podcast ve yazı paylaşmanın hem içerik zenginliği hem de değerli bulduğumuz düşünceleri daha rahat paylaşma açısından daha güzel olacağına karar verildi. “r” harfinin yerini alan kesme işareti de bu fikre son noktayı koydu.
                                         </p>
                                     </div>
 
 
                                 </div>
+                                <ContactForm />
 
 
                                 {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12">
