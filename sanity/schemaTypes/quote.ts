@@ -33,28 +33,15 @@ export const quote = {
             validation: (Rule: any) => Rule.required(),
             description: 'Alıntının gösterim periyodu'
         },
+
         {
             name: 'publishedAt',
             title: 'Yayınlanma Tarihi',
             type: 'datetime',
             validation: (Rule: any) => Rule.required(),
-            description: 'Alıntının yayın tarihi'
+            description: 'Alıntının yayın tarihi. Gelecek bir tarih seçerek alıntıyı ileri bir tarihte yayınlamak için planlayabilirsiniz. Her tip için (günlük, haftalık, aylık) en son yayınlanan alıntı gösterilir.'
         },
-        {
-            name: 'color',
-            title: 'Alıntı Renk Teması',
-            type: 'string',
-            options: {
-                list: [
-                    { title: 'Altın', value: 'gold' },
-                    { title: 'Mavi', value: 'blue' },
-                    { title: 'Yeşil', value: 'green' },
-                    { title: 'Mor', value: 'purple' },
-                    { title: 'Turuncu', value: 'orange' }
-                ]
-            },
-            description: 'Alıntının görsel teması için renk seçimi'
-        },
+
         {
             name: 'tags',
             title: 'Etiketler',

@@ -212,3 +212,44 @@ export const getPodcastsByCategory = async (categoryId: string) => {
   `, { categoryId, now })
 }
 
+
+export const getLatestQuotes = async () => {
+  const now = new Date().toISOString();
+  return client.fetch(`{
+    "daily": *[_type == "quote" && type == "daily" && publishedAt <= $now][0...1] | order(publishedAt desc)[0],
+    "weekly": *[_type == "quote" && type == "weekly" && publishedAt <= $now][0...1] | order(publishedAt desc)[0],
+    "monthly": *[_type == "quote" && type == "monthly" && publishedAt <= $now][0...1] | order(publishedAt desc)[0]
+  }`, { now });
+};
+
+// Function to get all scheduled quotes (useful for admin panels)
+export const getScheduledQuotes = async () => {
+  const now = new Date().toISOString();
+  return client.fetch(`
+    *[_type == "quote"] | order(publishedAt desc) {
+      _id,
+      content,
+      author,
+      type,
+      publishedAt,
+      color,
+      tags
+    }
+  `);
+};
+
+// Function to get upcoming quotes that are scheduled but not yet published
+export const getUpcomingQuotes = async () => {
+  const now = new Date().toISOString();
+  return client.fetch(`
+    *[_type == "quote" && publishedAt > $now] | order(publishedAt asc) {
+      _id,
+      content,
+      author,
+      type,
+      publishedAt,
+      color,
+      tags
+    }
+  `, { now });
+};
