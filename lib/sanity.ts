@@ -224,7 +224,6 @@ export const getLatestQuotes = async () => {
 
 // Function to get all scheduled quotes (useful for admin panels)
 export const getScheduledQuotes = async () => {
-  const now = new Date().toISOString();
   return client.fetch(`
     *[_type == "quote"] | order(publishedAt desc) {
       _id,
