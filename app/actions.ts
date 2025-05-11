@@ -2,7 +2,6 @@
 
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
-import mongoose from 'mongoose';
 
 // Form validation schema with Zod
 const FormSchema = z.object({
@@ -12,55 +11,8 @@ const FormSchema = z.object({
     message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
 });
 
-// MongoDB Connection Setup
-// Only create the connection once and reuse it
-let isConnected = false;
 
-const connectToMongoDB = async () => {
-    if (isConnected) {
-        return;
-    }
 
-    try {
-        await mongoose.connect(process.env.MONGODB_URI as string);
-        isConnected = true;
-        console.log('✅ MongoDB connected successfully');
-    } catch (error) {
-        console.error('❌ MongoDB connection error:', error);
-        throw new Error('Failed to connect to the database');
-    }
-};
-
-// Define Schema for Contact Form
-const ContactFormSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    subject: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    message: {
-        type: String,
-        required: true,
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now,
-    },
-});
-
-// Create or get the model
-const ContactForm = mongoose.models.ContactForm ||
-    mongoose.model('ContactForm', ContactFormSchema);
 
 // Nodemailer setup with Gmail
 const createTransporter = () => {
@@ -114,22 +66,6 @@ export async function submitContactForm(formData: FormData) {
                 error: 'Form validation failed. Please check your inputs.'
             };
         }
-
-        console.log("✅ Validation Passed. Attempting to save to database...");
-
-        // Connect to MongoDB
-        await connectToMongoDB();
-
-        // Save to database
-        const form = await ContactForm.create({
-            name,
-            email,
-            subject,
-            message,
-            timestamp: new Date()
-        });
-
-        console.log("✅ Form Saved to Database:", form);
 
         // Create transporter
         const transporter = createTransporter();
