@@ -243,7 +243,7 @@ export default function QuotePage() {
         return (
             <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <Image
-                    src="/assets/fed.webp"
+                    src="/assets/fedo.webp"
                     alt="Background"
                     fill
                     priority
