@@ -415,7 +415,7 @@ const Home = () => {
                 </div>
             </div>
 
-            {/* Quote Section - Modern Redesign */}
+            {/* Quote Section with Fixed Animation */}
             <div className="relative bg-black text-white py-24 overflow-hidden">
                 {/* Abstract background elements */}
                 <div className="absolute inset-0">
@@ -464,18 +464,21 @@ const Home = () => {
                                         {/* Decorative quote mark */}
                                         <div className="absolute -top-8 -left-2 text-yellow-500/20 text-4xl font-serif">"</div>
 
-                                        {/* Latin quote with flip animation */}
-                                        <div className="relative select-none transition-all duration-700 ease-in-out transform group-hover:opacity-0 group-hover:-translate-y-4">
-                                            <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
-                                                Vivamus, moriendum est.
-                                            </p>
-                                        </div>
+                                        {/* Quote flip container */}
+                                        <div className="relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out group-hover:rotate-x-180">
+                                            {/* Latin quote - front side */}
+                                            <div className="absolute w-full h-full backface-hidden">
+                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
+                                                    Vivamus, moriendum est.
+                                                </p>
+                                            </div>
 
-                                        {/* Turkish translation with flip animation */}
-                                        <div className="absolute inset-0 select-none opacity-0 transform translate-y-4 transition-all duration-700 ease-in-out group-hover:opacity-100 group-hover:translate-y-0 delay-300">
-                                            <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
-                                                Yaşayalım, nasılsa öleceğiz.
-                                            </p>
+                                            {/* Turkish translation - back side */}
+                                            <div className="absolute w-full h-full backface-hidden rotate-x-180">
+                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
+                                                    Yaşayalım, nasılsa öleceğiz.
+                                                </p>
+                                            </div>
                                         </div>
 
                                         {/* Decorative quote mark */}
@@ -509,6 +512,9 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Add these CSS styles to your global.css file or a <style> tag */}
+
         </div >
     );
 };

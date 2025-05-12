@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function ProfilePage() {
     const { isLoaded, isSignedIn, user } = useUser();
@@ -32,7 +33,7 @@ export default function ProfilePage() {
                     <div className="bg-black text-white p-6">
                         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                             <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-yellow-500">
-                                <img src={user?.imageUrl} alt="Profile" className="w-full h-full object-cover" />
+                                <Image src={user?.imageUrl} alt="Profile" className="w-full h-full object-cover" />
                             </div>
                             <div className="text-center md:text-left">
                                 <h1 className="text-2xl font-bold">{user?.fullName}</h1>
