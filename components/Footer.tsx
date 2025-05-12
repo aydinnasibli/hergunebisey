@@ -202,10 +202,10 @@ const Footer = () => {
                         </div>
 
                         {/* Subscriber count indicator */}
-                        <div className="flex items-center mt-4 text-white/50 text-sm">
+                        {/* <div className="flex items-center mt-4 text-white/50 text-sm">
                             <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
                             <span>1,500+ kişi abone oldu</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
