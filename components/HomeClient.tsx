@@ -459,7 +459,7 @@ const Home = () => {
                                 </div>
 
                                 {/* Quote content */}
-                                <div className="text-center relative z-10">
+                                <div className="text-center relative select-none z-10">
                                     <div className="relative mb-16 mt-12 md:mb-20 h-24 perspective-1000 group cursor-default">
                                         {/* Decorative quote mark */}
                                         <div className="absolute -top-8 -left-2 text-yellow-500/20 text-4xl font-serif">"</div>
