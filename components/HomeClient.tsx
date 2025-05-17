@@ -69,7 +69,7 @@ const Home = () => {
                             HERGÜNEBİ'ŞEY<span className="text-yellow-500">.</span>
                         </h1>
                         <p className="text-base sm:text-xl max-w-2xl mx-auto mb-6 sm:mb-12 text-white/90">
-                            Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş <br /> dehalardan da alıntıların bulunduğu platform.
+                            Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş <br /> dehalardan da alıntıların bulunduğu site.
                         </p>
                     </div>
 

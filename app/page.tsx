@@ -3,11 +3,11 @@ import { Metadata } from 'next';
 import Home from '@/components/HomeClient';
 export const metadata: Metadata = {
   title: 'Ana Sayfa | Hergünebi\’şey',
-  description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.',
+  description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu site.',
   keywords: ['Ana Sayfa', 'Hergunebisey', 'blog', 'podcast', 'quote'],
   openGraph: {
     title: 'Hergünebi\'şey',
-    description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu platform.',
+    description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu site.',
     url: 'https://www.hergunebisey.net/',
     siteName: 'Hergünebi\'şey',
     locale: 'tr_TR',
