@@ -1,6 +1,9 @@
 "use client";
 
 import Image from 'next/image';
+import gradientPhoto from '@/public/assets/evieaboutphoto.webp'
+import capturePhoto from '@/public/assets/writingaboutphoto.webp'
+import mainPhoto from '@/public/assets/mainaboutphoto.webp'
 
 const AboutUs = () => {
     return (
@@ -11,7 +14,7 @@ const AboutUs = () => {
                 <div className="absolute inset-0 w-full h-full">
                     <div className="relative w-full h-full">
                         <Image
-                            src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=2940&auto=format&fit=crop"
+                            src={gradientPhoto}
                             alt="About us background"
                             fill
                             priority
@@ -49,7 +52,7 @@ const AboutUs = () => {
                                     <div className="w-full h-full overflow-hidden rounded-lg">
                                         <div className="relative w-full h-full">
                                             <Image
-                                                src="https://images.unsplash.com/photo-1492551557933-34265f7af79e?q=80&w=2940&auto=format&fit=crop"
+                                                src={capturePhoto}
                                                 alt="Kütüphane"
                                                 fill
                                                 className="object-cover"
@@ -93,7 +96,7 @@ const AboutUs = () => {
                                         <div className="w-full h-full overflow-hidden rounded-lg">
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src="https://images.unsplash.com/photo-1492551557933-34265f7af79e?q=80&w=2940&auto=format&fit=crop"
+                                                    src={mainPhoto}
                                                     alt="Kütüphane"
                                                     fill
                                                     className="object-cover hover:scale-105 transition-transform duration-700"

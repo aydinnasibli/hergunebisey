@@ -4,7 +4,6 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
-import { ClerkProvider } from "@clerk/nextjs";
 import PlausibleProvider from 'next-plausible'
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
@@ -60,22 +59,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="tr" className="scrollbar-hide">
-        <body className={`${poppins.className} overflow-y-auto`}>
-          <PlausibleProvider domain="hergunebisey.net">
-            <Navbar />
+    <html lang="tr" className="scrollbar-hide">
+      <body className={`${poppins.className} overflow-y-auto`}>
+        <PlausibleProvider domain="hergunebisey.net">
+          <Navbar />
 
 
-            <div className="">
-              {children}
-              <HorizontalScrollBar />
-            </div>
-            <Footer />
+          <div className="">
+            {children}
+            <HorizontalScrollBar />
+          </div>
+          <Footer />
 
-          </PlausibleProvider>
-        </body>
-      </html>
-    </ClerkProvider >
+        </PlausibleProvider>
+      </body>
+    </html>
   );
 }

@@ -217,7 +217,7 @@ export default function BlogPage() {
                     ref={parallaxRef}
                     className="absolute inset-0 w-full h-full"
                     style={{
-                        backgroundImage: 'url(https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070)',
+                        backgroundImage: `url('/assets/blogbgphoto.webp')`, // Fixed path to use direct public folder path
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         height: '120%',

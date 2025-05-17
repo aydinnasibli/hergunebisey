@@ -131,7 +131,7 @@ const PodcastPage = () => {
                     ref={parallaxRef}
                     className="absolute inset-0 w-full h-full"
                     style={{
-                        backgroundImage: 'url(https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070)',
+                        backgroundImage: `url('/assets/podcastbgphoto.webp')`, // Fixed path to use direct public folder path
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         height: '120%',

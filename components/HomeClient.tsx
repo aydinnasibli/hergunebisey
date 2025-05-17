@@ -5,6 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { throttle } from 'lodash';
 import { Quicksand } from 'next/font/google';
+import homepagebg from '@/public/assets/homepagebg.webp'
+import homepage24 from '@/public/assets/homepage24.webp'
+import homepage14 from '@/public/assets/homepage14.webp'
+import homepage34 from '@/public/assets/homepage34.webp'
+import homepage44 from '@/public/assets/homepage44.webp'
+import homepageblog1 from '@/public/assets/homepageblog1.webp'
+import homepageblog2 from '@/public/assets/homepageblog2.webp'
+import homepageblog3 from '@/public/assets/homepageblog3.webp'
+import homepageblog4 from '@/public/assets/homepageblog4.webp'
+import homepageblog5 from '@/public/assets/homepageblog5.webp'
+import podcastbgphoto from '@/public/assets/podcastbgphoto.webp'
 const quicksand = Quicksand({
     weight: ["400", "500", "600", "700"],
     subsets: ["latin"], // Ensure Latin characters are loaded
@@ -37,7 +48,7 @@ const Home = () => {
                 <div ref={parallaxRef} className="absolute inset-0 w-full h-full">
                     <div className="relative w-full h-[120%]  -top-[8%]">
                         <Image
-                            src="https://images.unsplash.com/photo-1529310399831-ed472b81d589?q=80&w=2756&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            src={homepagebg}
                             alt="Hero background"
                             fill
                             priority
@@ -102,7 +113,7 @@ const Home = () => {
                             <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
                                 <div className="relative w-full h-full">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        src={homepage14}
                                         alt="Blog yazıları"
                                         fill
                                         className="object-cover hover:scale-105 transition-transform duration-500"
@@ -113,7 +124,7 @@ const Home = () => {
                             <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
                                 <div className="relative w-full h-full">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1631557677599-ee5fe0b3440b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        src={homepage24}
                                         alt="Podcast kayıtları"
                                         fill
                                         className="object-cover hover:scale-105 transition-transform duration-500"
@@ -124,7 +135,7 @@ const Home = () => {
                             <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden">
                                 <div className="relative w-full h-full">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1519802772250-a52a9af0eacb?q=80&w=3136&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        src={homepage34}
                                         alt="İlham verici alıntılar"
                                         fill
                                         className="object-cover hover:scale-105 transition-transform duration-500"
@@ -135,7 +146,7 @@ const Home = () => {
                             <div className="h-40 sm:h-52 md:h-64 rounded-lg overflow-hidden mt-6 sm:mt-12">
                                 <div className="relative w-full h-full">
                                     <Image
-                                        src="https://images.unsplash.com/photo-1472173148041-00294f0814a2?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                        src={homepage44}
                                         alt="Kültürel içerikler"
                                         fill
                                         className="object-cover hover:scale-105 transition-transform duration-500"
@@ -202,7 +213,7 @@ const Home = () => {
                                         <div className="col-span-2 h-64 overflow-hidden rounded-lg">
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=2070&auto=format&fit=crop"
+                                                    src={homepageblog2}
                                                     alt="Blog teması"
                                                     fill
                                                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -214,7 +225,7 @@ const Home = () => {
                                             <div className="h-32 overflow-hidden rounded-lg">
                                                 <div className="relative w-full h-full">
                                                     <Image
-                                                        src="https://images.unsplash.com/photo-1542435503-956c469947f6?q=80&w=2074&auto=format&fit=crop"
+                                                        src={homepageblog3}
                                                         alt="Blog yazısı"
                                                         fill
                                                         className="object-cover hover:scale-105 transition-transform duration-500"
@@ -225,7 +236,7 @@ const Home = () => {
                                             <div className="h-32 overflow-hidden rounded-lg">
                                                 <div className="relative w-full h-full">
                                                     <Image
-                                                        src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+                                                        src={homepageblog1}
                                                         alt="Blog yazısı"
                                                         fill
                                                         className="object-cover hover:scale-105 transition-transform duration-500"
@@ -237,7 +248,7 @@ const Home = () => {
                                         <div className="h-32 overflow-hidden rounded-lg">
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop"
+                                                    src={homepageblog4}
                                                     alt="Blog yazısı"
                                                     fill
                                                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -248,7 +259,7 @@ const Home = () => {
                                         <div className="h-32 col-span-2 overflow-hidden rounded-lg">
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=2074&auto=format&fit=crop"
+                                                    src={homepageblog5}
                                                     alt="Blog yazısı"
                                                     fill
                                                     className="object-cover hover:scale-105 transition-transform duration-500"
@@ -334,7 +345,7 @@ const Home = () => {
                                         <div className="absolute inset-0 rounded-xl overflow-hidden transform rotate-3 border-2 border-white/20">
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=1740&auto=format&fit=crop"
+                                                    src={podcastbgphoto}
                                                     alt="Podcast Cover"
                                                     fill
                                                     className="object-cover"

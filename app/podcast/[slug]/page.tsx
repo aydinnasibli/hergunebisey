@@ -5,7 +5,7 @@ import { getPodcastBySlug, urlFor } from '@/lib/sanity';
 import { Podcast } from '@/types/sanity';
 import { PortableText } from '@portabletext/react';
 import { Metadata } from 'next';
-
+import podcastphoto from '@/public/assets/podcastbgphoto.webp'
 
 
 export async function generateMetadata(
@@ -101,13 +101,14 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
     // Error state
     if (!podcast) {
         return (
-            <div className="relative w-full min-h-screen bg-black text-white p-8">
-                <div className="max-w-7xl mx-auto text-center">
+            <div className="flex items-center justify-center min-h-screen bg-black text-white p-8">
+                <div className="text-center">
                     <h1 className="text-3xl font-bold mb-4">Podcast bulunamadı</h1>
                     <p className="mb-8">Aradığınız podcast bulunamadı veya mevcut değil.</p>
                     <Link
                         href="/podcast"
-                        className="px-6 py-3 bg-yellow-500 text-black rounded-full hover:bg-yellow-400 transition-colors"
+                        className="inline-block px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl tracking-wider text-xs sm:text-sm hover:bg-gray-200 hover:text-black transition-colors duration-300 cursor-pointer relative z-30"
+
                     >
                         Tüm Podcastlere Dön
                     </Link>
@@ -115,6 +116,7 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
             </div>
         );
     }
+
 
     const {
         title,
@@ -145,7 +147,7 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
                         />
                     ) : (
                         <Image
-                            src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=2070"
+                            src={podcastphoto}
                             alt={title}
                             fill
                             className="object-cover"
@@ -329,7 +331,8 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
             <div className="container mx-auto px-4 py-12 text-center">
                 <Link
                     href="/podcast"
-                    className="px-8 py-4 bg-white/10 hover:bg-white/20 transition-all duration-300 rounded-full inline-flex items-center gap-2"
+                    className="inline-block px-6 py-2 sm:px-8 sm:py-3 border border-white rounded-2xl tracking-wider text-xs sm:text-sm hover:bg-gray-200 hover:text-black transition-colors duration-300 cursor-pointer relative z-30"
+
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -338,5 +341,6 @@ export default async function PodcastPage({ params }: { params: Promise<{ slug: 
                 </Link>
             </div>
         </div>
+
     );
 }
