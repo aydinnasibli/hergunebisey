@@ -118,7 +118,7 @@ const AboutUs = () => {
                             {/* Right Column */}
                             <div className="w-full lg:w-1/2">
                                 <div className="w-10 h-1 bg-yellow-500 mb-8"></div>
-                                <h2 className="text-3xl md:text-5xl font-bold mb-8">HERGÜNEBİ'ŞEY <span className="text-yellow-500">?</span></h2>
+                                <h2 className="text-3xl md:text-5xl font-bold mb-8">HERGÜNEBİ'ŞEY </h2>
 
                                 <div className="space-y-6 text-white/80">
                                     <p className="text-lg">
@@ -145,7 +145,7 @@ const AboutUs = () => {
                                     </p>
 
                                     <div className="p-5 bg-white/5 rounded-xl my-10 backdrop-blur-sm border border-white/10">
-                                        <h3 className="text-xl font-medium mb-3 text-yellow-500">Neden "Her gün bir şey"?</h3>
+                                        <h3 className="text-xl font-medium mb-3 text-yellow-500">Neden Hergünebi'şey ?</h3>
                                         <p>
                                             Hergünebi’şey aslen bir alıntı yayınlama sitesi olarak başladı. Ancak pek çok güzel fikrin de geliştirildiği gibi bi’ yürüyüş esnasında bu fikir biraz daha detaylandırıldı. Sonuç olarak podcast ve yazı paylaşmanın hem içerik zenginliği hem de değerli bulduğumuz düşünceleri daha rahat paylaşma açısından daha güzel olacağına karar verildi. “r” harfinin yerini alan kesme işareti de bu fikre son noktayı koydu.
                                         </p>
