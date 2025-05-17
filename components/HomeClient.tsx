@@ -505,7 +505,7 @@ const Home = () => {
                                             <div className="absolute w-full h-full backface-hidden">
                                                 <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isTouchDevice ? 'cursor-pointer' : ''}`}>
                                                     Vivamus, moriendum est.
-                                                    {isTouchDevice && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to translate)</span>}
+                                                    {isTouchDevice && <span className="block text-xs text-yellow-500/70 mt-2">(Çeviri için tıkla)</span>}
                                                 </p>
                                             </div>
 
@@ -513,7 +513,7 @@ const Home = () => {
                                             <div className="absolute w-full h-full backface-hidden rotate-x-180">
                                                 <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isTouchDevice ? 'cursor-pointer' : ''}`}>
                                                     Yaşayalım, nasılsa öleceğiz.
-                                                    {isTouchDevice && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to return)</span>}
+                                                    {isTouchDevice && <span className="block text-xs text-yellow-500/70 mt-2">(Orjinal halini görmek için tıkla)</span>}
                                                 </p>
                                             </div>
                                         </div>
