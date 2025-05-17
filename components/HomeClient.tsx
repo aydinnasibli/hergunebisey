@@ -28,26 +28,23 @@ const quicksand = Quicksand({
 const Home = () => {
     const parallaxRef = useRef<HTMLDivElement>(null);
     const [isFlipped, setIsFlipped] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
 
+    // Detect touch devices on mount - runs only once
     useEffect(() => {
-        const handleClick = () => {
-            // Simply mark as mobile if the user taps the screen
-            if (!isMobile) {
-                setIsMobile(true);
-            }
-        };
+        // Check if device supports touch
+        const isTouch = 'ontouchstart' in window ||
+            navigator.maxTouchPoints > 0 ||
+            window.matchMedia('(pointer: coarse)').matches;
 
-        // Add a one-time touch event listener to the document
-        document.addEventListener('touchstart', handleClick, { once: true });
-
-        // Cleanup
-        return () => document.removeEventListener('touchstart', handleClick);
-    }, [isMobile]);
+        setIsTouchDevice(isTouch);
+    }, []);
 
     const handleQuoteClick = () => {
-        // Toggle flip state on any device that registers a click
-        setIsFlipped(!isFlipped);
+        // Only toggle flip on click for touch devices
+        if (isTouchDevice) {
+            setIsFlipped(!isFlipped);
+        }
     };
 
 
@@ -502,21 +499,21 @@ const Home = () => {
                                         <div
                                             onClick={handleQuoteClick}
                                             className={`relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out 
-                    ${!isMobile ? 'group-hover:rotate-x-180' : ''} ${isFlipped ? 'rotate-x-180' : ''}`}
+                    ${!isTouchDevice ? 'group-hover:rotate-x-180' : ''} ${isFlipped ? 'rotate-x-180' : ''}`}
                                         >
                                             {/* Latin quote - front side */}
                                             <div className="absolute w-full h-full backface-hidden">
-                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isMobile ? 'cursor-pointer' : ''}`}>
+                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isTouchDevice ? 'cursor-pointer' : ''}`}>
                                                     Vivamus, moriendum est.
-                                                    {isMobile && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to translate)</span>}
+                                                    {isTouchDevice && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to translate)</span>}
                                                 </p>
                                             </div>
 
                                             {/* Turkish translation - back side */}
                                             <div className="absolute w-full h-full backface-hidden rotate-x-180">
-                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isMobile ? 'cursor-pointer' : ''}`}>
+                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isTouchDevice ? 'cursor-pointer' : ''}`}>
                                                     Yaşayalım, nasılsa öleceğiz.
-                                                    {isMobile && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to return)</span>}
+                                                    {isTouchDevice && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to return)</span>}
                                                 </p>
                                             </div>
                                         </div>
