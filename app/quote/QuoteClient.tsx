@@ -31,7 +31,6 @@ interface ParallaxQuoteSectionProps {
     scaleStyle: MotionValue<number>;
     index: number;
     type: 'daily' | 'weekly' | 'monthly';
-    color: string;
     sectionRef: React.RefObject<HTMLDivElement | null>; // Changed from React.RefObject<HTMLDivElement>
 }
 
@@ -303,21 +302,21 @@ export default function QuotePage() {
                     };
                 case 'weekly':
                     return {
-                        accent: 'bg-purple-500',
-                        text: 'text-purple-500',
-                        border: 'border-purple-500/30',
-                        glow: 'bg-purple-500/10',
-                        icon: 'text-purple-500',
-                        gradient: 'from-purple-500/20 to-transparent'
+                        accent: 'bg-yellow-500',
+                        text: 'text-yellow-500',
+                        border: 'border-yellow-500/30',
+                        glow: 'bg-yellow-500/10',
+                        icon: 'text-yellow-500',
+                        gradient: 'from-yellow-500/20 to-transparent'
                     };
                 case 'monthly':
                     return {
-                        accent: 'bg-blue-500',
-                        text: 'text-blue-500',
-                        border: 'border-blue-500/30',
-                        glow: 'bg-blue-500/10',
-                        icon: 'text-blue-500',
-                        gradient: 'from-blue-500/20 to-transparent'
+                        accent: 'bg-yellow-500',
+                        text: 'text-yellow-500',
+                        border: 'border-yellow-500/30',
+                        glow: 'bg-yellow-500/10',
+                        icon: 'text-yellow-500',
+                        gradient: 'from-yellow-500/20 to-transparent'
                     };
                 default:
                     return {
@@ -382,24 +381,7 @@ export default function QuotePage() {
                             ></motion.div>
 
                             <div className="flex items-center justify-center mb-6">
-                                <div className={`mr-4 ${colors.icon}`}>
-                                    {type === 'daily' && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                                        </svg>
-                                    )}
-                                    {type === 'weekly' && (
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className='w-10 h-10'>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
-                                        </svg>
-                                    )}
-                                    {type === 'monthly' && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
-                                        </svg>
-                                    )}
-                                </div>
                                 <h3 className={`text-3xl sm:text-5xl font-bold text-white tracking-wide`}>{title}</h3>
                             </div>
                         </CardHeader>
@@ -419,7 +401,7 @@ export default function QuotePage() {
                             </motion.div>
 
                             <motion.p
-                                className="text-2xl sm:text-4xl text-white font-medium italic leading-relaxed mb-12 text-center py-8"
+                                className="text-2xl italic sm:text-4xl text-white font-medium  leading-relaxed mb-12 text-center py-8"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, ease: "easeOut" }}
@@ -483,7 +465,7 @@ export default function QuotePage() {
 
 
                     <p
-                        className="text-xl md:text-lg text-[#F5F5DC] max-w-2xl mx-auto mb-6"
+                        className="text-base sm:text-xl max-w-2xl mx-auto mb-12 text-white/90"
                     >
                         İnsanlığa fikren ve manen büyük katkılarda bulunmuş kişilerden alıntılar ile hayatınıza yeni bir bakış açısı katın.
                     </p>
@@ -516,7 +498,6 @@ export default function QuotePage() {
                 scaleStyle={dailyScale}
                 index={0}
                 type="daily"
-                color="yellow"
                 sectionRef={dailyRef}
             />
 
@@ -529,7 +510,6 @@ export default function QuotePage() {
                 scaleStyle={weeklyScale}
                 index={1}
                 type="weekly"
-                color="purple"
                 sectionRef={weeklyRef}
             />
 
@@ -542,7 +522,6 @@ export default function QuotePage() {
                 scaleStyle={monthlyScale}
                 index={2}
                 type="monthly"
-                color="blue"
                 sectionRef={monthlyRef}
             />
         </div>

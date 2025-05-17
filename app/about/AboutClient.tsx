@@ -1,8 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import gradientPhoto from '@/public/assets/evieaboutphoto.webp'
-import capturePhoto from '@/public/assets/writingaboutphoto.webp'
+import gradientPhoto from '@/public/assets/aboutpagebg.webp'
 import mainPhoto from '@/public/assets/mainaboutphoto.webp'
 
 const AboutUs = () => {
@@ -40,33 +39,6 @@ const AboutUs = () => {
 
                         </div>
 
-                        {/* Right side - Floating Image with Design Elements */}
-                        <div className="hero-content-right relative h-80 md:h-auto">
-                            <div className="relative h-full w-full">
-                                {/* Decorative elements */}
-                                <div className="absolute -top-6 -left-6 w-24 h-24 border border-yellow-500/30 rounded-xl"></div>
-                                <div className="absolute -bottom-6 -right-6 w-24 h-24 border border-yellow-500/30 rounded-xl"></div>
-
-                                {/* Main Image */}
-                                <div className="relative overflow-hidden rounded-xl aspect-square bg-gradient-to-br from-white/5 to-white/10 p-1 shadow-2xl shadow-yellow-500/10">
-                                    <div className="w-full h-full overflow-hidden rounded-lg">
-                                        <div className="relative w-full h-full">
-                                            <Image
-                                                src={capturePhoto}
-                                                alt="Kütüphane"
-                                                fill
-                                                className="object-cover"
-                                                sizes="(max-width: 768px) 100vw, 50vw"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Floating accent elements */}
-                                <div className="absolute -top-4 -right-4 w-16 h-16 bg-yellow-500/20 backdrop-blur-md rounded-full"></div>
-                                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-yellow-500/20 backdrop-blur-md rounded-full"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

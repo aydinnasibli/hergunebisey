@@ -208,7 +208,6 @@ export default function BlogPage() {
 
         return pageNumbers
     }
-
     return (
         <>
             <div className="relative h-screen overflow-hidden">
@@ -217,7 +216,7 @@ export default function BlogPage() {
                     ref={parallaxRef}
                     className="absolute inset-0 w-full h-full"
                     style={{
-                        backgroundImage: `url('/assets/blogbgphoto.webp')`, // Fixed path to use direct public folder path
+                        backgroundImage: `url('/assets/evieaboutphoto.webp')`, // Fixed path to use direct public folder path
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         height: '120%',
