@@ -20,8 +20,9 @@ export function withSecurityHeaders(nextConfig: NextConfig = {}): NextConfig {
                         // Production-ready but should be tailored to your specific needs
                         {
                             key: 'Content-Security-Policy',
-                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://analytics.hergunebisey.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.hergunebisey.net; font-src 'self'; connect-src 'self' https://*.hergunebisey.net; frame-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none';",
+                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://plausible.io; frame-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none';",
                         },
+
 
                         // PREVENT CLICKJACKING - COMMON PRODUCTION VALUE
                         {
