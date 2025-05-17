@@ -30,28 +30,27 @@ const Home = () => {
     const [isFlipped, setIsFlipped] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Detect mobile device
     useEffect(() => {
-        const checkMobile = () => {
-            setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+        const handleClick = () => {
+            // Simply mark as mobile if the user taps the screen
+            if (!isMobile) {
+                setIsMobile(true);
+            }
         };
 
-        // Initial check
-        checkMobile();
-
-        // Add listener for window resize
-        window.addEventListener("resize", checkMobile);
+        // Add a one-time touch event listener to the document
+        document.addEventListener('touchstart', handleClick, { once: true });
 
         // Cleanup
-        return () => window.removeEventListener("resize", checkMobile);
-    }, []);
+        return () => document.removeEventListener('touchstart', handleClick);
+    }, [isMobile]);
 
     const handleQuoteClick = () => {
-        // Only toggle flip on click if we're on mobile
-        if (isMobile) {
-            setIsFlipped(!isFlipped);
-        }
+        // Toggle flip state on any device that registers a click
+        setIsFlipped(!isFlipped);
     };
+
+
     useEffect(() => {
         const handleScroll = throttle(() => {
             if (parallaxRef.current) {
@@ -503,12 +502,13 @@ const Home = () => {
                                         <div
                                             onClick={handleQuoteClick}
                                             className={`relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out 
-                    group-hover:rotate-x-180 ${isMobile && isFlipped ? 'rotate-x-180' : ''}`}
+                    ${!isMobile ? 'group-hover:rotate-x-180' : ''} ${isFlipped ? 'rotate-x-180' : ''}`}
                                         >
                                             {/* Latin quote - front side */}
                                             <div className="absolute w-full h-full backface-hidden">
                                                 <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isMobile ? 'cursor-pointer' : ''}`}>
                                                     Vivamus, moriendum est.
+                                                    {isMobile && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to translate)</span>}
                                                 </p>
                                             </div>
 
@@ -516,6 +516,7 @@ const Home = () => {
                                             <div className="absolute w-full h-full backface-hidden rotate-x-180">
                                                 <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isMobile ? 'cursor-pointer' : ''}`}>
                                                     Yaşayalım, nasılsa öleceğiz.
+                                                    {isMobile && <span className="block text-xs text-yellow-500/70 mt-2">(Tap to return)</span>}
                                                 </p>
                                             </div>
                                         </div>
