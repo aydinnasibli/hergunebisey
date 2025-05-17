@@ -14,6 +14,9 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hergunebisey.net'),
+  alternates: {
+    canonical: '/',
+  },
   title: {
     template: "%s | Hergünebi'şey",
     default: "Hergünebi'şey"
