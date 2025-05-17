@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { throttle } from 'lodash';
@@ -27,7 +27,31 @@ const quicksand = Quicksand({
 
 const Home = () => {
     const parallaxRef = useRef<HTMLDivElement>(null);
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
+    // Detect mobile device
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+        };
+
+        // Initial check
+        checkMobile();
+
+        // Add listener for window resize
+        window.addEventListener("resize", checkMobile);
+
+        // Cleanup
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
+    const handleQuoteClick = () => {
+        // Only toggle flip on click if we're on mobile
+        if (isMobile) {
+            setIsFlipped(!isFlipped);
+        }
+    };
     useEffect(() => {
         const handleScroll = throttle(() => {
             if (parallaxRef.current) {
@@ -471,22 +495,26 @@ const Home = () => {
 
                                 {/* Quote content */}
                                 <div className="text-center relative select-none z-10">
-                                    <div className="relative mb-16 mt-12 md:mb-20 h-24 perspective-1000 group cursor-default">
+                                    <div className="relative mb-16 mt-12 md:mb-20 h-24 perspective-1000 group">
                                         {/* Decorative quote mark */}
                                         <div className="absolute -top-8 -left-2 text-yellow-500/20 text-4xl font-serif">"</div>
 
                                         {/* Quote flip container */}
-                                        <div className="relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out group-hover:rotate-x-180">
+                                        <div
+                                            onClick={handleQuoteClick}
+                                            className={`relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out 
+                    group-hover:rotate-x-180 ${isMobile && isFlipped ? 'rotate-x-180' : ''}`}
+                                        >
                                             {/* Latin quote - front side */}
                                             <div className="absolute w-full h-full backface-hidden">
-                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
+                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isMobile ? 'cursor-pointer' : ''}`}>
                                                     Vivamus, moriendum est.
                                                 </p>
                                             </div>
 
                                             {/* Turkish translation - back side */}
                                             <div className="absolute w-full h-full backface-hidden rotate-x-180">
-                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed`}>
+                                                <p className={`${quicksand.variable} text-2xl italic md:text-4xl font-light leading-relaxed ${isMobile ? 'cursor-pointer' : ''}`}>
                                                     Yaşayalım, nasılsa öleceğiz.
                                                 </p>
                                             </div>
