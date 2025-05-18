@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { submitContactForm } from '@/app/actions';
+import { submitContactForm } from '@/app/actions/actions';
 
 interface FormState {
     status: 'idle' | 'submitting' | 'success' | 'error';

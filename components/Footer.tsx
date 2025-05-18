@@ -1,63 +1,51 @@
 "use client"
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
+import { useState, FormEvent } from 'react';
+import { subscribeToNewsletter } from '@/app/actions/newsletter.actions';
+
+interface FormState {
+    status: 'idle' | 'submitting' | 'success' | 'error';
+    message: string;
+}
 
 const Footer = () => {
     const [currentYear] = useState<number>(new Date().getFullYear());
-    const [isEmbedLoaded, setIsEmbedLoaded] = useState<boolean>(false);
-    const embedRef = useRef<HTMLDivElement | null>(null);
+    const [email, setEmail] = useState<string>('');
+    const [formState, setFormState] = useState<FormState>({
+        status: 'idle',
+        message: '',
+    });
 
-    // Handle beehiiv embed loading
-    useEffect(() => {
-        // Create a new beehiiv embed on client-side only
-        if (typeof window !== 'undefined' && embedRef.current) {
-            try {
-                // Clear container first
-                if (embedRef.current) {
-                    embedRef.current.innerHTML = '';
-                }
+    // Handle form submission
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-                // Create iframe element
-                const iframe = document.createElement('iframe');
-                iframe.src = "https://embeds.beehiiv.com/a61b55fa-b6ac-4c3c-b174-964cf902b10e?slim=true";
-                iframe.dataset.testId = "beehiiv-embed";
-                iframe.height = "52";
-                iframe.style.border = "none";
-                iframe.style.overflow = "hidden";
-                iframe.loading = "lazy";
-                iframe.title = "E-bülten aboneliği";
-                iframe.style.width = '100%';
-                iframe.style.margin = '0';
-                iframe.style.borderRadius = '0';
-                iframe.style.backgroundColor = 'transparent';
+        // Update form state to submitting
+        setFormState({ status: 'submitting', message: 'Gönderiliyor...' });
 
-                // Add event listener to handle successful load
-                iframe.onload = () => {
-                    console.log("Beehiiv iframe loaded successfully");
-                    setIsEmbedLoaded(true);
-                };
+        try {
+            // Call the server action
+            const result = await subscribeToNewsletter(email);
 
-                // Add error event listener
-                iframe.onerror = (e) => {
-                    console.error("Error loading beehiiv iframe:", e);
-                };
-
-                // Append iframe to container
-                if (embedRef.current) {
-                    embedRef.current.appendChild(iframe);
-                }
-            } catch (error) {
-                console.error("Error setting up beehiiv embed:", error);
+            if (result.success) {
+                setFormState({
+                    status: 'success',
+                    message: result.message || 'Bültenimize başarıyla kaydoldunuz!',
+                });
+                setEmail(''); // Clear email input on success
+            } else {
+                setFormState({
+                    status: 'error',
+                    message: result.message || 'Bir hata oluştu. Lütfen tekrar deneyin.',
+                });
             }
+        } catch (error) {
+            setFormState({
+                status: 'error',
+                message: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+            });
         }
-
-        // Clean up function to prevent memory leaks
-        return () => {
-            if (embedRef.current) {
-                embedRef.current.innerHTML = '';
-            }
-        };
-    }, []); // Empty dependency array means this runs once on mount
+    };
 
     // Social media icons array for better maintainability
     const socialIcons = [
@@ -181,31 +169,46 @@ const Footer = () => {
                         ))}
                     </div>
 
-                    {/* Newsletter signup with beehiiv embed */}
+                    {/* Newsletter subscription form */}
                     <div className="w-full md:w-1/3">
                         <h3 className="text-yellow-500 uppercase tracking-wider text-sm font-bold mb-6 relative inline-block">
-                            Bültene Abone Ol
+                            Bültenimize Abone Olun
                         </h3>
                         <p className="text-white/70 mb-6">
-                            En yeni içeriklerden haberdar olmak için e-posta listemize katıl.
+                            En yeni içeriklerimizden haberdar olmak için bültenimize abone olun.
                         </p>
-
-                        {/* beehiiv embed container */}
-                        <div className="relative w-full bg-white/10 p-2 rounded-lg min-h-14">
-                            {/* Embed container reference */}
-                            <div
-                                ref={embedRef}
-                                className="w-full h-full min-h-12"
-                                aria-label="E-bülten abonelik formu"
+                        <form onSubmit={handleSubmit} className="relative">
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="E-posta adresiniz"
+                                className="w-full bg-white/10 rounded-l-md py-3 px-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-yellow-500 border-r-0 border border-white/20"
+                                required
+                                aria-label="E-posta adresiniz"
+                                disabled={formState.status === 'submitting'}
                             />
-
-                            {/* Loading indicator */}
-                            {!isEmbedLoaded && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-white/5">
-                                    <div className="w-6 h-6 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
-                                </div>
-                            )}
-                        </div>
+                            <button
+                                type="submit"
+                                className={`absolute right-0 top-0 h-full px-4 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-r-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-700 ${formState.status === 'submitting' ? 'opacity-70 cursor-not-allowed' : ''
+                                    }`}
+                                disabled={formState.status === 'submitting'}
+                            >
+                                {formState.status === 'submitting' ? (
+                                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                ) : (
+                                    "Abone Ol"
+                                )}
+                            </button>
+                        </form>
+                        {formState.status !== 'idle' && (
+                            <p className={`mt-2 text-sm ${formState.status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                                {formState.message}
+                            </p>
+                        )}
                     </div>
                 </div>
 
