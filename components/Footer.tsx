@@ -185,7 +185,7 @@ const Footer = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="E-posta adresiniz"
-                                className="w-full bg-white/10 rounded-l-md py-3 px-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-yellow-500 border-r-0 border border-white/20"
+                                className="w-full bg-white/10 rounded-l-md py-3 px-4 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gray-800 border-r-0 border border-white/20"
                                 required
                                 aria-label="E-posta adresiniz"
                                 disabled={formState.status === 'submitting'}
