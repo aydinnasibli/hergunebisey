@@ -1,7 +1,7 @@
 "use server"
 
 import { z } from "zod";
-import mongoose, { Schema, model, Model, models } from "mongoose";
+import mongoose, { Schema, model, Model, models, mongo } from "mongoose";
 
 // Environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -15,8 +15,6 @@ const NewsletterSubscriberSchema = z.object({
         .max(255, "E-posta adresi çok uzun."),
 });
 
-// Define the type for newsletter subscriber
-type NewsletterSubscriber = z.infer<typeof NewsletterSubscriberSchema>;
 
 // Define the Mongoose schema
 const subscriberSchema = new Schema({
@@ -31,7 +29,6 @@ const subscriberSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-
 
 });
 
@@ -119,10 +116,10 @@ export async function subscribeToNewsletter(
     } catch (error) {
         console.error("Newsletter subscription error:", error);
 
+
         return {
             success: false,
             message: "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
         };
     }
 }
-
