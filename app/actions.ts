@@ -46,8 +46,9 @@ const connectToMongoDB = async (): Promise<typeof mongoose> => {
         console.log('✅ MongoDB connected successfully');
         cachedDb = client;
         return client;
-    } catch (error) {
-        console.error('❌ MongoDB connection error:', error);
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('❌ MongoDB connection error:', errorMessage);
         throw new Error('Failed to connect to the database');
     }
 };
@@ -198,7 +199,8 @@ export async function submitContactForm(formData: FormData): Promise<FormSubmiss
             message: "Form submitted successfully"
         };
     } catch (error: unknown) {
-        console.error("❌ Error submitting form:", error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.error("❌ Error submitting form:", errorMessage);
         return {
             success: false,
             error: "An unexpected error occurred. Please try again later."
