@@ -43,7 +43,9 @@ const Footer = () => {
             setFormState({
                 status: 'error',
                 message: 'Bir hata oluştu. Lütfen tekrar deneyin.',
+
             });
+            console.log('Error during form submission:', error);
         }
     };
 

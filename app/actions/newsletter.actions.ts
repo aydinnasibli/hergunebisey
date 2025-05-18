@@ -1,7 +1,7 @@
 "use server"
 
 import { z } from "zod";
-import mongoose, { Schema, model, Model, models, mongo } from "mongoose";
+import mongoose, { Schema, model, Model, models, } from "mongoose";
 
 // Environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
