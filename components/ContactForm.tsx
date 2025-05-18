@@ -34,7 +34,8 @@ const ContactForm = () => {
                     message: result.message || 'Bir hata oluştu. Lütfen tekrar deneyiniz.'
                 });
             }
-        } catch (err) {
+        } catch (error) {
+            console.error("Form submission error:", error);
             setFormState({
                 status: 'error',
                 message: 'Bir hata oluştu. Lütfen tekrar deneyiniz.'
