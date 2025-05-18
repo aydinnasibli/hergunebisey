@@ -103,6 +103,7 @@ const ContactForm = () => {
                     </label>
                     <textarea
                         id="message"
+                        name="message"
                         rows={5}
                         required
                         className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500/50 focus:border-yellow-500 text-white backdrop-blur-sm transition-all resize-none"
