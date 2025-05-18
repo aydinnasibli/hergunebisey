@@ -1,51 +1,56 @@
 // security-headers.ts
 import type { NextConfig } from 'next';
 
-
 export function withSecurityHeaders(nextConfig: NextConfig = {}): NextConfig {
     return {
         ...nextConfig,
         async headers() {
             const headersConfig = [
                 {
+                    // Apply to all routes except studio
                     source: '/:path*',
                     headers: [
-                        // ALREADY IMPLEMENTED
-                        // {
-                        //   key: 'Strict-Transport-Security',
-                        //   value: 'max-age=63072000; includeSubDomains; preload',
-                        // },
-
-                        // CONTENT SECURITY POLICY
-                        // Production-ready but should be tailored to your specific needs
                         {
                             key: 'Content-Security-Policy',
-                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://plausible.io; frame-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none';",
+                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://*.sanity.io; style-src 'self' 'unsafe-inline' https://*.sanity.io; img-src 'self' data: https://*.sanity.io; font-src 'self' data: https://*.sanity.io; connect-src 'self' https://plausible.io https://*.sanity.io https://*.mongodb.net mongodb://* https://api.sendgrid.com https://api.mailgun.net https://api.sendinblue.com https://api.mailchimp.com https://smtpjs.com; frame-src 'self' https://*.sanity.io; form-action 'self'; base-uri 'self'; object-src 'none';",
                         },
-
-
-                        // PREVENT CLICKJACKING - COMMON PRODUCTION VALUE
                         {
                             key: 'X-Frame-Options',
                             value: 'SAMEORIGIN',
                         },
-
-                        // PREVENT MIME TYPE SNIFFING - STANDARD VALUE
                         {
                             key: 'X-Content-Type-Options',
                             value: 'nosniff',
                         },
-
-                        // CONTROL REFERRER INFORMATION - COMMON PRODUCTION VALUE
                         {
                             key: 'Referrer-Policy',
                             value: 'strict-origin-when-cross-origin',
                         },
-
-                        // CONTROL BROWSER FEATURES - COMMONLY USED RESTRICTIONS
                         {
                             key: 'Permissions-Policy',
                             value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=()',
+                        },
+                    ],
+                },
+                {
+                    // Special relaxed rules for Sanity Studio
+                    source: '/studio/:path*',
+                    headers: [
+                        {
+                            key: 'Content-Security-Policy',
+                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.sanity.io; style-src 'self' 'unsafe-inline' https://*.sanity.io; img-src 'self' data: blob: https://*.sanity.io; font-src 'self' data: https://*.sanity.io; connect-src 'self' https://*.sanity.io wss://*.sanity.io https://api.sanity.io; frame-src 'self' https://*.sanity.io; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; object-src 'none';",
+                        },
+                        {
+                            key: 'X-Frame-Options',
+                            value: 'SAMEORIGIN',
+                        },
+                        {
+                            key: 'X-Content-Type-Options',
+                            value: 'nosniff',
+                        },
+                        {
+                            key: 'Referrer-Policy',
+                            value: 'strict-origin-when-cross-origin',
                         },
                     ],
                 },
