@@ -8,7 +8,15 @@ export default function robots(): MetadataRoute.Robots {
     return {
         rules: {
             userAgent: '*',
-            allow: '/',
+            allow: [
+                '/',
+                '/blog',
+                '/blog/*', // Allow all blog posts with their slugs
+                '/podcast',
+                '/podcast/*', // Allow all podcast episodes with their slugs
+                '/about',
+                '/quote',
+            ],
             // Protect admin and API routes from indexing
             disallow: [
                 '/profile/',

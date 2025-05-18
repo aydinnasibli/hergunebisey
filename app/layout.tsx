@@ -20,6 +20,10 @@ export const metadata: Metadata = {
     template: "%s | Hergünebi'şey",
     default: "Hergünebi'şey"
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu site.',
   keywords: ['blog', 'podcast', 'quote', 'alıntı', 'site'],
   authors: [{ name: 'Hergünebişey', url: 'https://www.hergunebisey.net' }],
