@@ -11,28 +11,43 @@ const Footer = () => {
     useEffect(() => {
         // Create a new beehiiv embed on client-side only
         if (typeof window !== 'undefined' && embedRef.current) {
-            // Force iframe to reload after component mounts
-            const iframe = document.createElement('iframe');
-            iframe.src = "https://embeds.beehiiv.com/a61b55fa-b6ac-4c3c-b174-964cf902b10e?slim=true";
-            iframe.dataset.testId = "beehiiv-embed"; // Use dataset for data attributes
-            iframe.height = "52";
-            iframe.style.border = "none"; // Use style instead of deprecated frameBorder
-            iframe.style.overflow = "hidden"; // Use style instead of deprecated scrolling
-            iframe.loading = "lazy";
-            iframe.title = "E-bülten aboneliği";
-            iframe.style.width = '100%';
-            iframe.style.margin = '0';
-            iframe.style.borderRadius = '0';
-            iframe.style.backgroundColor = 'transparent';
+            try {
+                // Clear container first
+                if (embedRef.current) {
+                    embedRef.current.innerHTML = '';
+                }
 
-            // Add event listener to handle successful load
-            iframe.onload = () => setIsEmbedLoaded(true);
+                // Create iframe element
+                const iframe = document.createElement('iframe');
+                iframe.src = "https://embeds.beehiiv.com/a61b55fa-b6ac-4c3c-b174-964cf902b10e?slim=true";
+                iframe.dataset.testId = "beehiiv-embed";
+                iframe.height = "52";
+                iframe.style.border = "none";
+                iframe.style.overflow = "hidden";
+                iframe.loading = "lazy";
+                iframe.title = "E-bülten aboneliği";
+                iframe.style.width = '100%';
+                iframe.style.margin = '0';
+                iframe.style.borderRadius = '0';
+                iframe.style.backgroundColor = 'transparent';
 
-            // Clear container and append new iframe
-            const container = embedRef.current;
-            if (container) {
-                container.innerHTML = '';
-                container.appendChild(iframe);
+                // Add event listener to handle successful load
+                iframe.onload = () => {
+                    console.log("Beehiiv iframe loaded successfully");
+                    setIsEmbedLoaded(true);
+                };
+
+                // Add error event listener
+                iframe.onerror = (e) => {
+                    console.error("Error loading beehiiv iframe:", e);
+                };
+
+                // Append iframe to container
+                if (embedRef.current) {
+                    embedRef.current.appendChild(iframe);
+                }
+            } catch (error) {
+                console.error("Error setting up beehiiv embed:", error);
             }
         }
 
@@ -46,7 +61,6 @@ const Footer = () => {
 
     // Social media icons array for better maintainability
     const socialIcons = [
-
         {
             name: 'Instagram',
             href: 'https://instagram.com/flavumnullus',
@@ -63,16 +77,6 @@ const Footer = () => {
                 <path d="M17.53 3H21L14.16 10.8 22.34 21h-6.27l-4.76-6.05L5.74 21H2l7.3-7.93L.66 3h6.43l4.38 5.6L17.53 3Z" />
             ),
         },
-
-
-        // {
-        //     name: 'YouTube',
-        //     href: 'https://youtube.com/c/yourchannelhere', // Replace with your actual YouTube channel URL
-        //     icon: <>
-        //         <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-        //         <polygon fill="currentColor" points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-        //     </>
-        // },
     ];
 
     // Interface for footer links
@@ -121,7 +125,6 @@ const Footer = () => {
             </div>
 
             {/* Diagonal line divider (static) */}
-
             <div className="absolute top-0 left-0 w-full h-8 overflow-hidden">
                 <div className="absolute w-full h-16 bg-yellow-500 transform -rotate-1 -translate-y-12"></div>
             </div>
@@ -203,12 +206,6 @@ const Footer = () => {
                                 </div>
                             )}
                         </div>
-
-                        {/* Subscriber count indicator */}
-                        {/* <div className="flex items-center mt-4 text-white/50 text-sm">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                            <span>1,500+ kişi abone oldu</span>
-                        </div> */}
                     </div>
                 </div>
 
@@ -217,7 +214,6 @@ const Footer = () => {
                     <p className="text-white/50 text-sm mb-4 md:mb-0">
                         © {currentYear} Hergünebi&apos;şey. Tüm hakları saklıdır.
                     </p>
-
                 </div>
             </div>
         </footer>

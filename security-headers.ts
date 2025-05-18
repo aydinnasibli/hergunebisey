@@ -12,7 +12,7 @@ export function withSecurityHeaders(nextConfig: NextConfig = {}): NextConfig {
                     headers: [
                         {
                             key: 'Content-Security-Policy',
-                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://*.sanity.io; style-src 'self' 'unsafe-inline' https://*.sanity.io; img-src 'self' data: https://*.sanity.io; font-src 'self' data: https://*.sanity.io; connect-src 'self' https://plausible.io https://*.sanity.io https://*.mongodb.net mongodb://* https://api.sendgrid.com https://api.mailgun.net https://api.sendinblue.com https://api.mailchimp.com https://smtpjs.com https://smtp.gmail.com https://mail.google.com; frame-src 'self' https://*.sanity.io; form-action 'self'; base-uri 'self'; object-src 'none';",
+                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://*.sanity.io https://*.beehiiv.com; style-src 'self' 'unsafe-inline' https://*.sanity.io https://*.beehiiv.com; img-src 'self' data: https://*.sanity.io https://*.beehiiv.com; font-src 'self' data: https://*.sanity.io; connect-src 'self' https://plausible.io https://*.sanity.io https://*.mongodb.net mongodb://* https://api.sendgrid.com https://api.mailgun.net https://api.sendinblue.com https://api.mailchimp.com https://smtpjs.com https://smtp.gmail.com https://mail.google.com https://*.beehiiv.com; frame-src 'self' https://*.sanity.io https://*.beehiiv.com embeds.beehiiv.com; form-action 'self' https://*.beehiiv.com; base-uri 'self'; object-src 'none';",
                         },
                         {
                             key: 'X-Frame-Options',
