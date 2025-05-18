@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import gradientPhoto from '@/public/assets/aboutpagebg.webp'
 import mainPhoto from '@/public/assets/mainaboutphoto.webp'
+import ContactForm from '@/components/ContactForm';
 
 const AboutUs = () => {
     return (
@@ -114,6 +115,7 @@ const AboutUs = () => {
                                         </p>
                                     </div>
                                 </div>
+                                <ContactForm />
                             </div>
                         </div>
                     </div>
