@@ -2,7 +2,16 @@
 
 import { z } from 'zod';
 import nodemailer from 'nodemailer';
-import mongoose from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
+
+// Define the interface for the contact form document
+interface IContactForm extends Document {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    timestamp: Date;
+}
 
 // Form validation schema with Zod
 const FormSchema = z.object({
@@ -12,11 +21,18 @@ const FormSchema = z.object({
     message: z.string().min(10, { message: 'Message must be at least 10 characters' }),
 });
 
+// Define return type for the form submission
+interface FormSubmissionResult {
+    success: boolean;
+    message?: string;
+    error?: string;
+}
+
 // MongoDB Connection Setup
 // Only create the connection once and reuse it
 let cachedDb: typeof mongoose | null = null;
 
-const connectToMongoDB = async () => {
+const connectToMongoDB = async (): Promise<typeof mongoose> => {
     if (cachedDb) {
         return cachedDb;
     }
@@ -37,7 +53,7 @@ const connectToMongoDB = async () => {
 };
 
 // Define Schema for Contact Form
-const ContactFormSchema = new mongoose.Schema({
+const ContactFormSchema = new mongoose.Schema<IContactForm>({
     name: {
         type: String,
         required: true,
@@ -63,14 +79,15 @@ const ContactFormSchema = new mongoose.Schema({
     },
 });
 
-// Create or get the model
-let ContactForm: mongoose.Model<any>;
+// Create or get the model with proper typing
+let ContactForm: Model<IContactForm>;
+
 try {
     // Try to get the existing model
-    ContactForm = mongoose.model('ContactForm');
+    ContactForm = mongoose.model<IContactForm>('ContactForm');
 } catch (error) {
     // Model doesn't exist, create it
-    ContactForm = mongoose.model('ContactForm', ContactFormSchema);
+    ContactForm = mongoose.model<IContactForm>('ContactForm', ContactFormSchema);
 }
 
 // Nodemailer setup with Gmail
@@ -88,9 +105,8 @@ const createTransporter = () => {
     });
 };
 
-export async function submitContactForm(formData: FormData) {
+export async function submitContactForm(formData: FormData): Promise<FormSubmissionResult> {
     'use server';
-
     console.log("📩 Received form data");
 
     try {
@@ -137,7 +153,7 @@ export async function submitContactForm(formData: FormData) {
 
         // Double check if model is defined
         if (!ContactForm) {
-            ContactForm = mongoose.model('ContactForm', ContactFormSchema);
+            ContactForm = mongoose.model<IContactForm>('ContactForm', ContactFormSchema);
         }
 
         // Save to database
@@ -181,8 +197,7 @@ export async function submitContactForm(formData: FormData) {
             success: true,
             message: "Form submitted successfully"
         };
-
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("❌ Error submitting form:", error);
         return {
             success: false,
