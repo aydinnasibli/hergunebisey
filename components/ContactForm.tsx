@@ -114,7 +114,7 @@ const ContactForm = () => {
                 <button
                     type="submit"
                     disabled={formState.status === 'submitting'}
-                    className={`w-full sm:w-auto px-6 py-3 rounded-lg bg-yellow-500 text-black font-medium 
+                    className={`w-full sm:w-auto cursor-pointer px-6 py-3 rounded-lg bg-yellow-500 text-black font-medium 
             hover:bg-yellow-400 transition-colors duration-300 flex items-center justify-center
             ${formState.status === 'submitting' ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
