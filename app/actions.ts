@@ -87,8 +87,9 @@ try {
     // Try to get the existing model
     ContactForm = mongoose.model<IContactForm>('ContactForm');
 } catch (error) {
-    // Model doesn't exist, create it
-    ContactForm = mongoose.model<IContactForm>('ContactForm', ContactFormSchema);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('❌ MongoDB model error:', errorMessage);
+    throw new Error('model error');
 }
 
 // Nodemailer setup with Gmail
