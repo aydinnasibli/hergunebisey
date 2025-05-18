@@ -91,16 +91,15 @@ const Footer = () => {
         {
             title: 'İçerikler',
             links: [
-                { name: 'Blog', href: '/blog' },
+                { name: 'Yazı', href: '/blog' },
                 { name: 'Podcast', href: '/podcast' },
-                { name: 'Alıntılar', href: '/quote' },
+                { name: 'Alıntı', href: '/quote' },
                 { name: 'Hakkımızda', href: '/about' },
             ]
         },
         {
             title: 'Kurumsal',
             links: [
-                { name: 'İletişim', href: '/contact' },
                 { name: 'Gizlilik', href: '/privacy' },
                 { name: 'Kullanım Şartları', href: '/terms' },
                 { name: 'Çerez Politikası', href: '/cookies' },
