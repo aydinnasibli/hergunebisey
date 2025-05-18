@@ -80,17 +80,17 @@ const ContactFormSchema = new mongoose.Schema<IContactForm>({
     },
 });
 
-// Create or get the model with proper typing
-let ContactForm: Model<IContactForm>;
+// Fix for Mongoose models in Next.js to handle hot reloading
+// This prevents the "Schema hasn't been registered for model" error
+const getContactFormModel = (): Model<IContactForm> => {
+    // Check if the model already exists to prevent OverwriteModelError
+    if (mongoose.models.ContactForm) {
+        return mongoose.models.ContactForm as Model<IContactForm>;
+    }
 
-try {
-    // Try to get the existing model
-    ContactForm = mongoose.model<IContactForm>('ContactForm');
-} catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('❌ MongoDB model error:', errorMessage);
-    throw new Error('model error');
-}
+    // If not, create and register the model with the schema
+    return mongoose.model<IContactForm>('ContactForm', ContactFormSchema);
+};
 
 // Nodemailer setup with Gmail
 const createTransporter = () => {
@@ -153,10 +153,8 @@ export async function submitContactForm(formData: FormData): Promise<FormSubmiss
         // Connect to MongoDB
         await connectToMongoDB();
 
-        // Double check if model is defined
-        if (!ContactForm) {
-            ContactForm = mongoose.model<IContactForm>('ContactForm', ContactFormSchema);
-        }
+        // Get the ContactForm model using our helper function
+        const ContactForm = getContactFormModel();
 
         // Save to database
         const form = await ContactForm.create({
