@@ -31,7 +31,7 @@ const ContactForm = () => {
             } else {
                 setFormState({
                     status: 'error',
-                    message: result.message || 'Bir hata oluştu. Lütfen tekrar deneyiniz.'
+                    message: result.error || 'Bir hata oluştu. Lütfen tekrar deneyiniz.'
                 });
             }
         } catch (error) {

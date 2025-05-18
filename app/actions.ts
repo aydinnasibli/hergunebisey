@@ -14,17 +14,22 @@ const FormSchema = z.object({
 
 // MongoDB Connection Setup
 // Only create the connection once and reuse it
-let isConnected = false;
+let cachedDb: typeof mongoose | null = null;
 
 const connectToMongoDB = async () => {
-    if (isConnected) {
-        return;
+    if (cachedDb) {
+        return cachedDb;
+    }
+
+    if (!process.env.MONGODB_URI) {
+        throw new Error('MONGODB_URI is not defined in environment variables');
     }
 
     try {
-        await mongoose.connect(process.env.MONGODB_URI as string);
-        isConnected = true;
+        const client = await mongoose.connect(process.env.MONGODB_URI);
         console.log('✅ MongoDB connected successfully');
+        cachedDb = client;
+        return client;
     } catch (error) {
         console.error('❌ MongoDB connection error:', error);
         throw new Error('Failed to connect to the database');
@@ -59,11 +64,21 @@ const ContactFormSchema = new mongoose.Schema({
 });
 
 // Create or get the model
-const ContactForm = mongoose.models.ContactForm ||
-    mongoose.model('ContactForm', ContactFormSchema);
+let ContactForm: mongoose.Model<any>;
+try {
+    // Try to get the existing model
+    ContactForm = mongoose.model('ContactForm');
+} catch (error) {
+    // Model doesn't exist, create it
+    ContactForm = mongoose.model('ContactForm', ContactFormSchema);
+}
 
 // Nodemailer setup with Gmail
 const createTransporter = () => {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+        throw new Error('Email credentials are not defined in environment variables');
+    }
+
     return nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -120,6 +135,11 @@ export async function submitContactForm(formData: FormData) {
         // Connect to MongoDB
         await connectToMongoDB();
 
+        // Double check if model is defined
+        if (!ContactForm) {
+            ContactForm = mongoose.model('ContactForm', ContactFormSchema);
+        }
+
         // Save to database
         const form = await ContactForm.create({
             name,
@@ -135,10 +155,13 @@ export async function submitContactForm(formData: FormData) {
         const transporter = createTransporter();
         console.log("✅ Email transporter created");
 
+        // Email recipient fallback
+        const emailTo = process.env.EMAIL_TO || 'hergunebisey@gmail.com';
+
         // Send email
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: process.env.EMAIL_TO || 'hergunebisey@gmail.com',
+            to: emailTo,
             subject: `New Contact ${subject}`,
             html: `
         <h2>New Contact Form Submission</h2>

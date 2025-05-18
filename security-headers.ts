@@ -12,7 +12,22 @@ export function withSecurityHeaders(nextConfig: NextConfig = {}): NextConfig {
                     headers: [
                         {
                             key: 'Content-Security-Policy',
-                            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://*.sanity.io https://*.beehiiv.com; style-src 'self' 'unsafe-inline' https://*.sanity.io https://*.beehiiv.com; img-src 'self' data: https://*.sanity.io https://*.beehiiv.com; font-src 'self' data: https://*.sanity.io; connect-src 'self' https://plausible.io https://*.sanity.io https://*.mongodb.net mongodb://* https://api.sendgrid.com https://api.mailgun.net https://api.sendinblue.com https://api.mailchimp.com https://smtpjs.com https://smtp.gmail.com https://mail.google.com https://*.beehiiv.com; frame-src 'self' https://*.sanity.io https://*.beehiiv.com embeds.beehiiv.com; form-action 'self' https://*.beehiiv.com; base-uri 'self'; object-src 'none';",
+                            value: `
+                                default-src 'self';
+                                script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://*.sanity.io https://*.beehiiv.com https://embeds.beehiiv.com;
+                                style-src 'self' 'unsafe-inline' https://*.sanity.io https://*.beehiiv.com https://embeds.beehiiv.com;
+                                img-src 'self' data: https://*.sanity.io https://*.beehiiv.com https://embeds.beehiiv.com;
+                                font-src 'self' data: https://*.sanity.io https://*.beehiiv.com;
+                                connect-src 'self' https://plausible.io https://*.sanity.io https://*.mongodb.net mongodb://* 
+                                    https://api.sendgrid.com https://api.mailgun.net https://api.sendinblue.com https://api.mailchimp.com 
+                                    https://smtpjs.com https://smtp.gmail.com https://mail.google.com https://*.beehiiv.com 
+                                    https://embeds.beehiiv.com https://*.px-cloud.net https://*.pxchk.net https://*.px-cdn.net 
+                                    https://*.pxe-cloud.net https://*.collector-pxebumqlwe.* https://fzm.*; 
+                                frame-src 'self' https://*.sanity.io https://*.beehiiv.com https://embeds.beehiiv.com;
+                                form-action 'self' https://*.beehiiv.com https://embeds.beehiiv.com;
+                                base-uri 'self';
+                                object-src 'none';
+                            `.replace(/\s+/g, ' ').trim(),
                         },
                         {
                             key: 'X-Frame-Options',
