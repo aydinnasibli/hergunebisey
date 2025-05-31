@@ -4,7 +4,19 @@ import { withSecurityHeaders } from './security-headers';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+    // Use remotePatterns instead of domains (domains is deprecated)
+    remotePatterns: [
+
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        port: '',
+        pathname: '/images/**',
+      },
+    ],
+
+  },
 };
 
-// Apply security headers to the Next.js configuration
 export default withSecurityHeaders(nextConfig);
