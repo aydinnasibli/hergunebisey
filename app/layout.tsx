@@ -7,6 +7,7 @@ import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
 import PageTransition from "@/components/PageTransition";
 import PlausibleProvider from 'next-plausible'
+import CookieConsent from "@/components/CookieConsent";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
@@ -85,6 +86,14 @@ export default function RootLayout({
           {/* Keep Footer outside transition for better UX */}
           <Footer />
         </PlausibleProvider>
+
+        {/* Cookie Consent - placed at the end for highest z-index */}
+        <CookieConsent
+          message="Bu web sitesini ziyaret ederek çerezleri ve gizlilik politikamızı kabul etmiş olursunuz."
+          buttonText="Kabul Et"
+          cookieName="hergunebisey-consent"
+          expirationDays={7}
+        />
       </body>
     </html>
   );
