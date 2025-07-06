@@ -120,3 +120,117 @@ body {
 .perspective-1000 {
     perspective: 1000px;
 }
+
+
+
+/* Custom Transition styles */
+
+/* Performance optimizations */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Optimize font rendering */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Prevent flash of unstyled content */
+.page-transition-wrapper {
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+a,
+button,
+input,
+textarea,
+select {
+    transition: all 0.2s ease-out;
+}
+
+/* Optimize animations for better performance */
+@media (prefers-reduced-motion: no-preference) {
+    .transition-all {
+        transition-property: opacity, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .transition-all {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Improve performance with hardware acceleration */
+.gpu-accelerated {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+}
+
+/* Loading state styles */
+.page-loading {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Prevent layout shift during transitions */
+.transition-container {
+    contain: layout style paint;
+}
+
+/* Optimize images for better performance */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Improve focus visibility */
+:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Optimize for mobile */
+@media (max-width: 768px) {
+    .transition-all {
+        transition-duration: 0.2s;
+    }
+}
+
+/* Prevent horizontal scroll issues */
+body {
+    overflow-x: hidden;
+    /* Ensure smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+}

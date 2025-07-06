@@ -1,14 +1,18 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import HorizontalScrollBar from "@/components/HorizontalScrollBar";
 import Navbar from "@/components/Navbar";
+import PageTransition from "@/components/PageTransition";
 import PlausibleProvider from 'next-plausible'
+
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
-  subsets: ["latin"], // Ensure Latin characters are loaded
-  variable: "--font-poppins", // Set a CSS variable
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: 'swap', // Improve font loading performance
 });
 
 export const metadata: Metadata = {
@@ -38,23 +42,20 @@ export const metadata: Metadata = {
     description: 'Bilimden tarihe, kültürden teknolojiye birbirinden farklı pek çok konuda podcast ve yazının yanı sıra tarihe yön vermiş dehalardan da alıntıların bulunduğu site.',
     images: [
       {
-        url: '/images/og-image.jpg', // Replace with your actual OG image path
+        url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Your Site Name',
       },
     ],
   },
-
   icons: {
     icon: [
       { url: '/favicon.ico' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
-
   },
-
 }
 
 export default function RootLayout({
@@ -64,17 +65,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" className="scrollbar-hide">
-      <body className={`${poppins.className} overflow-y-auto`}>
+      <body className={`${poppins.className} overflow-y-auto antialiased`}>
         <PlausibleProvider domain="hergunebisey.net">
+          {/* Keep Navbar outside transition for better UX */}
           <Navbar />
 
+          {/* Main content with transitions */}
+          <main className="relative">
+            <PageTransition>
+              <div className="min-h-screen">
+                {children}
+              </div>
+            </PageTransition>
 
-          <div className="">
-            {children}
+            {/* Keep HorizontalScrollBar outside transition if it's global */}
             <HorizontalScrollBar />
-          </div>
-          <Footer />
+          </main>
 
+          {/* Keep Footer outside transition for better UX */}
+          <Footer />
         </PlausibleProvider>
       </body>
     </html>
