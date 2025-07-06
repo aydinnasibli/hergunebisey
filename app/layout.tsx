@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import PageTransition from "@/components/PageTransition";
 import PlausibleProvider from 'next-plausible'
 import CookieConsent from "@/components/CookieConsent";
-
+import { Toaster } from "react-hot-toast";
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
@@ -86,7 +86,7 @@ export default function RootLayout({
           {/* Keep Footer outside transition for better UX */}
           <Footer />
         </PlausibleProvider>
-
+        <Toaster />
         {/* Cookie Consent - placed at the end for highest z-index */}
         <CookieConsent
           message="Bu web sitesini ziyaret ederek çerezleri ve gizlilik politikamızı kabul etmiş olursunuz."
