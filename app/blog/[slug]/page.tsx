@@ -159,7 +159,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                     <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center z-10 mt-12">
                         <Link
                             href="/blog"
-                            className="flex items-center bg-yellow-500 text-black px-4 py-2 rounded-full font-medium hover:bg-yellow-400 transition-all duration-300 transform hover:-translate-y-1 group shadow-lg"
+                            className="flex items-center bg-yellow-500 text-black px-4 py-2 rounded-full font-medium hover:bg-yellow-400 transition-all duration-400 transform hover:-translate-y-1 group shadow-lg"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-300">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
