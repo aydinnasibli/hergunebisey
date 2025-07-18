@@ -96,15 +96,17 @@ const AboutUs = () => {
                                         Merak etmek, araştırmak ve paylaşmak. Bu üç kelime ile özetlenebilecek olan hikayemiz; temelinde merak ettiğimiz bir konuyu birden fazla kaynaktan inceleyerek araştırmaya, bu esnada da kendi yorumumuzu katarak içeriğe dönüştürmeye dayanıyor.
                                     </p>
 
-                                    <p>
+                                    <p className="text-lg">
+
                                         Doğru sorularla merakımızı ateşleyip daha fazlasını öğrenme hevesimizle de konunun üstüne gidiyoruz. Konu hakkında kaliteli bulduğumuz kaynakları tüketip işin detayını öğreniyor, ardından kendi geçmiş bilgi ve tecrübelerimiz ile harmanlayıp ortaya bir yazı ya da podcast yayını çıkarıyoruz. Bu araştırmalar esnasında karşılaştığımız az sözle çok şey anlatan cümleleri de alıntı olarak düzenli periyotlarla yayınlıyoruz. Tüm bu süreçte öğrendiklerimizin bizim hayatlarımıza anlam ve değer katacağına da yürekten inanıyoruz.
                                     </p>
 
-                                    <p>
+                                    <p className="text-lg">
+
                                         Bu sitede ürettiğimiz içerikleri takipçilerimize iletiyoruz. Bunun karşılığında ufak da olsa insanların hayatlarına dokunuyor ve bir topluluk kuruyoruz. Bu topluluğu, elimizden geldiğince çok kişiye ulaştırarak; ulaştığımız kişilere hap bilgi seviyesinde olmayan, çok daha anlamlı ve zengin içerikler sunarak büyütmeye çabalıyoruz. Bu esnada pek çok hata yapacağımızın da farkında olarak bu yaratmaya çalıştığımız topluluğun desteğini bekliyoruz. Düzeltmeler için gerekli her noktada lütfen bizimle iletişime geçmekten çekinmeyin.
                                     </p>
 
-                                    <p>
+                                    <p className="text-lg">
                                         Özetle bu sitede hayatı yaşamaya değer kılıyor, insanları da merak edip öğrenmeye davet ediyoruz.
                                     </p>
 
